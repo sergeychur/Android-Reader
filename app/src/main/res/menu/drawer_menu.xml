@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/bookShelveFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/book_shelf"/>
+        <item
+            android:id="@+id/tasksListFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/tasks_list"/>
+        <item
+            android:id="@+id/commonStatsFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/stats"/>
+        <item
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/settings"/>
+        <item
+            android:id="@+id/aboutFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/about"/>
+    </group>
+</menu>
