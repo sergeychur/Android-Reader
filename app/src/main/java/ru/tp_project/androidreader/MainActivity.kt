@@ -1,14 +1,15 @@
 package ru.tp_project.androidreader
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import ru.tp_project.androidreader.fragments.BookShelveFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), BookShelveFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +21,10 @@ class MainActivity : AppCompatActivity(), BookShelveFragment.OnFragmentInteracti
 
         val sideBar = findViewById<NavigationView>(R.id.nav_view)
         sideBar?.setupWithNavController(navController)
-
+//        
+//        val toolBar = findViewById<Toolbar>(R.id.toolbar)
+//        setSupportActionBar(toolBar)
+//        toolBar.setupWithNavController(navController, appBarConfiguration)
     }
 
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

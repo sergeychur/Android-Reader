@@ -6,7 +6,7 @@
     app:startDestination="@id/bookShelveFragment">
     <fragment
         android:id="@+id/bookShelveFragment"
-        android:name="ru.tp_project.androidreader.fragments.BookShelveFragment"
+        android:name="ru.tp_project.androidreader.fragments.BookShelfFragment"
         android:label="fragment_book_shelve"
         tools:layout="@layout/fragment_book_shelve" >
         <action
