@@ -4,9 +4,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: make for english too -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="book_shelf">Книжная полка</string>
-    <string name="tasks_list">Задачи</string>
-    <string name="stats">Статистика</string>
-    <string name="settings">Настройки</string>
-    <string name="about">О приложении</string>
+    <string name="book_shelf">Book Shelf</string>
+    <string name="tasks_list">Tasks</string>
+    <string name="stats">Statistics</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
 </resources>
