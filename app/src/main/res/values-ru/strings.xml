@@ -8,4 +8,8 @@
     <string name="stats">Статистика</string>
     <string name="settings">Настройки</string>
     <string name="about">О приложении</string>
+    <string name="new_task">Новая задача</string>
+    <string name="task_edit">Редактирование задачи</string>
+    <string name="reading">Чтение</string>
+    <string name="error_no_tasks">Нет задач</string>
 </resources>
