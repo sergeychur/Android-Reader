@@ -9,4 +9,16 @@
     <string name="stats">Statistics</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
+    <string name="read_header">Read</string>
+    <string name="books_read">Books</string>
+    <string name="pages_read">Pages</string>
+    <string name="words_read">Words</string>
+    <string name="speed_header">Speed of reading</string>
+    <string name="hours_per_day">Hours/Day</string>
+    <string name="words_per_min">Words/Min</string>
+    <string name="pages_per_hour">Pages/Hour</string>
+    <string name="spent_header">Spent</string>
+    <string name="years_spent">Years</string>
+    <string name="days_spent">Days</string>
+    <string name="hours_spent">Hours</string>
 </resources>
