@@ -11,5 +11,5 @@ interface UserStatisticDao {
     suspend fun save(user: User)
 
     @Query("SELECT * FROM user WHERE id = :userId")
-    fun load(userId: Int): LiveData<User>
+    suspend fun load(userId: Int): User
 }
