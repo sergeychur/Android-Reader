@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="book"
+            type="ru.tp_project.androidreader.viewModels.BookShelveViewModel" />
+
+    </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/bookPreview"
@@ -14,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -23,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:textSize="30sp"
-            android:text="Война и мир" />
+            android:text="@{book.data.name}" />
 
         <TextView
             android:id="@+id/bookAuthor"
@@ -32,7 +41,7 @@
             android:layout_margin="2dp"
             android:layout_marginLeft="4dp"
             android:textSize="20sp"
-            android:text="Лев Николаевич Толстой" />
+            android:text="@{book.data.author}" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="FB2"
+                android:text="@{book.data.author}"
                 android:textSize="18sp" />
 
             <TextView
@@ -52,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="9.5Мб"
+                android:text="@{book.data.author}"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -83,7 +92,6 @@
                 android:id="@+id/bookDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background=""
                 android:layout_weight="1"
                 android:layout_margin="1dp"
                 android:src="@drawable/delete_24px"/>
@@ -93,7 +101,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background=""
                 android:layout_margin="1dp"
                 android:src="@drawable/share_24px"/>
 
@@ -102,10 +109,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background=""
                 android:layout_margin="1dp"
                 android:src="@drawable/info_24px"/>
         </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
+</layout>
