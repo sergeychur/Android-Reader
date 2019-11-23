@@ -1,6 +1,7 @@
 package ru.tp_project.androidreader.model
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -17,32 +18,31 @@ abstract class AppDb : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDb? = null
 
+        @Synchronized
         fun getInstance(context: Context): AppDb {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
             }
-
-            synchronized(AppDb::class) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDb::class.java,
-                    "app_database"
-                ).addCallback(
-                    object : RoomDatabase.Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            db.execSQL(
-                                "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 1)",
-                                intArrayOf(context.resources.getInteger(R.integer.single_user_id)).toTypedArray()
-                            )
-                        }
+            Log.d("DBcreate", "Db created")
+            val instance = Room.databaseBuilder(
+                context.applicationContext,
+                AppDb::class.java,
+                "app_database"
+            ).addCallback(
+                object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        db.execSQL(
+                            "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 1)",
+                            intArrayOf(context.resources.getInteger(R.integer.single_user_id)).toTypedArray()
+                        )
                     }
-                )
-                    .build()
-                INSTANCE = instance
-                return instance
-            }
+                }
+            )
+                .build()
+            INSTANCE = instance
+            return instance
         }
     }
 }
