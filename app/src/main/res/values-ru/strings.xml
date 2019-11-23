@@ -24,4 +24,7 @@
     <string name="years_spent">Лет</string>
     <string name="days_spent">Дней</string>
     <string name="hours_spent">Часов</string>
+    <string name="task_name_header">Название:</string>
+    <string name="selected_books_list_header">Выбранные книги:</string>
+    <string name="no_selected_books">Нет выбранных книг</string>
 </resources>
