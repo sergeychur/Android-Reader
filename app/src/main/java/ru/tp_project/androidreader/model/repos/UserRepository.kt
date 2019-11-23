@@ -10,6 +10,7 @@ class UserRepository {
     private var currentUserID = R.integer.single_user_id
 
     fun getUserStatistic(context: Context): LiveData<User> {
-        return AppDb.getInstance(context).userStatisticDao().load(context.resources.getInteger(currentUserID))
+        return AppDb.getInstance(context).userStatisticDao()
+            .load(context.resources.getInteger(currentUserID))
     }
 }

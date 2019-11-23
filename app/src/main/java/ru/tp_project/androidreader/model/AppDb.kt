@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.dao.UserStatisticDao
 import ru.tp_project.androidreader.model.data_models.User
 
@@ -32,8 +33,8 @@ abstract class AppDb : RoomDatabase() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             db.execSQL(
-                                "INSERT INTO user VALUES(1, 0, 0, 1, 0, 1, 0, 0, 0, 1)"
-                                //intArrayOf(R.integer.single_user_id).toTypedArray()
+                                "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 0)",
+                                intArrayOf(context.resources.getInteger(R.integer.single_user_id)).toTypedArray()
                             )
                         }
                     }
