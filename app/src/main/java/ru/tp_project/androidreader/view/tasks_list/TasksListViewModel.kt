@@ -3,7 +3,7 @@ package ru.tp_project.androidreader.view.tasks_list
 import androidx.lifecycle.MutableLiveData
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.repos.TasksRepository
-import ru.tp_project.androidreader.viewmodel.BaseViewModel
+import ru.tp_project.androidreader.base.BaseViewModel
 
 
 class TasksListViewModel : BaseViewModel() {

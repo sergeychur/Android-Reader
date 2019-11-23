@@ -1,4 +1,4 @@
-package ru.tp_project.androidreader.viewmodel
+package ru.tp_project.androidreader.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
