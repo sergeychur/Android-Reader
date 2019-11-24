@@ -22,6 +22,13 @@
     <string name="years_spent">Years</string>
     <string name="days_spent">Days</string>
     <string name="hours_spent">Hours</string>
+    <string name="task_name_header">Task name:</string>
+    <string name="selected_books_list_header">Selected books:</string>
+    <string name="no_selected_books">There aren\'t any book</string>
+    <string name="delete">delete</string>
+    <string name="google_books">Google books</string>
+    <string name="file_store">File store</string>
+    <string name="book_image">Book\'s image</string>
     <string name="space">\u0020</string>
     <string name="done">Done:</string>
     <string name="goal">Goal:</string>

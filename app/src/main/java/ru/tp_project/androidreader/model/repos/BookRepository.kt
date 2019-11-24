@@ -15,7 +15,7 @@ class BookRepository {
 
     fun getBook(context: Context, onResult: (isSuccess: Boolean, book: Book?) -> Unit) {
         GlobalScope.launch {
-            var book = withContext(Dispatchers.Default) {
+            val book = withContext(Dispatchers.Default) {
                 BookDb.getInstance(context).bookDao().load(bookID)
             }
             onResult(true, book)

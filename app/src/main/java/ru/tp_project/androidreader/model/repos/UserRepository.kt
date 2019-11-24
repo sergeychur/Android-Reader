@@ -15,11 +15,11 @@ class UserRepository {
     fun getUserStatistic(context: Context, onResult: (isSuccess: Boolean, user: User?) -> Unit) {
         GlobalScope.launch {
             val user = withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).userStatisticDao().load(context.resources.getInteger(currentUserID))
+                AppDb.getInstance(context).userStatisticDao()
+                    .load(context.resources.getInteger(currentUserID))
             }
             onResult(true, user)
         }
-
     }
 
 }
