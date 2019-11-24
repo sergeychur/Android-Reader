@@ -8,15 +8,16 @@ import kotlinx.coroutines.withContext
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.AppDb
 import ru.tp_project.androidreader.model.data_models.Task
+import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksRepository {
 
-    fun getTasksList(context: Context, onResult: (isSuccess: Boolean, tasks: List<Task>?) -> Unit) {
+    fun getTasksList(context: Context, onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit) {
         GlobalScope.launch {
             val tasks = withContext(Dispatchers.Default) {
                 AppDb.getInstance(context).taskDao().loadAllTasks(context.resources.getInteger(R.integer.single_user_id))
             }
-            onResult(true, tasks)
+            onResult(tasks.isNotEmpty(), tasks)
         }
     }
 

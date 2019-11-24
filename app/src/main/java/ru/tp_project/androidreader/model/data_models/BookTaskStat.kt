@@ -1,9 +1,6 @@
 package ru.tp_project.androidreader.model.data_models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "book_task_stat",
     foreignKeys = [ForeignKey(entity = Task::class,
@@ -11,7 +8,9 @@ import androidx.room.PrimaryKey
         childColumns = arrayOf("task_id")),
     ForeignKey(entity = Book::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("book_id"))]
+        childColumns = arrayOf("book_id"))],
+    indices = [Index(value = ["task_id"]),
+        Index(value = ["book_id"])]
 )
 data class BookTaskStat (
     @PrimaryKey(autoGenerate = true)
@@ -20,6 +19,8 @@ data class BookTaskStat (
     val taskID: Int,
     @ColumnInfo(name = "book_id")
     val bookID: Int,
-    val pages_read: Int,
-    val words_read: Int
+    @ColumnInfo(name = "pages_read")
+    val pagesRead: Int,
+    @ColumnInfo(name = "words_read")
+    val wordsRead: Int
 )

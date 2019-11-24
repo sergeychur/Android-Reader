@@ -1,15 +1,13 @@
 package ru.tp_project.androidreader.model.data_models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.sql.Date
 
 @Entity(tableName = "task",
     foreignKeys = [ForeignKey(entity = User::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("user_id"))]
+        childColumns = arrayOf("user_id"))],
+    indices = [Index(value = ["user_id"])]
 )
 data class Task (
     @PrimaryKey(autoGenerate = true)

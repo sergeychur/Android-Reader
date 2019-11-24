@@ -13,6 +13,8 @@ interface TaskDao {
     @Insert(onConflict = REPLACE)
     suspend fun save(task: Task)
 
-    @Query("SELECT COUNT(*), SUM() FROM task t JOIN book_task_stat bs ON (t.id == bs.task_id) WHERE user_id = :userId ORDER BY created DESC")
+    @Query("SELECT t.id, t.name, t.description, t.user_id, t.created, t.deadline," +
+            " t.books, t.pages, t.words, ts.books_read, ts.pages_read, ts.words_read FROM task t JOIN task_stat ts" +
+            " ON (ts.task_id=t.id) WHERE t.user_id=:userId ORDER BY created DESC")
     suspend fun loadAllTasks(userId: Int): List<TaskStat>
 }

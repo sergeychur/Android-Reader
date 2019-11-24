@@ -59,19 +59,19 @@
                 android:layout_column="0"
                 android:layout_marginStart="2dp"
                 android:layout_margin="5dp"
-                android:text="@{@string/books_read + @string/space + data.task.books}"/>
+                android:text="@{@string/books_read + @string/space + data.books}"/>
 
             <TextView
                 android:layout_row="0"
                 android:layout_column="1"
                 android:layout_margin="5dp"
-                android:text="@{@string/words_read + @string/space + data.task.words}"/>
+                android:text="@{@string/words_read + @string/space + data.words}"/>
 
             <TextView
                 android:layout_row="0"
                 android:layout_column="2"
                 android:layout_margin="5dp"
-                android:text="@{@string/pages_read + @string/space + data.task.pages}"/>
+                android:text="@{@string/pages_read + @string/space + data.pages}"/>
 
             <!--TODO(sergeychur): move to constants-->
         </GridLayout>
@@ -83,8 +83,8 @@
                     android:layout_marginStart="5dp"
                     android:backgroundTint="@color/colorPrimaryBlue"
                     android:foregroundTint="@color/colorPrimaryBlue"
-                    android:max="100"
-                    android:progress="80"
+                    android:max="@integer/maximum_progress"
+                    android:progress="@{(int) (((float)data.pagesRead / (float)data.pages) * 100)}"
                     android:progressBackgroundTint="@color/colorPrimaryBlue"
                     android:progressTint="@color/colorPrimaryBlue"
                     android:secondaryProgressTint="@color/colorPrimaryBlue"
@@ -105,19 +105,19 @@
                         android:layout_row="0"
                         android:layout_column="0"
                         android:layout_margin="5dp"
-                        android:text="@{@string/books_read + @string/space + data.books_read}"/>
-
+                        android:text="@{@string/books_read + @string/space + data.booksRead}"/>
+                    <!--TODO(sergeychur): change for books read-->
                     <TextView
                         android:layout_row="0"
                         android:layout_column="1"
                         android:layout_margin="5dp"
-                        android:text="@{@string/words_read + @string/space + data.words_read}"/>
+                        android:text="@{@string/words_read + @string/space + data.wordsRead}"/>
 
                     <TextView
                         android:layout_row="0"
                         android:layout_column="2"
                         android:layout_margin="5dp"
-                        android:text="@{@string/pages_read + @string/space + data.pages_read}"/>
+                        android:text="@{@string/pages_read + @string/space + data.pagesRead}"/>
                 </GridLayout>
                 <GridLayout
                     android:layout_row="6"
