@@ -2,6 +2,7 @@ package ru.tp_project.androidreader
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -26,11 +27,16 @@ class MainActivity : AppCompatActivity() {
         val sideBar = findViewById<NavigationView>(R.id.nav_view)
         sideBar?.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(navController.graph
-            , drawerLayout = drawer_layout) // для бокового меню
+        appBarConfiguration = AppBarConfiguration(
+            navController.graph
+            , drawerLayout = drawer_layout
+        ) // для бокового меню
         val toolBar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolBar)
         toolBar.setupWithNavController(navController, appBarConfiguration)
     }
 
+    fun onAddTaskBtnClick(view: View) {
+        navController.navigate(R.id.newTaskFragment)
+    }
 }

@@ -29,6 +29,7 @@ abstract class AppDb : RoomDatabase() {
             if (tempInstance != null) {
                 return tempInstance
             }
+
             Log.d("DBcreate", "Db created")
             val instance = Room.databaseBuilder(
                 context.applicationContext,
@@ -39,7 +40,7 @@ abstract class AppDb : RoomDatabase() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         db.execSQL(
-                            "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 1)",
+                            "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 0)",
                             intArrayOf(context.resources.getInteger(R.integer.single_user_id)).toTypedArray()
                         )
                         // remove in future

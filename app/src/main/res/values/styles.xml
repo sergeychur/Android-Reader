@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextInputTheme">
+        <item name="android:colorControlActivated">@android:color/black</item>
+        <item name="android:colorControlHighlight">@android:color/black</item>
+    </style>
+
 </resources>
