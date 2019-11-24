@@ -106,7 +106,6 @@
                         android:layout_column="0"
                         android:layout_margin="5dp"
                         android:text="@{@string/books_read + @string/space + data.booksRead}"/>
-                    <!--TODO(sergeychur): change for books read-->
                     <TextView
                         android:layout_row="0"
                         android:layout_column="1"

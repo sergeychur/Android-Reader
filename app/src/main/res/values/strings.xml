@@ -32,4 +32,6 @@
     <string name="space">\u0020</string>
     <string name="done">Done:</string>
     <string name="goal">Goal:</string>
+    <string name="taskDone">Finished</string>
+    <string name="taskActive">Active</string>
 </resources>

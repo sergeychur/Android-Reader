@@ -12,10 +12,11 @@ import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksRepository {
 
-    fun getTasksList(context: Context, onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit) {
+    fun getTasksList(done: Boolean, context: Context, onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit) {
         GlobalScope.launch {
             val tasks = withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).taskDao().loadAllTasks(context.resources.getInteger(R.integer.single_user_id))
+                // TODO(sergeychur): get here done value from the outsides
+                AppDb.getInstance(context).taskDao().loadAllTasks(context.resources.getInteger(R.integer.single_user_id), done)
             }
             onResult(tasks.isNotEmpty(), tasks)
         }

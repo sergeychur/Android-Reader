@@ -9,14 +9,17 @@ import ru.tp_project.androidreader.model.data_models.TaskStat
 
 
 class TasksListViewModel : BaseViewModel() {
-    val tasksListLive = MutableLiveData<List<TaskStat>>()
+    val tasksListLive = MutableLiveData<MutableList<TaskStat>>()
 
-    fun fetchTasksList(context: Context) {
+    fun clearTasksList() {
+        tasksListLive.value?.removeAll {true}
+    }
+    fun fetchTasksList(context: Context, done: Boolean) {
         dataLoading.value = true
-        TasksRepository.getInstance().getTasksList(context) { isSuccess, tasks ->
+        TasksRepository.getInstance().getTasksList(done, context) { isSuccess, tasks ->
             dataLoading.postValue(false)
             if (isSuccess) {
-                tasksListLive.postValue(tasks)
+                tasksListLive.postValue(tasks?.toMutableList())
                 empty.postValue(false)
             } else {
                 empty.postValue(true)

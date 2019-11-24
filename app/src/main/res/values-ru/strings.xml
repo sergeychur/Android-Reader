@@ -34,4 +34,6 @@
     <string name="space">\u0020</string>
     <string name="done">Выполнено:</string>
     <string name="goal">Цель:</string>
+    <string name="taskDone">Выполненные</string>
+    <string name="taskActive">Активные</string>
 </resources>
