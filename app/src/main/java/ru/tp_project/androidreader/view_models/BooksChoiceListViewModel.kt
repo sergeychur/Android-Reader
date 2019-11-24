@@ -3,6 +3,7 @@ package ru.tp_project.androidreader.view_models
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.tp_project.androidreader.base.BaseViewModel
+import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.repos.BooksRepository
 
 
@@ -11,8 +12,12 @@ class BooksChoiceListViewModel : BaseViewModel() {
     private val booksListLive = MutableLiveData<List<Book>>()
 
     init {
-        selectedBooks.value = ArrayList()//arrayListOf(Book("1"), Book("2"))
-        empty.value = true // TODO (Kotyrich) temprorary
+        selectedBooks.value = arrayListOf(
+            Book("1", "BookName", "???", "Name Secname", 100.13f, "fb2", 0.5f, "what"),
+            Book("1", "BookName", "???", "Name Secname", 100.13f, "fb2", 0.5f, "what"),
+            Book("1", "BookName", "???", "Name Secname", 100.13f, "fb2", 0.5f, "what")
+        )
+        empty.value = false // TODO(Kotyrich) temporary
     }
 
     fun getBooksList() {
@@ -36,6 +41,13 @@ class BooksChoiceListViewModel : BaseViewModel() {
         selectedBooks.value!!.add(book)
         empty.value = false
     }
-}
 
-data class Book(val id: String)
+    fun removeBook(book: Book) {
+        selectedBooks.value!!.remove(book)
+        selectedBooks.value = selectedBooks.value
+
+        if (selectedBooks.value!!.size == 0) {
+            empty.value = true
+        }
+    }
+}

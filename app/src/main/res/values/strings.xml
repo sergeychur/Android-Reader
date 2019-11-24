@@ -25,4 +25,5 @@
     <string name="task_name_header">Task name:</string>
     <string name="selected_books_list_header">Selected books:</string>
     <string name="no_selected_books">There aren\'t any book</string>
+    <string name="delete">delete</string>
 </resources>

@@ -40,12 +40,14 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/task_name_input"
+                    android:theme="@style/TextInputTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill_vertical"
                     android:inputType="textShortMessage"
                     android:singleLine="true"
                     android:textColorHighlight="@android:color/black"
+                    android:textColorHint="@android:color/black"
                     android:textColorLink="@android:color/black" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -63,7 +65,7 @@
                 android:text="@string/selected_books_list_header"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryBlue"
-                android:textSize="18sp" />
+                android:textSize="22sp" />
         </LinearLayout>
 
         <RelativeLayout
@@ -79,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/error_no_tasks"
+                android:text="@string/no_selected_books"
                 android:textSize="18sp"
                 android:visibility="@{safeUnbox(viewmodel.empty) ? View.VISIBLE : View.GONE}" />
 

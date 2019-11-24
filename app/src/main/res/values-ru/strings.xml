@@ -27,4 +27,5 @@
     <string name="task_name_header">Название:</string>
     <string name="selected_books_list_header">Выбранные книги:</string>
     <string name="no_selected_books">Нет выбранных книг</string>
+    <string name="delete">удалить</string>
 </resources>

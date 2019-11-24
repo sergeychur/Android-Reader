@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 import ru.tp_project.androidreader.BR
-import ru.tp_project.androidreader.view_models.Book
+import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.view_models.BooksChoiceListViewModel
 
 class BooksChoiceListViewHolder(
