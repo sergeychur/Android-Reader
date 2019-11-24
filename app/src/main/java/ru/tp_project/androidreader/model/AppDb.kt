@@ -10,10 +10,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.dao.TaskDao
 import ru.tp_project.androidreader.model.dao.UserStatisticDao
-import ru.tp_project.androidreader.model.data_models.Task
-import ru.tp_project.androidreader.model.data_models.User
+import ru.tp_project.androidreader.model.data_models.*
 
-@Database(entities = [User::class, Task::class], version = 1)
+@Database(entities = [User::class, Task::class, BookTaskStat::class,
+    Book::class, TaskStatDB::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun userStatisticDao(): UserStatisticDao
@@ -45,6 +45,7 @@ abstract class AppDb : RoomDatabase() {
                         )
                         // remove in future
                         db.execSQL("INSERT INTO task VALUES(1, 'task#1', 'vip task', 1, 181881, 21212, 1, 2, 3)")
+                        db.execSQL("INSERT INTO task_stat VALUES(1, 1, 1, 1, 1, 'false')")
                     }
                 }
             )

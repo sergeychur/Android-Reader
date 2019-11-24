@@ -5,10 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.repos.TasksRepository
 import ru.tp_project.androidreader.base.BaseViewModel
+import ru.tp_project.androidreader.model.data_models.TaskStat
 
 
 class TasksListViewModel : BaseViewModel() {
-    val tasksListLive = MutableLiveData<List<Task>>()
+    val tasksListLive = MutableLiveData<List<TaskStat>>()
 
     fun fetchTasksList(context: Context) {
         dataLoading.value = true

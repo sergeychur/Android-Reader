@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.tp_project.androidreader.databinding.ViewTasksListTaskBinding
 import ru.tp_project.androidreader.model.data_models.Task
+import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksListAdapter(private val tasksListViewModel: TasksListViewModel) : RecyclerView.Adapter<TasksListViewHolder>() {
-    var tasksList: List<Task> = emptyList()
+    var tasksList: List<TaskStat> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,7 +22,7 @@ class TasksListAdapter(private val tasksListViewModel: TasksListViewModel) : Rec
         holder.setup(tasksList[position])
     }
 
-    fun updateTasksList(tasksList: List<Task>) {
+    fun updateTasksList(tasksList: List<TaskStat>) {
         this.tasksList = tasksList
         notifyDataSetChanged()
     }

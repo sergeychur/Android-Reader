@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.tp_project.androidreader.BR
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Task
+import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksListViewHolder constructor(private val dataBinding: ViewDataBinding, private val tasksListViewModel: TasksListViewModel)
     : RecyclerView.ViewHolder(dataBinding.root) {
 
 //    val avatarImage = itemView.item_avatar
-    fun setup(itemData: Task) {
+    fun setup(itemData: TaskStat) {
         dataBinding.setVariable(BR.data, itemData)
         dataBinding.executePendingBindings()
 
