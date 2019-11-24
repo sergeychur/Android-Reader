@@ -1,13 +1,15 @@
 package ru.tp_project.androidreader.view_models
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.Book
-import ru.tp_project.androidreader.model.repos.BooksRepository
+import ru.tp_project.androidreader.model.repos.TasksRepository
+import ru.tp_project.androidreader.model.repos.UserRepository
 
 
-class NewTaskViewModel : BaseViewModel() {
+class NewTaskViewModel(val context: Context) : BaseViewModel() {
     private val selectedBooks = MutableLiveData<ArrayList<Book>>()
 
     init {
@@ -28,7 +30,8 @@ class NewTaskViewModel : BaseViewModel() {
     }
 
     fun addTask(taskName: String) {
-
+        val userId = UserRepository().getCurrentUserID(context)
+        TasksRepository.getInstance().createTask(context, userId, taskName, selectedBooks.value!!.toList())
     }
 
     fun removeBook(book: Book) {

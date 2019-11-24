@@ -8,9 +8,16 @@ import kotlinx.coroutines.withContext
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.AppDb
 import ru.tp_project.androidreader.model.data_models.User
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository {
     private var currentUserID = R.integer.single_user_id
+
+    // TODO mb remove context in future
+    fun getCurrentUserID(context: Context): Int {
+        return context.resources.getInteger(currentUserID)
+    }
 
     fun getUserStatistic(context: Context, onResult: (isSuccess: Boolean, user: User?) -> Unit) {
         GlobalScope.launch {

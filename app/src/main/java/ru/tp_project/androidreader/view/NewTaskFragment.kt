@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_new_task.*
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.FragmentNewTaskBinding
 import ru.tp_project.androidreader.view.books_choise_list.BooksChoiceListAdapter
+import ru.tp_project.androidreader.view_models.BaseViewModelFactory
 import ru.tp_project.androidreader.view_models.NewTaskViewModel
 
 class NewTaskFragment : Fragment() {
@@ -25,7 +26,9 @@ class NewTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = FragmentNewTaskBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(this@NewTaskFragment)
+            viewmodel = ViewModelProviders.of(
+                this@NewTaskFragment,
+                BaseViewModelFactory { NewTaskViewModel(context!!.applicationContext) })
                 .get(NewTaskViewModel::class.java)
             lifecycleOwner = viewLifecycleOwner
         }
@@ -64,10 +67,11 @@ class NewTaskFragment : Fragment() {
         if (item.itemId == R.id.action_accept) {
             val taskName = task_name_input.text.toString()
             if (viewDataBinding.viewmodel!!.validateTask(taskName)) {
-                // TODO(Kotyarich) add task to tasks list
+                viewDataBinding.viewmodel!!.addTask(taskName)
                 findNavController().navigateUp()
+            } else {
+                showInvalidTaskAlert()
             }
-            showInvalidTaskAlert()
         }
         return super.onOptionsItemSelected(item)
     }

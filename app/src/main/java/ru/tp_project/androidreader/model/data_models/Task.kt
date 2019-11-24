@@ -11,15 +11,15 @@ import java.sql.Date
 )
 data class Task (
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val name: String,
-    val description: String,
+    val description: String = "",
     @ColumnInfo(name = "user_id")
     val userID: Int,
     @ColumnInfo(name = "created")
     val created: Date,
-    val deadline: Date,
-    val books: Int,
-    val pages: Int,
-    val words: Int
+    val deadline: Date = Date.valueOf("5999-1-1"),
+    val books: Int = 0,
+    val pages: Int = 0,
+    val words: Int = 0
 )

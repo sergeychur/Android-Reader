@@ -30,14 +30,14 @@ data class TaskStat(
 )
 data class TaskStatDB(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     @ColumnInfo(name = "task_id")
     val taskID: Int,
     @ColumnInfo(name = "books_read")
-    val booksRead: Int,
+    val booksRead: Int = 0,
     @ColumnInfo(name = "pages_read")
-    val pagesRead: Int,
+    val pagesRead: Int = 0,
     @ColumnInfo(name = "words_read")
-    val wordsRead: Int,
-    val done: Boolean
+    val wordsRead: Int = 0,
+    val done: Boolean = false
 )
