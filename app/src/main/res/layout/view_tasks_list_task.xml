@@ -7,126 +7,150 @@
     <data>
 
         <import type="android.view.View" />
-
         <variable
             name="data"
             type="ru.tp_project.androidreader.model.data_models.Task" />
     </data>
 
 
-    <LinearLayout
+    <GridLayout
         android:id="@+id/item_header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <!--TODO(sergeychur): change to wrap content with normal photo-->
+        android:columnCount="2"
+        android:orientation="vertical"
+        android:rowCount="7">
         <ImageView
             android:id="@+id/bookPreview"
-            android:layout_width="40dp"
-            android:layout_height="fill_parent"
-            android:src="@drawable/left_rounded"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="fill_vertical"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_rowSpan="6"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="2dp"
+            android:gravity="center_vertical"
+            android:text="@{data.name}"
+            android:textColor="@color/colorPrimaryBlue"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_margin="5dp"
+            android:text="@string/goal" />
+        <GridLayout
+            android:layout_row="2"
+            android:layout_column="1"
+            android:columnCount="3"
+            android:rowCount="1"
+            android:layout_gravity="center_horizontal"
+            >
+            <TextView
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_marginStart="2dp"
+                android:layout_margin="5dp"
+                android:text="@{@string/books_read + @string/space + data.books}"/>
 
             <TextView
-                android:id="@+id/item_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_vertical"
-                android:text="@{data.name}"
-                android:textColor="@color/colorPrimaryBlue"
-                android:textSize="20sp" />
-            <!--TODO(sergeychur):possible shit with rotate, check, maybe place to constants-->
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="3"
-                android:layout_gravity="center"
-                android:rowCount="5"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:layout_margin="5dp"
-                    android:text="Цель:"/>
-                <TextView
-                    android:layout_column="0"
-                    android:layout_row="1"
-                    android:layout_margin="5dp"
-                    android:text="18 книг"/>
-                <TextView
-                    android:layout_column="1"
-                    android:layout_row="1"
-                    android:layout_margin="5dp"
-                    android:text="1005000 слов"/>
-                <TextView
-                    android:layout_column="2"
-                    android:layout_row="1"
-                    android:layout_margin="5dp"
-                    android:text="1005000 страниц"/>
-                <!--TODO(sergeychur): move to constants-->
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_margin="5dp"
+                android:text="@{@string/words_read + @string/space + data.words}"/>
+
+            <TextView
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_margin="5dp"
+                android:text="@{@string/pages_read + @string/space + data.pages}"/>
+
+            <!--TODO(sergeychur): move to constants-->
+        </GridLayout>
                 <ProgressBar
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_columnSpan="3"
-                    android:layout_column="0"
-                    android:layout_row="2"
                     android:id="@+id/progressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_row="3"
+                    android:layout_column="1"
                     android:layout_marginStart="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="80"
-                    android:progressTint="@color/colorPrimaryBlue"
-                    android:progressBackgroundTint="@color/colorPrimaryBlue"
-                    android:secondaryProgressTint="@color/colorPrimaryBlue"
                     android:backgroundTint="@color/colorPrimaryBlue"
                     android:foregroundTint="@color/colorPrimaryBlue"
-                    />
+                    android:max="100"
+                    android:progress="80"
+                    android:progressBackgroundTint="@color/colorPrimaryBlue"
+                    android:progressTint="@color/colorPrimaryBlue"
+                    android:secondaryProgressTint="@color/colorPrimaryBlue"
+                    android:layout_gravity="fill_horizontal"/>
 
                 <TextView
-                    android:layout_column="0"
-                    android:layout_row="3"
-                    android:layout_margin="5dp"
-                    android:text="Выполнено:"/>
-                <TextView
-                    android:layout_column="0"
                     android:layout_row="4"
-                    android:layout_margin="5dp"
-                    android:text="18 книг"/>
-                <TextView
                     android:layout_column="1"
-                    android:layout_row="4"
                     android:layout_margin="5dp"
-                    android:text="1005000 слов"/>
-                <TextView
-                    android:layout_column="2"
-                    android:layout_row="4"
-                    android:layout_margin="5dp"
-                    android:text="1005000 страниц"/>
+                    android:text="@string/done" />
+                <GridLayout
+                    android:layout_row="5"
+                    android:layout_column="1"
+                    android:columnCount="3"
+                    android:rowCount="1"
+                    android:layout_gravity="center_horizontal">
+                    <TextView
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        android:text="@{@string/books_read + @string/space + data.books}"/>
 
-            </GridLayout>
+                    <TextView
+                        android:layout_row="0"
+                        android:layout_column="1"
+                        android:layout_margin="5dp"
+                        android:text="@{@string/words_read + @string/space + data.words}"/>
 
-        </LinearLayout>
-    </LinearLayout>
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:layout_gravity="center"
-        android:rowCount="1"
-        android:orientation="vertical">
-        <Button
-            android:text="Статистика"/>
-        <Button
-            android:text="Редактировать"/>
-        <Button
-            android:text="Поделиться"/>
+                    <TextView
+                        android:layout_row="0"
+                        android:layout_column="2"
+                        android:layout_margin="5dp"
+                        android:text="@{@string/pages_read + @string/space + data.pages}"/>
+                </GridLayout>
+                <GridLayout
+                    android:layout_row="6"
+                    android:layout_column="1"
+                    android:layout_width="wrap_content"
+                    android:columnCount="4"
+                    android:rowCount="1"
+                    android:layout_gravity="end"
+                    >
+                    <ImageButton
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:src="@drawable/delete"
+                        />
+                    <ImageButton
+                        android:layout_row="0"
+                        android:layout_column="1"
+                        android:src="@drawable/edit"
+                        />
+                    <ImageButton
+                        android:layout_row="0"
+                        android:layout_column="2"
+                        android:src="@drawable/share"
+                        />
+                    <ImageButton
+                        android:layout_row="0"
+                        android:layout_column="3"
+                        android:src="@drawable/info"
+                        />
+                </GridLayout>
+
+
     </GridLayout>
+
 </layout>

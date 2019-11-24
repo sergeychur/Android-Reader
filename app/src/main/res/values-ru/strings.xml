@@ -24,4 +24,7 @@
     <string name="years_spent">Лет</string>
     <string name="days_spent">Дней</string>
     <string name="hours_spent">Часов</string>
+    <string name="space">\u0020</string>
+    <string name="done">Выполнено:</string>
+    <string name="goal">Цель:</string>
 </resources>
