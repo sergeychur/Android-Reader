@@ -14,7 +14,7 @@ class TasksRepository {
     fun getTasksList(context: Context, onResult: (isSuccess: Boolean, tasks: List<Task>?) -> Unit) {
         GlobalScope.launch {
             val tasks = withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).taskDao().load(context.resources.getInteger(R.integer.single_user_id))
+                AppDb.getInstance(context).taskDao().loadAllTasks(context.resources.getInteger(R.integer.single_user_id))
             }
             onResult(true, tasks)
         }
