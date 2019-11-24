@@ -29,4 +29,7 @@
     <string name="google_books">Google books</string>
     <string name="file_store">File store</string>
     <string name="book_image">Book\'s image</string>
+    <string name="space">\u0020</string>
+    <string name="done">Done:</string>
+    <string name="goal">Goal:</string>
 </resources>
