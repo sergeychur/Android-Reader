@@ -28,4 +28,5 @@
     <string name="delete">delete</string>
     <string name="google_books">Google books</string>
     <string name="file_store">File store</string>
+    <string name="book_image">Book\'s image</string>
 </resources>

@@ -30,4 +30,5 @@
     <string name="delete">удалить</string>
     <string name="google_books">Google books</string>
     <string name="file_store">Файловое хранилище</string>
+    <string name="book_image">Обложка книги</string>
 </resources>

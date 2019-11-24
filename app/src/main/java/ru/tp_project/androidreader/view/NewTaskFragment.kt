@@ -40,10 +40,10 @@ class NewTaskFragment : Fragment() {
                 hided_btns.visibility = View.VISIBLE
             }
         }
-        hide_btn.setOnClickListener { v: View ->
+        hide_btn.setOnClickListener { _: View ->
             run {
                 hided_btns.visibility = View.INVISIBLE
-                v.visibility = View.VISIBLE
+                add_book_to_tusk_btn.show()
             }
         }
         setupAdapter()
@@ -71,10 +71,6 @@ class NewTaskFragment : Fragment() {
             )
             selected_books_rv.adapter = adapter
         }
-    }
-
-    fun onAddBookBtnClick(view: View) {
-
     }
 
 }

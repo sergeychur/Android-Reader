@@ -138,9 +138,10 @@
                         android:layout_marginBottom="10dp"
                         android:clickable="true"
                         android:focusable="true"
+                        app:backgroundTint="@color/colorPrimaryBlue"
                         app:fabSize="mini"
-                        app:maxImageSize="40dp"
-                        app:srcCompat="@drawable/ic_google_books_btn" />
+                        app:maxImageSize="26dp"
+                        app:srcCompat="@drawable/ic_google_play_books_icon" />
                 </LinearLayout>
 
                 <LinearLayout
