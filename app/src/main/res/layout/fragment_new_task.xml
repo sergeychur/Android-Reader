@@ -110,40 +110,80 @@
                 android:visibility="invisible"
                 tools:visibility="visible">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/google_books__btn"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
 
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:fabSize="mini"
-                    app:maxImageSize="40dp"
-                    app:srcCompat="@drawable/ic_google_books_btn" />
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded"
+                        android:text="@string/google_books"
+                        android:textColor="@color/colorPrimaryGray" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/file_store_btn"
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/google_books__btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="18dp"
+                        android:layout_marginBottom="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:fabSize="mini"
+                        app:maxImageSize="40dp"
+                        app:srcCompat="@drawable/ic_google_books_btn" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:orientation="horizontal">
 
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:backgroundTintMode="add"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:fabSize="mini"
-                    app:maxImageSize="40dp"
-                    app:srcCompat="@drawable/ic_file_store_btn" />
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded"
+                        android:text="@string/file_store"
+                        android:textColor="@color/colorPrimaryGray" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/file_store_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="18dp"
+                        android:layout_marginBottom="10dp"
+                        android:backgroundTintMode="add"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:fabSize="mini"
+                        app:maxImageSize="40dp"
+                        app:srcCompat="@drawable/ic_file_store_btn" />
+
+                </LinearLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/hide_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_gravity="end"
                     android:layout_marginEnd="10dp"
                     android:clickable="true"
                     android:focusable="true"

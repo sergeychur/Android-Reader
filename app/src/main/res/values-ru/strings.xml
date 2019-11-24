@@ -28,4 +28,6 @@
     <string name="selected_books_list_header">Выбранные книги:</string>
     <string name="no_selected_books">Нет выбранных книг</string>
     <string name="delete">удалить</string>
+    <string name="google_books">Google books</string>
+    <string name="file_store">Файловое хранилище</string>
 </resources>
