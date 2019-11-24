@@ -7,6 +7,14 @@ import android.os.Build
 import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
+import android.content.ContentProvider
+import android.R.attr.name
+import org.simpleframework.xml.core.Persister
+import android.R.xml
+
+
+
+
 
 
 /* Get uri related content real local file path. */
@@ -200,6 +208,7 @@ private fun getImageRealPath(
     val cursor = contentResolver.query(uri, null, whereClause, null, null)
 
     if (cursor != null) {
+
         val moveToFirst = cursor.moveToFirst()
         if (moveToFirst) {
 

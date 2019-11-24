@@ -1,7 +1,9 @@
 package ru.tp_project.androidreader.view
 
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -24,14 +26,22 @@ import ru.tp_project.androidreader.view_models.BookShelveViewModel
 import java.util.ArrayList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
+import org.simpleframework.xml.Attribute
+import org.simpleframework.xml.Namespace
+import org.simpleframework.xml.Element
+import org.simpleframework.xml.Root
+import org.simpleframework.xml.core.Persister
 import ru.tp_project.androidreader.databinding.ShelveOneBookBinding
 import org.w3c.dom.Document
-import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
+import org.xml.sax.InputSource
+import ru.tp_project.androidreader.model.xml.BookXML
 import java.io.File
 import java.io.InputStream
+import java.io.StringReader
 import java.nio.charset.Charset
+import java.util.zip.ZipFile
 import javax.xml.parsers.DocumentBuilderFactory
 
 class BookShelfFragment : Fragment() {
@@ -77,17 +87,57 @@ class BookShelfFragment : Fragment() {
             Log.d("lololo", selectedFile.toString())
             val path = selectedFile?.lastPathSegment.toString().removePrefix("raw:")
             println(selectedFile?.lastPathSegment)
-/*
-            var contentResolver ContentResolver
-            val input: InputStream = ContentResolver.openInputStream(data!!.data)
-            val inputAsString = input.bufferedReader().use { it.readText() }
-            textView.setText(inputAsString)
-*/
+
+            var filePath: String? = null
+            val _uri = data!!.getData()
+
+
+            val input: InputStream? = getActivity()!!.getContentResolver().openInputStream(data!!.data!!)
+
+            val inputAsString = input!!.bufferedReader().use { it.readText() }
+            letstry(inputAsString!!)
+
+            //Log.d("inputAsString ", inputAsString)
+
+
+
+
             //println("fly like apple "+path + " " + getTextContent(path))
             //dosomefun(getUriRealPath(this.context!!, data?.data!!))
             //val xlmFile: File = File(data)
         }
     }
+
+    fun letstry(xml : String) {
+        val reader = StringReader(xml)
+        val serializer = Persister()
+        Log.v("lolo", "sdadasad")
+        try {
+            val book = serializer.read(BookXML::class.java, reader, false)
+            Log.v("SimpleTest", "Pet Name")
+            if (book.stylesheet != null) {
+                Log.v("SimpleTest", "success")
+                Log.v("SimpleTest", book.toString())
+                Log.v("stylesheet type", book.stylesheet.type)
+                Log.v("titleInfo book_title", book.description.titleInfo.book_title)
+                Log.v("titleInfo date", book.description.titleInfo.date)
+                Log.v("titleInfo genre", book.description.titleInfo.genre)
+                Log.v("titleInfo lang", book.description.titleInfo.lang)
+                Log.v("titleInfo first_name", book.description.titleInfo.author.first_name)
+                Log.v("titleInfo last_name", book.description.titleInfo.author.last_name)
+
+                Log.v("SimpleTest", "success")
+                Log.v("SimpleTest", "success")
+                Log.v("SimpleTest", "success")
+                Log.v("SimpleTest", "success")
+                Log.v("SimpleTest", "success")
+                Log.v("SimpleTest", "success")
+            }
+        } catch (e: Exception) {
+            Log.e("SimpleTest", e.message)
+        }
+    }
+
 
     fun getTextContent(pathFilename: String): String {
 
@@ -116,16 +166,32 @@ class BookShelfFragment : Fragment() {
             return "Some error, Not found the File, or app has not permissions: " + pathFilename
         }
     }
-    fun dosomefun(name: String?) {
+    fun dosomefun(inp: String) {
 
+        var inp1 = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
+        "   <s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">"+
+                "       <s:Header>"+
+                "           <ActivityId CorrelationId=\"15424263-3c01-4709-bec3-740d1ab15a38\" xmlns=\"http://schemas.microsoft.com/2004/09/ServiceModel/Diagnostics\">50d69ff9-8cf3-4c20-afe5-63a9047348ad</ActivityId>"+
+                "           <clalLog_CorrelationId xmlns=\"http://clalbit.co.il/clallog\">eb791540-ad6d-48a3-914d-d74f57d88179</clalLog_CorrelationId>"+
+                "       </s:Header>"+
+                "       <s:Body>"+
+                "           <ValidatePwdAndIPResponse xmlns=\"http://tempuri.org/\">"+
+                "           <ValidatePwdAndIPResult xmlns:a=\"http://schemas.datacontract.org/2004/07/ClalBit.ClalnetMediator.Contracts\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">"+
+                "           <a:ErrorMessage>Valid User</a:ErrorMessage>"+
+                "           <a:FullErrorMessage i:nil=\"true\" />"+
+                "           <a:IsSuccess>true</a:IsSuccess>"+
+                "           <a:SecurityToken>999993_310661843</a:SecurityToken>"+
+                "           </ValidatePwdAndIPResult>"+
+                "           </ValidatePwdAndIPResponse>"+
+                "       </s:Body>\n"+
+                "   </s:Envelope>\n"
 
+        println("look at me: " + inp)
 //        var intent = Intent(Intent.ACTION_GET_CONTENT);
 //        intent.setType("file/*");
 //        startActivityForResult(intent, YOUR_RESULT_CODE);
-        Log.d("lololo name", name)
-        val xlmFile: File = File(name)
-        val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xlmFile)
-
+        val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( InputSource( StringReader(inp)))
+/*
         xmlDoc.documentElement.normalize()
 
         println("Root Node:" + xmlDoc.documentElement.nodeName)
@@ -158,6 +224,8 @@ class BookShelfFragment : Fragment() {
                 println("description: ${elem.getElementsByTagName("description").item(0).textContent}")
             }
         }
+
+ */
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -205,6 +273,9 @@ class BookShelfFragment : Fragment() {
         //list = ListFragment(books)
     }
 
+    fun writeee() {
+
+    }
 }
 
 class ListAdapter(private val books: List<Book>, val fragment: Fragment) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
