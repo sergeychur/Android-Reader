@@ -34,4 +34,8 @@
     <string name="space">\u0020</string>
     <string name="done">Выполнено:</string>
     <string name="goal">Цель:</string>
+    <string name="action_accept">accept</string>
+    <string name="ok">OK</string>
+    <string name="task_add_alert_header">Невозможно добавить</string>
+    <string name="task_add_alert_text">Имя задачи и список книг не могут быть пустыми</string>
 </resources>

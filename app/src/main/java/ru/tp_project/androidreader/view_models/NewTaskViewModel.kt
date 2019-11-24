@@ -7,9 +7,8 @@ import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.repos.BooksRepository
 
 
-class BooksChoiceListViewModel : BaseViewModel() {
+class NewTaskViewModel : BaseViewModel() {
     private val selectedBooks = MutableLiveData<ArrayList<Book>>()
-    private val booksListLive = MutableLiveData<List<Book>>()
 
     init {
         selectedBooks.value = arrayListOf(
@@ -20,26 +19,16 @@ class BooksChoiceListViewModel : BaseViewModel() {
         empty.value = false // TODO(Kotyrich) temporary
     }
 
-    fun getBooksList() {
-        dataLoading.value = true
-        BooksRepository.getInstance().getBooksList { isSuccess, books ->
-            dataLoading.value = false
-            if (isSuccess) {
-                booksListLive.value = books
-                empty.value = false
-            } else {
-                empty.value = true
-            }
-        }
-    }
-
     fun getSelectedBooks(): LiveData<ArrayList<Book>> {
         return selectedBooks
     }
 
-    fun addSelectedBook(book: Book) {
-        selectedBooks.value!!.add(book)
-        empty.value = false
+    fun validateTask(taskName: String): Boolean {
+        return taskName.isNotEmpty() && selectedBooks.value!!.size > 0
+    }
+
+    fun addTask(taskName: String) {
+
     }
 
     fun removeBook(book: Book) {

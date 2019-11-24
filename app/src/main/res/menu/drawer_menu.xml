@@ -24,4 +24,5 @@
             android:icon="@drawable/ic_launcher_background"
             android:title="@string/about"/>
     </group>
+
 </menu>
