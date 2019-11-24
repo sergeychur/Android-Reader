@@ -31,8 +31,11 @@ class TasksListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding.viewmodel?.fetchTasksList(requireContext(), false)
-
+        val isActive = viewDataBinding.viewmodel?.isActive() ?: true
+        viewDataBinding.viewmodel?.setTabNum(if (isActive) 0 else 1)
+        viewDataBinding.viewmodel?.fetchTasksList(requireContext(), !isActive)
+        val index = if (isActive) 0 else 1
+        tabs.getTabAt(index)?.select()
         setupAdapter()
         setupObservers()
 
@@ -40,9 +43,11 @@ class TasksListFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tab.position == 0) {
                     viewDataBinding.viewmodel?.fetchTasksList(requireContext(), false)
+                    viewDataBinding.viewmodel?.setTabNum(0)
                 } else {
                     viewDataBinding.viewmodel?.clearTasksList()
                     viewDataBinding.viewmodel?.fetchTasksList(requireContext(), true)
+                    viewDataBinding.viewmodel?.setTabNum(1)
                 }
             }
 
