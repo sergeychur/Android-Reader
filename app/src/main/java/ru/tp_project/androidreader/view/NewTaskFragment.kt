@@ -25,7 +25,8 @@ class NewTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = FragmentNewTaskBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(this@NewTaskFragment).get(BooksChoiceListViewModel::class.java)
+            viewmodel = ViewModelProviders.of(this@NewTaskFragment)
+                .get(BooksChoiceListViewModel::class.java)
             lifecycleOwner = viewLifecycleOwner
         }
         return viewDataBinding.root
@@ -33,7 +34,18 @@ class NewTaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        add_book_to_tusk_btn.setOnClickListener { v: View ->
+            run {
+                v.visibility = View.INVISIBLE
+                hided_btns.visibility = View.VISIBLE
+            }
+        }
+        hide_btn.setOnClickListener { v: View ->
+            run {
+                hided_btns.visibility = View.INVISIBLE
+                v.visibility = View.VISIBLE
+            }
+        }
         setupAdapter()
         setupObservers()
     }
@@ -51,9 +63,18 @@ class NewTaskFragment : Fragment() {
             adapter = BooksChoiceListAdapter(viewDataBinding.viewmodel!!)
             val layoutManager = LinearLayoutManager(activity)
             selected_books_rv.layoutManager = layoutManager
-            selected_books_rv.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
+            selected_books_rv.addItemDecoration(
+                DividerItemDecoration(
+                    activity,
+                    layoutManager.orientation
+                )
+            )
             selected_books_rv.adapter = adapter
         }
+    }
+
+    fun onAddBookBtnClick(view: View) {
+
     }
 
 }
