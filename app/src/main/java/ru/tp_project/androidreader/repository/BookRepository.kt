@@ -29,6 +29,5 @@ class BookRepository {
             }
             onResult(true, book)
         }
-
     }
 }

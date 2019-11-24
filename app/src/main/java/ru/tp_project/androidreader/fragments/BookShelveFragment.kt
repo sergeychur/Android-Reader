@@ -1,11 +1,15 @@
 package ru.tp_project.androidreader.fragments
 
+import android.app.Activity.RESULT_OK
 import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -13,9 +17,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.FragmentActivity
@@ -32,30 +38,23 @@ import ru.tp_project.androidreader.viewModels.BookShelveViewModel
 import java.util.ArrayList
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.shadow.ShadowViewDelegate
+import com.squareup.picasso.Picasso
 import ru.tp_project.androidreader.data.database.BookDao
 import ru.tp_project.androidreader.repository.BookRepository
 import ru.tp_project.androidreader.databinding.ShelveOneBookBinding
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
+import java.io.File
+import java.io.InputStream
+import java.nio.charset.Charset
+import javax.xml.parsers.DocumentBuilderFactory
 
 class BookShelfFragment : Fragment() {
-
     var books = ArrayList<Book>()
-/*
-    private val viewModel: BookShelveViewModel by viewModels(
-        // SavedStateVMFactory is renamed to SavedStateViewModelFactory
-        // https://stackoverflow.com/questions/56908490/unresolved-reference-savedstatevmfactory
-
-        // first argument is application
-        //https://stackoverflow.com/questions/57838759/how-android-jetpack-savedstateviewmodelfactory-works
-
-        // context.
-        //https://stackoverflow.com/questions/57468124/what-type-of-application-does-savedstateviewmodelfactory-requires
-
-        factoryProducer = {
-            //first argument can be context.applicationContext!! as Application
-            SavedStateViewModelFactory(this.activity!!.application, this)
-        }
-    )*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,42 +63,120 @@ class BookShelfFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_book_shelve, container, false)
         val recyclerView = view.findViewById(R.id.listRecyclerView) as RecyclerView
 
+        var addButton = view.findViewById(R.id.addBook) as FloatingActionButton;
+        addButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                showFileChooser()
+            }
+        })
+
         recyclerView.adapter = ListAdapter(books, this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        Log.d("adapters", "в ините "+ books.size + " " + recyclerView.id )
         return view
-    }
-
-    fun updateTODO() {
-
-    }
-
-    val bookObserver = Observer<Book> { newBook ->
-        // Update the UI, in this case, a TextView.
-        //nameTextView.text = newName
-        updateTODO()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            /*
-        //val rep = BookRepository()
-        //val state = SavedStateHandle()
-        //state.set("bookId", "1")
-        //+val voewM =  SavedStateViewModelFactory(this.activity!!.application, this)
-        //val viewModel: BookShelveViewModel = BookShelveViewModel(SavedStateHandle(), rep)
-        val viewModel = SavedStateViewModelFactory(this.activity!!.application, this)
-        val observer = Observer<Book> { statistic: Book ->
-            run {
-               //
-            }
+    }
+
+    fun showFileChooser() {
+
+        val intent = Intent()
+            .setType("*/*")
+            .setAction(Intent.ACTION_GET_CONTENT)
+
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
+}
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 111 && resultCode == RESULT_OK) {
+            val selectedFile = data?.data //The uri with the location of the file
+            selectedFile.toString()
+            Log.d("lololo", selectedFile.toString())
+            val path = selectedFile?.lastPathSegment.toString().removePrefix("raw:")
+            println(selectedFile?.lastPathSegment)
+
+            var contentResolver ContentResolver
+            val input: InputStream = ContentResolver.openInputStream(data!!.data)
+            val inputAsString = input.bufferedReader().use { it.readText() }
+            textView.setText(inputAsString)
+
+            //println("fly like apple "+path + " " + getTextContent(path))
+            //dosomefun(getUriRealPath(this.context!!, data?.data!!))
+                //val xlmFile: File = File(data)
+        }
+    }
+
+    fun getTextContent(pathFilename: String): String {
+
+        val fileobj = File( pathFilename )
+
+        if (!fileobj.exists()) {
+
+            println("Path does not exist")
+
+        } else {
+
+            println("Path to read exist")
         }
 
-        //ViewModelProviders.of(activity!!).get(BookShelveViewModel::class.java).book
-        //    .observe(this, observer)
+        println("Path to the file:")
+        println(pathFilename)
 
-        //viewModel.book.observe(this, observer)
-        //viewModel.book.observe(viewLifecycleOwner, bookObserver)*/
+        if (fileobj.exists() && fileobj.canRead()) {
+
+            var ins: InputStream = fileobj.inputStream()
+            var content = ins.readBytes().toString(Charset.defaultCharset())
+            return content
+
+        }else{
+
+            return "Some error, Not found the File, or app has not permissions: " + pathFilename
+        }
+    }
+    fun dosomefun(name: String?) {
+
+
+//        var intent = Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("file/*");
+//        startActivityForResult(intent, YOUR_RESULT_CODE);
+        Log.d("lololo name", name)
+        val xlmFile: File = File(name)
+        val xmlDoc: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xlmFile)
+
+        xmlDoc.documentElement.normalize()
+
+        println("Root Node:" + xmlDoc.documentElement.nodeName)
+
+        val bookList: NodeList = xmlDoc.getElementsByTagName("book")
+
+        for(i in 0..bookList.length - 1)
+        {
+            var bookNode: Node = bookList.item(i)
+
+            if (bookNode.getNodeType() === Node.ELEMENT_NODE) {
+
+                val elem = bookNode as Element
+
+
+                val mMap = mutableMapOf<String, String>()
+
+
+                for(j in 0..elem.attributes.length - 1)
+                {
+                    mMap.put(elem.attributes.item(j).nodeName, elem.attributes.item(j).nodeValue)
+                }
+                println("Current Book : ${bookNode.nodeName} - $mMap")
+
+                println("Author: ${elem.getElementsByTagName("author").item(0).textContent}")
+                println("Title: ${elem.getElementsByTagName("title").item(0).textContent}")
+                println("Genre: ${elem.getElementsByTagName("genre").item(0).textContent}")
+                println("Price: ${elem.getElementsByTagName("price").item(0).textContent}")
+                println("publish_date: ${elem.getElementsByTagName("publish_date").item(0).textContent}")
+                println("description: ${elem.getElementsByTagName("description").item(0).textContent}")
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,32 +217,30 @@ class BookShelfFragment : Fragment() {
 class ListAdapter(private val books: List<Book>, val fragment: Fragment) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bindView(position, fragment)
-
-        val vm = ViewModelProviders.of((FragmentActivity) holder.getContext()).get(BookShelveViewModel.class);
-
-        vm.setPost(list.get(position));
-        holder.setViewModel(vm);
-
+        var viewModel = BookShelveViewModel(fragment.context!!)
+        viewModel.refresh()
+        val observer = Observer<Book> { newBook: Book? ->
+            holder.binding.book = newBook
+            Log.d("interesting", "binding book"+ " "+newBook)
+        }
+        viewModel.data?.observe(fragment.viewLifecycleOwner, observer)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ListViewHolder {
-        Log.d("yuyuyu", "в ините "+ books.size + " " + parent.id + " " +
-                R.layout.fragment_book_shelve + " " + R.id.listRecyclerView)
+        val inflatter = LayoutInflater.from(parent.getContext())
+        //var binding : ShelveOneBookBinding
+        var binding =  ShelveOneBookBinding.inflate(inflatter,parent, false)
 
-        // val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_book_shelve, parent, false)
-
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.shelve_one_book,
-            parent, false)
-
-        var binding : ShelveOneBookBinding
-        binding = inflate(LayoutInflater.from(parent.getContext()), R.layout.shelve_one_book,
-            parent, false)
-        return ListViewHolder(view, books, fragment, binding, parent.getContext() )
+        return ListViewHolder(binding.root, books, fragment, binding, parent.getContext() )
     }
 
     override fun getItemCount(): Int {
         return books.size
+    }
+
+    @BindingAdapter("bind:imageUrl")
+    fun loadImage( imageView : ImageView, v:String) {
+       Picasso.with(imageView.getContext()).load(v).into(imageView);
     }
 
     class ListViewHolder(itemView: View, private val books: List<Book>,
@@ -174,37 +249,8 @@ class ListAdapter(private val books: List<Book>, val fragment: Fragment) : Recyc
                          val context: Context
     ) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        //private List<TextView> views = new ArrayList<>(4);
-        private val text: TextView? = null
-        private var viewsInRow: Int = 0
-        var viewModel: BookShelveViewModel
-        get() = viewModel
-        set(value) {
-            this.viewModel = value;
-            binding.book = value
-        }
-
-       // private lateinit var binding: ShelveOneBookBinding
-
         init {
-            Log.d("here we go", "в ините "+ books.size)
-            Log.d("myTag", "в ините "+ books.size)
-            Log.d("itemView", "в ините "+ books.size + " " + itemView.id + " " + R.layout.fragment_book_shelve + " " + R.id.listRecyclerView)
             itemView.setOnClickListener(this)
-//            binding = ShelveOneBookBinding.bind(itemView).apply {
-//                book = ViewModelProviders.of(this@BookShelfFragment).get(TasksListViewModel::class.java)
-//                setLifecycleOwner(viewLifecycleOwner)
-//            }
-//            binding.book = BookModel
-//            binding.book?.data.value = books[3]
-
-            viewsInRow = 3
-            if (itemView.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Log.d("myTag", "Портретная ориентация")
-            } else if (itemView.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Log.d("myTag", "Альбомная ориентация")
-                viewsInRow = 4
-            }
         }
 
         override fun onClick(v: View) {
@@ -212,43 +258,14 @@ class ListAdapter(private val books: List<Book>, val fragment: Fragment) : Recyc
         }
 
         fun bindView(num: Int, fragment1 : Fragment) {
-            //val binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
-            //binding.setEmployee(employee);
 
-            if (binding.book == null) {
-                Log.d("iiiiiii", "binding.book == null")
-                //return
-            }
-            if (binding.book?.data == null) {
-                Log.d("iiiiiii", "binding.book.data == null")
-                //return
-            }
-            binding.book?.refresh()
-            val observer = Observer<Book> { statistic: Book? ->            }
-            binding.book?.refresh()
-            binding.book?.data!!.observe(fragment1.viewLifecycleOwner, observer)
-
-
-            Log.d("not there", "в ините "+ books.size)
+//            binding.book?.refresh()
+//            val observer = Observer<Book> { statistic: Book? ->            }
+//            binding.book?.refresh()
+//            binding.book?.data!!.observe(fragment1.viewLifecycleOwner, observer)
             val book = books[num]
-            Log.d("myTag", num.toString() + "This is my message " + books[num])
-
             val bookNameView = itemView.findViewById<View>(R.id.bookName) as TextView
             bookNameView.setText(book.name)
-
-            val bookAutorView = itemView.findViewById<View>(R.id.bookAuthor) as TextView
-            bookAutorView.setText(book.author)
-
-            val bookFormatView = itemView.findViewById<View>(R.id.bookFormat) as TextView
-            bookFormatView.setText(book.format)
-
-            val bookPreviewView = itemView.findViewById<View>(R.id.bookPreview) as ImageView
-            val imageBytes = Base64.decode(book.photo, 0)
-            val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-            bookPreviewView.setImageBitmap(image)
-
-            val bookSizeView = itemView.findViewById<View>(R.id.bookSize) as TextView
-            bookSizeView.setText(book.size.toString())
 
             val bookProgressView = itemView.findViewById<View>(R.id.bookProgress) as SeekBar
             bookProgressView.setProgress(book.progress.toInt())

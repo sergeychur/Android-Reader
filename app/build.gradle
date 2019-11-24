@@ -49,6 +49,10 @@ dependencies {
     // databinding
     kapt 'com.android.databinding:compiler:3.2.0-alpha10'
 
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
+
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_viewmodel_version"
 
