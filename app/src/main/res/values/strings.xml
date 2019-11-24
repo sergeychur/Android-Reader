@@ -22,4 +22,7 @@
     <string name="years_spent">Years</string>
     <string name="days_spent">Days</string>
     <string name="hours_spent">Hours</string>
+    <string name="space">\u0020</string>
+    <string name="done">Done:</string>
+    <string name="goal">Goal:</string>
 </resources>
