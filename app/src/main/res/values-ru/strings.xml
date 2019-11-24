@@ -8,4 +8,23 @@
     <string name="stats">Статистика</string>
     <string name="settings">Настройки</string>
     <string name="about">О приложении</string>
+    <string name="new_task">Новая задача</string>
+    <string name="task_edit">Редактирование задачи</string>
+    <string name="reading">Чтение</string>
+    <string name="error_no_tasks">Нет задач</string>
+    <string name="read_header">Прочитано</string>
+    <string name="books_read">Книг</string>
+    <string name="pages_read">Страниц</string>
+    <string name="words_read">Слов</string>
+    <string name="speed_header">Скорость чтения</string>
+    <string name="hours_per_day">Час/День</string>
+    <string name="words_per_min">Слов/Мин</string>
+    <string name="pages_per_hour">Стр/Час</string>
+    <string name="spent_header">Проведено</string>
+    <string name="years_spent">Лет</string>
+    <string name="days_spent">Дней</string>
+    <string name="hours_spent">Часов</string>
+    <string name="space">\u0020</string>
+    <string name="done">Выполнено:</string>
+    <string name="goal">Цель:</string>
 </resources>

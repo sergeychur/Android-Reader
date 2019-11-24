@@ -4,7 +4,7 @@
     <data>
         <variable
             name="book"
-            type="ru.tp_project.androidreader.models.Book" />
+            type="ru.tp_project.androidreader.model.data_models.Book" />
 
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
