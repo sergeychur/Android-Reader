@@ -25,14 +25,14 @@ class TasksListFragment : Fragment() {
 //        return inflater.inflate(R.layout.fragment_tasks_list, container, false)
         viewDataBinding = FragmentTasksListBinding.inflate(inflater, container, false).apply {
             viewmodel = ViewModelProviders.of(this@TasksListFragment).get(TasksListViewModel::class.java)
-            setLifecycleOwner(viewLifecycleOwner)
+            lifecycleOwner = viewLifecycleOwner
         }
         return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding.viewmodel?.fetchTasksList()
+        viewDataBinding.viewmodel?.fetchTasksList(requireContext())
 
         setupAdapter()
         setupObservers()
