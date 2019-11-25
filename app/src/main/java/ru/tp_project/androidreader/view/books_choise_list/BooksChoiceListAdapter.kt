@@ -24,7 +24,7 @@ class BooksChoiceListAdapter(private val newTaskViewModel: NewTaskViewModel) :
 
     override fun onBindViewHolder(holder: BooksChoiceListViewHolder, position: Int) {
         holder.setup(booksList[position])
-        holder.itemView.findViewById<Button>(R.id.delete_btn).setOnClickListener { v: View ->
+        holder.itemView.findViewById<Button>(R.id.delete_btn).setOnClickListener {
             run {
                 newTaskViewModel.removeBook(booksList[position])
             }

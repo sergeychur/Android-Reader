@@ -48,6 +48,7 @@ class TasksRepository {
         }
     }
 
+    @Suppress("unused")
     fun getTask(taskId: Int, context: Context, onResult: (isSuccess: Boolean, task: TaskStat) -> Unit) {
         GlobalScope.launch {
             val task = withContext(Dispatchers.Default) {

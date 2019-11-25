@@ -3,11 +3,6 @@ package ru.tp_project.androidreader.view.tasks_list
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.withContext
-import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.TaskStat
 import ru.tp_project.androidreader.model.repos.TasksRepository

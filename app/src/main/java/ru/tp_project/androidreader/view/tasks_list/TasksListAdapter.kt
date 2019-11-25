@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.tp_project.androidreader.databinding.ViewTasksListTaskBinding
-import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksListAdapter(private val tasksListViewModel: TasksListViewModel,

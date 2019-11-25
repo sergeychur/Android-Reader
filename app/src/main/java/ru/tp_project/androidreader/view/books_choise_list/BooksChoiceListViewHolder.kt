@@ -10,7 +10,7 @@ import ru.tp_project.androidreader.view_models.NewTaskViewModel
 
 class BooksChoiceListViewHolder(
     private val dataBinding: ViewDataBinding,
-    private val booksListViewModel: NewTaskViewModel
+    @Suppress("unused") private val booksListViewModel: NewTaskViewModel
 ) : RecyclerView.ViewHolder(dataBinding.root) {
 
     fun setup(itemData: Book) {
