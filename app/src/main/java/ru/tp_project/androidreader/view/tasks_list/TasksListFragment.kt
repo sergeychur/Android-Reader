@@ -71,7 +71,11 @@ class TasksListFragment : Fragment() {
     private fun setupAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            adapter = TasksListAdapter(viewDataBinding.viewmodel!!)
+            adapter = TasksListAdapter(viewDataBinding.viewmodel!!, {taskId, callback:() -> Unit ->
+                onDeleteTask(taskId, callback)
+            },
+                {taskId -> onShareTask(taskId)}
+            )
             val layoutManager = LinearLayoutManager(activity)
             tasks_list_rv.layoutManager = layoutManager
             tasks_list_rv.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
@@ -79,4 +83,17 @@ class TasksListFragment : Fragment() {
         }
     }
 
+    private fun onDeleteTask(taskId: Int, callback: () -> Unit) {
+        viewDataBinding.viewmodel?.deleteTask(requireContext(), taskId) {
+            callback()
+            viewDataBinding.viewmodel?.clearTasksList()
+            val active = viewDataBinding.viewmodel?.isActive()
+            val activeVal = active ?: true
+            viewDataBinding.viewmodel?.fetchTasksList(requireContext(), !activeVal)
+        }
+    }
+
+    private fun onShareTask(taskId: Int) {
+        Log.d("kek", "share")
+    }
 }

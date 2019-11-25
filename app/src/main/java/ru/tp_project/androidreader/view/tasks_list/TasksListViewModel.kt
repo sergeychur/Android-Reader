@@ -1,6 +1,7 @@
 package ru.tp_project.androidreader.view.tasks_list
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import ru.tp_project.androidreader.model.repos.TasksRepository
 import ru.tp_project.androidreader.base.BaseViewModel
@@ -21,7 +22,7 @@ class TasksListViewModel : BaseViewModel() {
         tabNumber.value = num ?: 0
     }
     fun fetchTasksList(context: Context, done: Boolean?) {
-        dataLoading.value = true
+        dataLoading.postValue(true)
         val doneVal = done ?: false
         TasksRepository.getInstance().getTasksList(doneVal, context) { isSuccess, tasks ->
             dataLoading.postValue(false)
@@ -30,6 +31,14 @@ class TasksListViewModel : BaseViewModel() {
                 empty.postValue(false)
             } else {
                 empty.postValue(true)
+            }
+        }
+    }
+    fun deleteTask(context: Context, taskId: Int, successCallback: ()-> Unit) {
+        Log.d("kek", "deleted")
+        TasksRepository.getInstance().deleteTask(taskId, context) {isSuccess ->
+            if (isSuccess) {
+                successCallback()
             }
         }
     }

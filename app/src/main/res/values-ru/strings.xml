@@ -36,4 +36,7 @@
     <string name="goal">Цель:</string>
     <string name="taskDone">Выполненные</string>
     <string name="taskActive">Активные</string>
+    <string name="delete_question">Delete?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

@@ -34,4 +34,7 @@
     <string name="goal">Goal:</string>
     <string name="taskDone">Finished</string>
     <string name="taskActive">Active</string>
+    <string name="delete_question">Delete?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
