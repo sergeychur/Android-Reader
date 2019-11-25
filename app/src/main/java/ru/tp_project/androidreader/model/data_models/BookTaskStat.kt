@@ -1,12 +1,13 @@
 package ru.tp_project.androidreader.model.data_models
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 
 @Entity(tableName = "book_task_stat",
-    foreignKeys = [ForeignKey(entity = Task::class,
+    foreignKeys = [ForeignKey(onDelete = CASCADE, entity = Task::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("task_id")),
-    ForeignKey(entity = Book::class,
+    ForeignKey(onDelete = CASCADE, entity = Book::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("book_id"))],
     indices = [Index(value = ["task_id"]),
