@@ -45,4 +45,6 @@
     <string name="share_text">I read - books: %d, pages: %d, words: %d; my speed - books per day: %d, words per min: %d, pages per hour: %d; I spent %d years, %d days, %d hours!</string>
     <string name="share_title">Android-Reader</string>
     <string name="task_stat">Task Statistics</string>
+    <string name="share">share</string>
+    <string name="info">info</string>
 </resources>

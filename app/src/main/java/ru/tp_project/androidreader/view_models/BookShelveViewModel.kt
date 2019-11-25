@@ -9,18 +9,18 @@ import javax.inject.Inject
 
 // https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate
 // https://www.fandroid.info/viewmodels-with-saved-state/
-class BookShelveViewModel @Inject constructor(val context: Context): ViewModel() {
+class BookShelveViewModel @Inject constructor(val context: Context) : ViewModel() {
     var data = MutableLiveData<Book>()// LiveData<Book> = repository.getBook(userId!!)
-    var repository = BookRepository()
-    var fail = MutableLiveData<Boolean>().apply { value = false }
+    private var repository = BookRepository()
+    private var fail = MutableLiveData<Boolean>().apply { value = false }
 
     fun refresh() {
         repository.getBook(context) { isSuccess, book ->
             if (isSuccess) {
-                Log.d("we get book", "book:"+ book)
+                Log.d("we get book", "book:$book")
                 data.postValue(book)
             } else {
-                Log.d("we dont get book", "book:"+ book)
+                Log.d("we dont get book", "book:$book")
                 fail.postValue(true)
             }
         }

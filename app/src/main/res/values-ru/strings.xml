@@ -47,4 +47,6 @@
     <string name="share_text">Я прочитал - книг: %d, страниц: %d, слов: %d; моя скорость - книг в день: %d, слов в минуту: %d, страниц в час: %d; я читал %d лут, %d дней, %d часов!</string>
     <string name="share_title">Android-Reader</string>
     <string name="task_stat">Статистика по задаче</string>
+    <string name="share">поделиться</string>
+    <string name="info">информация</string>
 </resources>

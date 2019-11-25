@@ -12,7 +12,7 @@ class CommonStatsViewModel(application: Application) : AndroidViewModel(applicat
     private var userRepository = UserRepository()
     private var context = application.applicationContext
     var statistic = MutableLiveData<User>()
-    var fail = MutableLiveData<Boolean>().apply { value = false }
+    private var fail = MutableLiveData<Boolean>().apply { value = false }
 
     fun getStatistic() {
         userRepository.getUserStatistic(context) { isSuccess, user ->

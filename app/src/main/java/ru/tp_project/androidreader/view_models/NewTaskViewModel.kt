@@ -31,7 +31,8 @@ class NewTaskViewModel(val context: Context) : BaseViewModel() {
 
     fun addTask(taskName: String) {
         val userId = UserRepository().getCurrentUserID(context)
-        TasksRepository.getInstance().createTask(context, userId, taskName, selectedBooks.value!!.toList())
+        TasksRepository.getInstance()
+            .createTask(context, userId, taskName, selectedBooks.value!!.toList())
     }
 
     fun removeBook(book: Book) {
