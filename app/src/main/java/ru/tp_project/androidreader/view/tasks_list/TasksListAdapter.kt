@@ -9,7 +9,7 @@ import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksListAdapter(private val tasksListViewModel: TasksListViewModel,
                        private val deleteListener: (Int, () -> Unit) -> Unit,
-                       private val shareListener: (Int) -> Unit)
+                       private val shareListener: (TaskStat) -> Unit)
     : RecyclerView.Adapter<TasksListViewHolder>() {
     var tasksList: List<TaskStat> = emptyList()
 

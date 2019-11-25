@@ -1,5 +1,6 @@
 package ru.tp_project.androidreader.view.tasks_list
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_tasks_list.*
+import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.FragmentTasksListBinding
+import ru.tp_project.androidreader.model.data_models.TaskStat
 
 class TasksListFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentTasksListBinding
@@ -79,7 +82,7 @@ class TasksListFragment : Fragment() {
             adapter = TasksListAdapter(viewDataBinding.viewmodel!!, {taskId, callback:() -> Unit ->
                 onDeleteTask(taskId, callback)
             },
-                {taskId -> onShareTask(taskId)}
+                {task: TaskStat -> onShareTask(task)}
             )
             val layoutManager = LinearLayoutManager(activity)
             tasks_list_rv.layoutManager = layoutManager
@@ -94,7 +97,19 @@ class TasksListFragment : Fragment() {
         }
     }
 
-    private fun onShareTask(taskId: Int) {
+    private fun onShareTask(task: TaskStat) {
         Log.d("kek", "share")
+        val str = getString(R.string.share_task_text).format(task.name, task.description,
+            task.books, task.pages, task.words,
+            task.booksRead, task.pagesRead, task.wordsRead)
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TITLE, getString(R.string.share_title))
+            putExtra(Intent.EXTRA_TEXT, str)
+            type = "text/plain"
+        }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
     }
 }
