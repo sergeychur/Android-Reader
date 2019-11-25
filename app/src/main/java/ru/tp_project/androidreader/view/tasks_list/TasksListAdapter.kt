@@ -15,7 +15,7 @@ class TasksListAdapter(private val tasksListViewModel: TasksListViewModel,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val dataBinding = ViewTasksListTaskBinding.inflate(inflater, parent, false)
-        return TasksListViewHolder(dataBinding, tasksListViewModel)
+        return TasksListViewHolder(dataBinding)
     }
 
     override fun getItemCount() = tasksList.size
