@@ -65,7 +65,6 @@
             android:layout_marginBottom="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onAddTaskBtnClick"
             app:fabSize="normal"
             app:maxImageSize="57dp"
             app:srcCompat="@drawable/ic_add_button" />

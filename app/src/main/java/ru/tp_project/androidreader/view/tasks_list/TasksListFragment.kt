@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -41,7 +42,9 @@ class TasksListFragment : Fragment() {
         tabs.getTabAt(index)?.select()
         setupAdapter()
         setupObservers()
-
+        add_tusk_btn.setOnClickListener {
+            findNavController().navigate(R.id.newTaskFragment)
+        }
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tab.position == 0) {

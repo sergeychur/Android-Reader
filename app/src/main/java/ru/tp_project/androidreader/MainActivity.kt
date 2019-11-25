@@ -44,8 +44,4 @@ class MainActivity : AppCompatActivity() {
         menu.findItem(R.id.action_share).isVisible = false
         return true
     }
-
-    fun onAddTaskBtnClick(view: View) {
-        navController.navigate(R.id.newTaskFragment)
-    }
 }
