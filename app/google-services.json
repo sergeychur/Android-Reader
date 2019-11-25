@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "455237438483",
+    "firebase_url": "https://androidreader-3d352.firebaseio.com",
+    "project_id": "androidreader-3d352",
+    "storage_bucket": "androidreader-3d352.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455237438483:android:5ce43d1ca089dd7b8503e6",
+        "android_client_info": {
+          "package_name": "ru.tp_project.androidreader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455237438483-idf13uj93k48ksricrpf7of6bch75q07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzWBc2tD_tQFh9E-9EKHG8hwKEkYcuR2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455237438483-idf13uj93k48ksricrpf7of6bch75q07.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
