@@ -37,6 +37,7 @@
             android:id="@+id/tasks_list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/tabs"
             android:visibility="@{safeUnbox(viewmodel.dataLoading) ? View.GONE : View.VISIBLE}" />
 
         <ProgressBar
