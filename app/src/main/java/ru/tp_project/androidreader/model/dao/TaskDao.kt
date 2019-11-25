@@ -33,4 +33,8 @@ interface TaskDao {
 
     @Query("DELETE FROM task WHERE id=:taskId")
     suspend fun deleteTask(taskId: Int)
+    @Query("SELECT t.id, t.name, t.description, t.user_id, t.created, t.deadline," +
+            " t.books, t.pages, t.words, ts.books_read, ts.pages_read, ts.words_read FROM task t JOIN task_stat ts" +
+            " ON (ts.task_id=t.id) WHERE t.id=:taskId")
+    suspend fun getTask(taskId: Int): TaskStat
 }

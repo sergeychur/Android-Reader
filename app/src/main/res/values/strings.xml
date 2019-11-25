@@ -41,4 +41,6 @@
     <string name="delete_question">Delete?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="share_title">Android-Reader</string>
+    <string name="share_task_text">I have task, named: %s. It\'s description is: %s. I had to read %d books, %d pages, %d words. I read %d books, %d pages, %d words</string>
 </resources>

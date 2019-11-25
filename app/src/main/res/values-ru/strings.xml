@@ -43,4 +43,6 @@
     <string name="delete_question">Delete?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="share_title">Android-Reader</string>
+    <string name="share_task_text">У меня есть задача: %s. Её описание: %s. Нужно было прочитать %d книг, %d страниц, %d слов. Я прочитал %d книг, %d страниц, %d слов.</string>
 </resources>

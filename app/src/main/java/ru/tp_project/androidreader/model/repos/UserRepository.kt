@@ -14,7 +14,6 @@ import javax.inject.Singleton
 class UserRepository {
     private var currentUserID = R.integer.single_user_id
 
-    // TODO mb remove context in future
     fun getCurrentUserID(context: Context): Int {
         return context.resources.getInteger(currentUserID)
     }
