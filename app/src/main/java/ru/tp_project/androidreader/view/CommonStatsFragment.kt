@@ -1,18 +1,17 @@
 package ru.tp_project.androidreader.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_common_stats.*
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.FragmentCommonStatsBinding
-
 import ru.tp_project.androidreader.model.data_models.User
 import ru.tp_project.androidreader.view_models.CommonStatsViewModel
-
 
 
 class CommonStatsFragment : Fragment() {
@@ -61,5 +60,21 @@ class CommonStatsFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_share).isVisible = true
         super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_share) {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TITLE, getString(R.string.share_title))
+                putExtra(Intent.EXTRA_TEXT, viewDataBinding.viewmodel!!.getStatisticText())
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
