@@ -1,6 +1,7 @@
 package ru.tp_project.androidreader.model.data_models
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import java.sql.Date
 
 data class TaskStat(
@@ -23,7 +24,7 @@ data class TaskStat(
 )
 
 @Entity(tableName = "task_stat",
-    foreignKeys = [ForeignKey(entity = Task::class,
+    foreignKeys = [ForeignKey(onDelete = CASCADE, entity = Task::class,
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("task_id"))],
     indices = [Index(value = ["task_id"])]

@@ -10,11 +10,29 @@
             name="viewmodel"
             type="ru.tp_project.androidreader.view.tasks_list.TasksListViewModel" />
     </data>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                >
 
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/active_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/taskActive" />
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/done_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/taskDone"
+                    />
+
+            </com.google.android.material.tabs.TabLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tasks_list_rv"
             android:layout_width="match_parent"
@@ -52,5 +70,4 @@
             app:srcCompat="@drawable/ic_add_button" />
 
     </RelativeLayout>
-
 </layout>
