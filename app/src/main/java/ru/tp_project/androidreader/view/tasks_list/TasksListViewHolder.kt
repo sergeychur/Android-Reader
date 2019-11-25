@@ -1,20 +1,16 @@
 package ru.tp_project.androidreader.view.tasks_list
 
-import android.content.Intent
 import android.util.Log
 import android.widget.ImageButton
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-
 import ru.tp_project.androidreader.BR
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.TaskStat
-import java.lang.String.format
 
-class TasksListViewHolder constructor(private val dataBinding: ViewDataBinding, private val tasksListViewModel: TasksListViewModel)
+class TasksListViewHolder(private val dataBinding: ViewDataBinding)
     : RecyclerView.ViewHolder(dataBinding.root) {
 
     fun setup(itemData: TaskStat, deleteListener: (Int, () -> Unit) -> Unit, shareListener: (TaskStat) -> Unit) {
