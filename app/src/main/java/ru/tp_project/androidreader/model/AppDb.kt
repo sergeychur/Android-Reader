@@ -48,7 +48,6 @@ abstract class AppDb : RoomDatabase() {
                         )
                         // remove in future
                         db.execSQL("INSERT INTO task VALUES(1, 'task#1', 'vip task', 1, 181881, 21212, 1, 2, 3)")
-                        db.execSQL("INSERT INTO task_stat VALUES(1, 1, 1, 1, 1, 1)")
 
                         db.execSQL("INSERT INTO task_stat VALUES(1, 1, 1, 1, 1, 'false')")
                         db.execSQL(

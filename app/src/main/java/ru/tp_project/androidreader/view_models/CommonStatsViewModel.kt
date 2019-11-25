@@ -2,12 +2,7 @@ package ru.tp_project.androidreader.view_models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.User
 import ru.tp_project.androidreader.model.repos.UserRepository
 
