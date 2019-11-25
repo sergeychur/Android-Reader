@@ -46,4 +46,6 @@
     <string name="share_task_text">У меня есть задача: %s. Её описание: %s. Нужно было прочитать %d книг, %d страниц, %d слов. Я прочитал %d книг, %d страниц, %d слов.</string>
     <string name="share_text">Я прочитал - книг: %d, страниц: %d, слов: %d; моя скорость - книг в день: %d, слов в минуту: %d, страниц в час: %d; я читал %d лут, %d дней, %d часов!</string>
     <string name="share_title">Android-Reader</string>
+    <string name="share">поделиться</string>
+    <string name="info">информация</string>
 </resources>

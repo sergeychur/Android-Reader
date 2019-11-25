@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -27,7 +25,8 @@
             android:layout_row="0"
             android:layout_column="0"
             android:layout_rowSpan="6"
-            android:src="@drawable/ic_launcher_background"/>
+            android:src="@drawable/ic_launcher_background"
+            android:contentDescription="@string/book_image" />
 
         <TextView
             android:id="@+id/item_name"
@@ -131,25 +130,26 @@
                         android:layout_row="0"
                         android:layout_column="0"
                         android:src="@drawable/delete"
-                        />
+                        android:contentDescription="@string/delete" />
+
                     <ImageButton
                         android:id="@+id/edit_task"
                         android:layout_row="0"
                         android:layout_column="1"
                         android:src="@drawable/edit"
-                        />
+                        android:contentDescription="@string/task_edit" />
                     <ImageButton
                         android:id="@+id/share_task"
                         android:layout_row="0"
                         android:layout_column="2"
                         android:src="@drawable/share"
-                        />
+                        android:contentDescription="@string/share" />
                     <ImageButton
                         android:id="@+id/task_stats"
                         android:layout_row="0"
                         android:layout_column="3"
                         android:src="@drawable/info"
-                        />
+                        android:contentDescription="@string/info" />
                 </GridLayout>
 
 
