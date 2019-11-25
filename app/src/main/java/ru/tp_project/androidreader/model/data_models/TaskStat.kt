@@ -23,10 +23,13 @@ data class TaskStat(
     val wordsRead: Int
 )
 
-@Entity(tableName = "task_stat",
-    foreignKeys = [ForeignKey(onDelete = CASCADE, entity = Task::class,
+@Entity(
+    tableName = "task_stat",
+    foreignKeys = [ForeignKey(
+        onDelete = CASCADE, entity = Task::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("task_id"))],
+        childColumns = arrayOf("task_id")
+    )],
     indices = [Index(value = ["task_id"])]
 )
 data class TaskStatDB(

@@ -2,16 +2,23 @@ package ru.tp_project.androidreader.model.data_models
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 
-@Entity(primaryKeys = ["taskId", "bookId"],
+@Entity(
+    primaryKeys = ["taskId", "bookId"],
     foreignKeys = [
-        ForeignKey(entity = Task::class,
+        ForeignKey(
+            onDelete = CASCADE, entity = Task::class,
             parentColumns = ["id"],
-            childColumns = ["taskId"]),
-        ForeignKey(entity = Book::class,
+            childColumns = ["taskId"]
+        ),
+        ForeignKey(
+            onDelete = CASCADE, entity = Book::class,
             parentColumns = ["id"],
-            childColumns = ["bookId"])
-    ])
+            childColumns = ["bookId"]
+        )
+    ]
+)
 data class TaskBook(
     val taskId: Long,
     val bookId: Int
