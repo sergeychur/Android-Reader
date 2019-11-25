@@ -66,6 +66,11 @@ class TasksListFragment : Fragment() {
             adapter.updateTasksList(it)
         })
 
+        // TODO(sergeychur): crutch again, move to PagedList
+        viewDataBinding.viewmodel?.changed?.observe(viewLifecycleOwner, Observer {
+            adapter.updateTasksList(viewDataBinding.viewmodel?.tasksListLive?.value!!.toList())
+        })
+
     }
 
     private fun setupAdapter() {
@@ -86,10 +91,6 @@ class TasksListFragment : Fragment() {
     private fun onDeleteTask(taskId: Int, callback: () -> Unit) {
         viewDataBinding.viewmodel?.deleteTask(requireContext(), taskId) {
             callback()
-            viewDataBinding.viewmodel?.clearTasksList()
-            val active = viewDataBinding.viewmodel?.isActive()
-            val activeVal = active ?: true
-            viewDataBinding.viewmodel?.fetchTasksList(requireContext(), !activeVal)
         }
     }
 
