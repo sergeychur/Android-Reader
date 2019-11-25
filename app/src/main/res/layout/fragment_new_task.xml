@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewmodel"
-            type="ru.tp_project.androidreader.view_models.BooksChoiceListViewModel" />
+            type="ru.tp_project.androidreader.view_models.NewTaskViewModel" />
     </data>
 
     <LinearLayout
@@ -41,7 +43,6 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/task_name_input"
-                    android:theme="@style/TextInputTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill_vertical"
@@ -49,7 +50,8 @@
                     android:singleLine="true"
                     android:textColorHighlight="@android:color/black"
                     android:textColorHint="@android:color/black"
-                    android:textColorLink="@android:color/black" />
+                    android:textColorLink="@android:color/black"
+                    android:theme="@style/TextInputTheme" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -76,7 +78,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/selected_books_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <TextView
                 android:layout_width="wrap_content"
