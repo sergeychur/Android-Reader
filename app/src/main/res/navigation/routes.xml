@@ -69,10 +69,18 @@
         <action
             android:id="@+id/action_tasksListFragment_to_taskEditingFragment"
             app:destination="@id/taskEditingFragment" />
+        <action
+            android:id="@+id/action_tasksListFragment_to_taskStatFragment"
+            app:destination="@id/taskStatFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskEditingFragment"
         android:name="ru.tp_project.androidreader.view.TaskEditingFragment"
         android:label="@string/task_edit"
         tools:layout="@layout/fragment_task_editing" />
+    <fragment
+        android:id="@+id/taskStatFragment"
+        android:name="ru.tp_project.androidreader.view.TaskStatFragment"
+        android:label="fragment_task_stat"
+        tools:layout="@layout/fragment_task_stat" />
 </navigation>
