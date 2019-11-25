@@ -19,8 +19,8 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
-                        "databinding.incremental":"true",
-                        ]
+                        "databinding.incremental": "true",
+                ]
             }
         }
     }
@@ -64,7 +64,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
 
     // optional - ReactiveStreams support for LiveData
-    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version" // For Kotlin use lifecycle-reactivestreams-ktx
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
+    // For Kotlin use lifecycle-reactivestreams-ktx
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"

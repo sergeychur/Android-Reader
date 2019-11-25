@@ -44,7 +44,7 @@ class TasksListViewHolder constructor(private val dataBinding: ViewDataBinding, 
         stater.setOnClickListener {v->
             Log.d("kek", "move to statistics of task")
             val bundle = bundleOf("taskId" to itemData.id)
-            findNavController(v).navigate(R.id.action_tasksListFragment_to_taskEditingFragment, bundle)
+            findNavController(v).navigate(R.id.action_tasksListFragment_to_taskStatFragment, bundle)
         }
     }
 }
