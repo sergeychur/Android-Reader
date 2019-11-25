@@ -19,7 +19,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
-                        "databinding.incremental": "true",
+                        "room.schemaLocation": "$projectDir/schemas".toString()
                 ]
             }
         }
