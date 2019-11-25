@@ -6,10 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Transaction
-import ru.tp_project.androidreader.model.data_models.Book
-import ru.tp_project.androidreader.model.data_models.Task
-import ru.tp_project.androidreader.model.data_models.TaskStat
-import ru.tp_project.androidreader.model.data_models.TaskStatDB
+import ru.tp_project.androidreader.model.data_models.*
 
 
 @Dao
@@ -20,10 +17,16 @@ interface TaskDao {
     @Insert
     suspend fun saveStat(taskStatDB: TaskStatDB)
 
+    @Insert
+    suspend fun saveTaskBook(taskBook: TaskBook)
+
     @Transaction
     suspend fun createTask(task: Task, books: List<Book>) {
         val taskId = save(task)
         saveStat(TaskStatDB(taskID = taskId.toInt()))
+        for (book in books) {
+            saveTaskBook(TaskBook(taskId, book.id.toInt()))
+        }
     }
 
     @Query("SELECT t.id, t.name, t.description, t.user_id, t.created, t.deadline," +

@@ -1,8 +1,9 @@
 package ru.tp_project.androidreader.model.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
 import ru.tp_project.androidreader.model.data_models.User
 
 @Dao

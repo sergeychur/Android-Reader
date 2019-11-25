@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.tollbar_menu, menu)
         menu.findItem(R.id.action_accept).isVisible = false
+        menu.findItem(R.id.action_share).isVisible = false
         return true
     }
 

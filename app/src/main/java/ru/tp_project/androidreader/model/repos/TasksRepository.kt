@@ -20,6 +20,7 @@ class TasksRepository {
             val task = Task(
                 name = taskName,
                 userID = userId,
+                books = books.size,
                 created = Date(Calendar.getInstance().time.time)
             )
             withContext(Dispatchers.Default) {

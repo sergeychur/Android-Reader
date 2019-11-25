@@ -58,9 +58,9 @@ class NewTaskFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.tollbar_menu, menu)
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_accept).isVisible = true
+        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
