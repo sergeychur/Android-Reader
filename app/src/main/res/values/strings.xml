@@ -36,4 +36,9 @@
     <string name="ok">OK</string>
     <string name="task_add_alert_header">Can\'t add task</string>
     <string name="task_add_alert_text">Task\'s name and books list can\'t be empty</string>
+    <string name="taskDone">Finished</string>
+    <string name="taskActive">Active</string>
+    <string name="delete_question">Delete?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

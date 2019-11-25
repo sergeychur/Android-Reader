@@ -7,7 +7,10 @@ import ru.tp_project.androidreader.databinding.ViewTasksListTaskBinding
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.data_models.TaskStat
 
-class TasksListAdapter(private val tasksListViewModel: TasksListViewModel) : RecyclerView.Adapter<TasksListViewHolder>() {
+class TasksListAdapter(private val tasksListViewModel: TasksListViewModel,
+                       private val deleteListener: (Int, () -> Unit) -> Unit,
+                       private val shareListener: (Int) -> Unit)
+    : RecyclerView.Adapter<TasksListViewHolder>() {
     var tasksList: List<TaskStat> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksListViewHolder {
@@ -19,7 +22,7 @@ class TasksListAdapter(private val tasksListViewModel: TasksListViewModel) : Rec
     override fun getItemCount() = tasksList.size
 
     override fun onBindViewHolder(holder: TasksListViewHolder, position: Int) {
-        holder.setup(tasksList[position])
+        holder.setup(tasksList[position], deleteListener, shareListener)
     }
 
     fun updateTasksList(tasksList: List<TaskStat>) {

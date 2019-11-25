@@ -28,16 +28,22 @@ class TasksRepository {
         }
     }
 
-    fun getTasksList(
-        context: Context,
-        onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit
-    ) {
+    fun getTasksList(done: Boolean, context: Context, onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit) {
         GlobalScope.launch {
             val tasks = withContext(Dispatchers.Default) {
                 AppDb.getInstance(context).taskDao()
-                    .loadAllTasks(context.resources.getInteger(R.integer.single_user_id))
+                .loadAllTasks(context.resources.getInteger(R.integer.single_user_id), done)
             }
             onResult(tasks.isNotEmpty(), tasks)
+        }
+    }
+
+    fun deleteTask(taskId: Int, context: Context, onResult: (isSuccess: Boolean) -> Unit) {
+        GlobalScope.launch {
+            withContext(Dispatchers.Default) {
+                AppDb.getInstance(context).taskDao().deleteTask(taskId)
+            }
+            onResult(true)
         }
     }
 
