@@ -49,4 +49,6 @@
     <string name="task_stat">Статистика по задаче</string>
     <string name="share">поделиться</string>
     <string name="info">информация</string>
+    <string name="sign_in_google">Войти через Google</string>
+    <string name="sign_out">Выйти из аккаунта</string>
 </resources>

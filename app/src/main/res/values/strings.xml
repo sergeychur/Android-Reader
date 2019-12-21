@@ -47,4 +47,6 @@
     <string name="task_stat">Task Statistics</string>
     <string name="share">share</string>
     <string name="info">info</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sign_out">Sign out</string>
 </resources>

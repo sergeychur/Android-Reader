@@ -111,6 +111,9 @@ dependencies {
 
     // firebase
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    // firebase auth
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
