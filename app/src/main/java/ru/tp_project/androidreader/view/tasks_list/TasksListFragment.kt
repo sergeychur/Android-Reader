@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_tasks_list.*
 import ru.tp_project.androidreader.R
+import ru.tp_project.androidreader.ReaderApp
 import ru.tp_project.androidreader.databinding.FragmentTasksListBinding
 import ru.tp_project.androidreader.model.data_models.TaskStat
 
@@ -37,7 +38,7 @@ class TasksListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val isActive = viewDataBinding.viewmodel?.isActive() ?: true
         viewDataBinding.viewmodel?.setTabNum(if (isActive) 0 else 1)
-        viewDataBinding.viewmodel?.fetchTasksList(requireContext(), !isActive)
+        viewDataBinding.viewmodel?.fetchTasksList(ReaderApp.getInstance(), !isActive)
         val index = if (isActive) 0 else 1
         tabs.getTabAt(index)?.select()
         setupAdapter()
@@ -48,11 +49,11 @@ class TasksListFragment : Fragment() {
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tab.position == 0) {
-                    viewDataBinding.viewmodel?.fetchTasksList(requireContext(), false)
+                    viewDataBinding.viewmodel?.fetchTasksList(ReaderApp.getInstance(), false)
                     viewDataBinding.viewmodel?.setTabNum(0)
                 } else {
                     viewDataBinding.viewmodel?.clearTasksList()
-                    viewDataBinding.viewmodel?.fetchTasksList(requireContext(), true)
+                    viewDataBinding.viewmodel?.fetchTasksList(ReaderApp.getInstance(), true)
                     viewDataBinding.viewmodel?.setTabNum(1)
                 }
             }
@@ -95,7 +96,7 @@ class TasksListFragment : Fragment() {
     }
 
     private fun onDeleteTask(taskId: Int, callback: () -> Unit) {
-        viewDataBinding.viewmodel?.deleteTask(requireContext(), taskId) {
+        viewDataBinding.viewmodel?.deleteTask(ReaderApp.getInstance(), taskId) {
             callback()
         }
     }
