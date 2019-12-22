@@ -44,8 +44,7 @@ abstract class AppDb : RoomDatabase() {
                         db.execSQL("INSERT INTO task VALUES(1, 'task#1', 'vip task', 1, 181881, 21212, 1, 2, 3)")
                     }
                 }
-            )
-                .build()
+            ).build()
             INSTANCE = instance
             return instance
         }
@@ -55,8 +54,13 @@ abstract class AppDb : RoomDatabase() {
 
 @Dao
 interface BooksDao {
-    @Query("SELECT Count(1) FROM book")
-    fun count(): Int
+    @Query("SELECT * FROM book")
+    suspend fun getAll(): List<Book>
+    @Insert
+//        ("INSERT INTO book VALUES(id, name, photo, author, size, format, progress, text) (:name," +
+//            " :name, :photo, :author, " +
+//            " :size, :format, :progress, :text)")
+    suspend fun addBook(book: Book)
 }
 
 @Dao
@@ -71,6 +75,7 @@ interface BookDao {
 @Database(entities = [Book::class], version = 1)
 abstract class BookDb : RoomDatabase() {
     abstract fun bookDao(): BookDao
+    abstract fun booksDao(): BooksDao
 
     companion object {
         @Volatile
@@ -92,19 +97,19 @@ abstract class BookDb : RoomDatabase() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             db.execSQL(
-                                "INSERT INTO book VALUES( \"1\", \"Война и мир\", \"no\",\n" +
+                                "INSERT INTO book VALUES( 1, \"Война и мир\", \"no\",\n" +
                                         "                            \"Лев Николаевич Толстой\", 32.3, \"FB2\", 0.3,\n" +
                                         "                            \"Это какой то текст\")"
                                 //intArrayOf(R.integer.single_user_id).toTypedArray()
                             )
                             db.execSQL(
-                                "INSERT INTO book VALUES( \"2\", \"КАПИТАНСКАЯ ДОЧКА\", \"no\",\n" +
+                                "INSERT INTO book VALUES( 2, \"КАПИТАНСКАЯ ДОЧКА\", \"no\",\n" +
                                         "                            \"Александр Пушкин\", 18.3, \"FB2\", 0.1,\n" +
                                         "                            \"Отец мой Андрей Петрович Гринев в молодости своей служил при графе Минихе и вышел в отставку премьер-майором в 17.. году. С тех пор жил он в своей Симбирской деревне, где и женился на девице Авдотье Васильевне Ю., дочери бедного тамошнего дворянина. Нас было девять человек детей. Все мои братья и сестры умерли во младенчестве.\")"
                                 //intArrayOf(R.integer.single_user_id).toTypedArray()
                             )
                             db.execSQL(
-                                "INSERT INTO book VALUES( \"3\", \"Матренин двор\", \"no\",\n" +
+                                "INSERT INTO book VALUES( 3, \"Матренин двор\", \"no\",\n" +
                                         "                            \"Александр Исаевич Солженицын\", 32.3, \"FB2\", 0.3,\n" +
                                         "                            \"На сто восемьдесят четвёртом километре от Москвы по ветке, что идёт к Мурому и Казани, ещё с добрых полгода после того все поезда замедляли свой ход почти как бы до ощупи. Пассажиры льнули к стёклам, выходили в тамбур: чинят пути, что ли? из графика вышел?\n" +
                                         "\n" +

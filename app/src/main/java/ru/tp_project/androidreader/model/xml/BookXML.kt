@@ -100,32 +100,63 @@ class BookXML {
         @set:Element(required=false, name = "title")
         var title: P = P()
 
+
         class P {
             @get:Element(required=false, name = "p")
             @set:Element(required=false, name = "p")
             var p: String = "-"
         }
 
-        @get:ElementList(required=false, name = "section")
-        @set:ElementList(required=false, name = "section")
-        var section: List<P>? = null
+        @get:ElementList(required=false, name = "section", entry = "p", inline = true)
+        @set:ElementList(required=false, name = "section", entry = "p", inline = true)
+        var section: List<String> = listOf("")
+
+        //@ElementList(required=false, name = "section",  inline = true)
+        //@set:ElementList(required=false, name = "section",  inline = true)
+        //var section: List<P>? = null
 
 //        class Section {
 //            @get:ElementList(required=false, name = "p")
 //            @set:ElementList(required=false, name = "p")
 //            var p: List<String>? = null
 //        }
-
-        @get:Element(required=false, name = "binary")
-        @set:Element(required=false, name = "binary")
-        var binary: String = ""
-        @get:Attribute(required=false,name = "id")
-        @set:Attribute(required=false,name = "id")
-        var idb: String = ""
-        @get:Attribute(required=false,name = "content-type")
-        @set:Attribute(required=false,name = "content-type")
-        var content_type: String = ""
-
     }
+
+    @get:Element(required=false, name = "binary")
+    @set:Element(required=false, name = "binary")
+    var binary: String = ""
+
+    @get:Attribute(required=false,name = "id")
+    @set:Attribute(required=false,name = "id")
+    var idb: String = ""
+
+    @get:Attribute(required=false,name = "content-type")
+    @set:Attribute(required=false,name = "content-type")
+    var content_type: String = ""
 }
 
+@Root(name = "section")
+class SectionList {
+    //@ElementList(requiSectionListred=false,  inline = true)
+    //@field:ElementList(required=false,  entry = "p", inline = true)
+    @set:ElementList(inline = true, required = false, entry = "p")
+    @get:ElementList(inline = true, required = false, entry = "p")
+    var section: List<String> = listOf("s")
+}
+
+@Root(name = "section")
+class SectionList1 {
+    //@ElementList(requiSectionListred=false,  inline = true)
+    //@field:ElementList(required=false,  entry = "p", inline = true)
+    @set:Element(required=false)
+    @get:Element(required=false)
+    var section: String = "section"
+}
+
+
+@Root(name = "p")
+class P {
+    @get:Element(required=false, name = "p")
+    @set:Element(required=false, name = "p")
+    var p: String = "-"
+}
