@@ -30,6 +30,8 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
         var parts = vp.contentString.split("\n")
         var stringToBeDisplayed = ""
         var first = true
+        addpage(progress, totalPages, 0, 0)
+        totalPages++
         for (onePart in parts) {
             var part = onePart
             if (!first) {

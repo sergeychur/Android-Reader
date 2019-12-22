@@ -48,6 +48,7 @@ import ru.tp_project.androidreader.databinding.FragmentTasksListBinding
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase
 import ru.tp_project.androidreader.view.tasks_list.TasksListAdapter
 import ru.tp_project.androidreader.view.tasks_list.TasksListViewModel
 import ru.tp_project.androidreader.view_models.BooksShelveViewModel
@@ -133,14 +134,23 @@ class BookShelfFragment : Fragment() {
             } else {
                 val intent = Intent(this.context, BookViewer::class.java)
                 // To pass any data to next activity
-
-                intent.putStringArrayListExtra("book", ArrayList(book.body.section))
-                intent.putExtra("pages_count", book.body.section.size)
-                intent.putExtra("pages_current", 2)
-                intent.putExtra("image", book.binary)
+                setToIntent(intent, book)
                 startActivity(intent)
             }
         }
+    }
+
+    fun setToIntent(intent:Intent, book: BookXML){
+
+        intent.putStringArrayListExtra("book", ArrayList(book.body.section))
+        intent.putExtra("pages_count", book.body.section.size)
+        intent.putExtra("pages_current", 0)
+        intent.putExtra(PageContentsFragmentBase.ARG_PHOTO, book.binary)
+        intent.putExtra(PageContentsFragmentBase.ARG_AUTHOR_FIRST, book.description.titleInfo.author.first_name)
+        intent.putExtra(PageContentsFragmentBase.ARG_AUTHOR_LAST, book.description.titleInfo.author.last_name)
+        intent.putExtra(PageContentsFragmentBase.ARG_SOURCE, book.description.publishInfo.publisher)
+        intent.putExtra(PageContentsFragmentBase.ARG_DATE, book.description.titleInfo.date)
+        intent.putExtra(PageContentsFragmentBase.ARG_TITLE, book.description.titleInfo.book_title)
     }
 
     fun getContent(xml : String) : String? {

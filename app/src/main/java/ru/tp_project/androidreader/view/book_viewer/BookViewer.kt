@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
+import android.util.Xml
 import android.view.Display
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +18,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import ru.tp_project.androidreader.R
+import ru.tp_project.androidreader.model.xml.BookXML
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR_FIRST
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR_LAST
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_DATE
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_GENRE
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_PAGE
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_PHOTO
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_SOURCE
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_TITLE
 
 import java.util.HashMap
 
@@ -29,7 +40,6 @@ class BookViewer : AppCompatActivity() {
     private var mContentString = ""
     private var mPagesAmount = 0
     private var mPagesCurrent = 0
-    private var mPhoto = ""
     private var mDisplay: Display? = null
 
     private val screenWidth: Int
@@ -56,7 +66,7 @@ class BookViewer : AppCompatActivity() {
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = findViewById(R.id.pager) as ViewPager
 
-        getFromIntent()
+        var bookXML = getFromIntent()
 
         // obtaining screen dimensions
         mDisplay = getWindowManager().getDefaultDisplay()
@@ -69,7 +79,7 @@ class BookViewer : AppCompatActivity() {
             mContentString
         )
 
-        val pt = PagerTask(mPager, mPagesCurrent, {v -> this.onPageProcessedUpdate(v)})
+        val pt = PagerTask(mPager, mPagesCurrent, {v -> this.onPageProcessedUpdate(v, bookXML)})
         pt.execute(vp)
     }
 
@@ -93,20 +103,27 @@ class BookViewer : AppCompatActivity() {
         return maxLineCount+2
     }
 
-    fun getFromIntent() {
+    fun getFromIntent() : BookXML{
+        var bookXML = BookXML()
         var strs = intent.getSerializableExtra("book") as ArrayList<String>
 
-        mPagesCurrent = intent.getSerializableExtra("pages_current") as Int
-        mPhoto = intent.getStringExtra("image")!!
+        mPagesCurrent = intent.getIntExtra(ARG_PAGE,0)!!
+        bookXML.description.titleInfo.author.first_name = intent.getStringExtra(ARG_AUTHOR_FIRST)!!
+        bookXML.description.titleInfo.author.last_name = intent.getStringExtra(ARG_AUTHOR_LAST)!!
+        bookXML.binary = intent.getStringExtra(ARG_PHOTO)!!
+        bookXML.description.publishInfo.publisher = intent.getStringExtra(ARG_SOURCE)!!
+        bookXML.description.titleInfo.date = intent.getStringExtra(ARG_DATE)!!
+        bookXML.description.titleInfo.book_title = intent.getStringExtra(ARG_TITLE)!!
 
         mContentString = ""
         for (str in strs) {
             mContentString += str
         }
+        return bookXML
     }
 
-    private fun initViewPager() {
-        mPagerAdapter = MyPagerAdapter(getSupportFragmentManager(), 1, mPhoto)
+    private fun initViewPager(bookXml: BookXML) {
+        mPagerAdapter = MyPagerAdapter(getSupportFragmentManager(), 1, bookXml)
         mPager!!.setAdapter(mPagerAdapter)
         mPager!!.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
@@ -116,11 +133,11 @@ class BookViewer : AppCompatActivity() {
         })
     }
 
-    fun onPageProcessedUpdate(progress: ProgressTracker) {
+    fun onPageProcessedUpdate(progress: ProgressTracker, bookXML: BookXML) {
         mPages = progress.pages
         // init the pager if necessary
         if (mPagerAdapter == null) {
-            initViewPager()
+            initViewPager(bookXML)
             hideProgress()
             addPageIndicator(0)
         } else {
