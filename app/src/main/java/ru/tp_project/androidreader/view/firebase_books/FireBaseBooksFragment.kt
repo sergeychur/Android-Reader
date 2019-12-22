@@ -9,66 +9,69 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_book_shelve.*
 import kotlinx.android.synthetic.main.fragment_fire_base_books.*
+import kotlinx.android.synthetic.main.view_fire_base_books_list_book.*
 import ru.tp_project.androidreader.ReaderApp
 import ru.tp_project.androidreader.databinding.FragmentFireBaseBooksBinding
 
 class FireBaseBooksFragment : Fragment() {
-    private lateinit var viewDataBinding: FragmentFireBaseBooksBinding
+    private lateinit var databinding: FragmentFireBaseBooksBinding
     private lateinit var adapter: FireBaseListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewDataBinding = FragmentFireBaseBooksBinding.inflate(inflater, container, false).apply {
+        databinding = FragmentFireBaseBooksBinding.inflate(inflater, container, false).apply {
             firebaseViewModel = ViewModelProviders.of(this@FireBaseBooksFragment).get(FireBaseViewModel::class.java)
             lifecycleOwner = viewLifecycleOwner
         }
-        return viewDataBinding.root
+        return databinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDataBinding.firebaseViewModel?.fetchBooksList(ReaderApp.getInstance())
+        databinding.firebaseViewModel?.fetchBooksList(ReaderApp.getInstance())
         setupAdapter()
         setupObservers()
     }
 
     private fun setupObservers() {
-        viewDataBinding.firebaseViewModel?.booksListLive?.observe(viewLifecycleOwner, Observer {
+        databinding.firebaseViewModel?.booksListLive?.observe(viewLifecycleOwner, Observer {
             adapter.updateBooksList(it)
         })
 
-        viewDataBinding.firebaseViewModel?.changed?.observe(viewLifecycleOwner, Observer {
-            adapter.updateBooksList(viewDataBinding.firebaseViewModel?.booksListLive?.value!!.toList())
+        databinding.firebaseViewModel?.changed?.observe(viewLifecycleOwner, Observer {
+            adapter.updateBooksList(databinding.firebaseViewModel?.booksListLive?.value!!.toList())
         })
 
     }
 
     private fun setupAdapter() {
-        val viewModel = viewDataBinding.firebaseViewModel
+        val viewModel = databinding.firebaseViewModel
         if (viewModel != null) {
-            adapter = FireBaseListAdapter(viewDataBinding.firebaseViewModel!!
+            adapter = FireBaseListAdapter(databinding.firebaseViewModel!!
             ) { bookLink, callback:() -> Unit ->
                 onDeleteBook(bookLink, callback)
             }
-            val layoutManager = LinearLayoutManager(activity)
-            fire_base_books_list_rv.layoutManager = layoutManager
-            fire_base_books_list_rv.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
-            fire_base_books_list_rv.adapter = adapter
+            val layoutManager = LinearLayoutManager(this.context)
+            firebaseBooksListRv.layoutManager = layoutManager
+            firebaseBooksListRv.addItemDecoration(DividerItemDecoration(this.context, layoutManager.orientation))
+            firebaseBooksListRv.adapter = adapter
         }
     }
 
     private fun onDeleteBook(bookLink: String, callback: () -> Unit) {
-        viewDataBinding.firebaseViewModel?.deleteBook(ReaderApp.getInstance(), bookLink) {
+        databinding.firebaseViewModel?.deleteBook(ReaderApp.getInstance(), bookLink) {
             callback()
         }
     }
 
-    private fun onDownloadBook(bookLink: String, callback: () -> Unit) {
-        viewDataBinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookLink) {
+    /*private fun onDownloadBook(bookLink: String, callback: () -> Unit) {
+        databinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookLink) {
             callback()
         }
-    }
+    }*/
 }

@@ -1,5 +1,6 @@
 package ru.tp_project.androidreader.view.firebase_books
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ class FireBaseListAdapter(private val firebasebookViewModel: FireBaseViewModel,
 
     fun updateBooksList(booksList: List<FireBaseBook>) {
         this.booksList = booksList
+//        Log.println(Log.ERROR, "ss", "AAAAAA: size is " + booksList.size.toString())
         notifyDataSetChanged()
     }
 }

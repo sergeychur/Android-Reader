@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.FireBaseBook
 import ru.tp_project.androidreader.model.repos.BookRepository
+import java.io.File
 
 class FireBaseViewModel : BaseViewModel() {
     private var repository = BookRepository()
@@ -21,12 +22,13 @@ class FireBaseViewModel : BaseViewModel() {
         repository.getFireBaseBooksList(context) { isSuccess, books ->
             dataLoading.postValue(false)
             if (isSuccess) {
-                booksListLive.postValue(books?.toMutableList())
+                booksListLive.postValue(books!!.toMutableList())
                 empty.postValue(false)
             } else {
                 empty.postValue(true)
             }
         }
+//        booksListLive.postValue(listOf(FireBaseBook("w", "w")).toMutableList())
     }
     fun deleteBook(context: Context, bookLink: String, successCallback: ()-> Unit) {
         Log.d("kek", "deleted")
@@ -41,7 +43,7 @@ class FireBaseViewModel : BaseViewModel() {
     }
 
     fun downloadBook(context: Context, bookLink: String, successCallback: ()-> Unit) {
-        repository.getFireBaseBook(bookLink, context) { isSuccess ->
+        repository.getFireBaseBook(bookLink, File.createTempFile("kek", "ekek"), context) { isSuccess ->
             if (isSuccess) {
                 Log.println(Log.INFO, "kek", "success")
             } else {

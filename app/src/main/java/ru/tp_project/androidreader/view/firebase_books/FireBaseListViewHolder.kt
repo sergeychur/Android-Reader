@@ -21,5 +21,6 @@ class FireBaseListViewHolder(private val dataBinding: ViewDataBinding)
                 Log.println(Log.ERROR, "lol", "kek")
             }
         }
+
     }
 }
