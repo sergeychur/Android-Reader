@@ -15,11 +15,11 @@ class FireBaseListViewHolder(private val dataBinding: ViewDataBinding)
         dataBinding.setVariable(BR.firebase_book, itemData)
         dataBinding.executePendingBindings()
 
-//        val deleter = itemView.findViewById<ImageButton>(R.id.delete_firebase_book)
-//        deleter.setOnClickListener {
-//            deleteListener(itemData.link) {
-//                Log.println(Log.ERROR, "lol", "kek")
-//            }
-//        }
+        val deleter = itemView.findViewById<ImageButton>(R.id.delete_firebase_book)
+        deleter.setOnClickListener {
+            deleteListener(itemData.link) {
+                Log.println(Log.ERROR, "lol", "kek")
+            }
+        }
     }
 }
