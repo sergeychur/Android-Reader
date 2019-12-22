@@ -11,7 +11,7 @@
     <string name="new_task">Новая задача</string>
     <string name="task_edit">Редактирование задачи</string>
     <string name="reading">Чтение</string>
-    <string name="error_no_tasks">Нет задач</string>
+    <string name="error_no_tasks">Нет контента</string>
     <string name="read_header">Прочитано</string>
     <string name="books_read">Книг</string>
     <string name="pages_read">Страниц</string>
@@ -52,4 +52,5 @@
     <string name="sign_in_google">Войти через Google</string>
     <string name="sign_out">Выйти из аккаунта</string>
     <string name="books_in_net">Книги из сети</string>
+    <string name="download">Скачать</string>
 </resources>

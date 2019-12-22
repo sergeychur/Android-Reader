@@ -88,7 +88,7 @@
         tools:layout="@layout/fragment_task_stat" />
     <fragment
         android:id="@+id/fireBaseBooksFragment"
-        android:name="ru.tp_project.androidreader.view.FireBaseBooksFragment"
+        android:name="ru.tp_project.androidreader.view.firebase_books.FireBaseBooksFragment"
         android:label="@string/books_in_net"
         tools:layout="@layout/fragment_fire_base_books" />
 </navigation>
