@@ -2,11 +2,12 @@ package ru.tp_project.androidreader
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,10 +19,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.tp_project.androidreader.view_models.AuthViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +30,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +54,28 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolBar)
         toolBar.setupWithNavController(navController, appBarConfiguration)
 
+        initAuthViewModel()
+        initObserver()
+        initGoogleSignInClient()
+    }
+
+    private fun initAuthViewModel() {
+        authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+    }
+
+    private fun initGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-        auth = FirebaseAuth.getInstance()
+    }
+
+    private fun initObserver() {
+        authViewModel.authenticatedUserLiveData.observe(this, Observer<FirebaseUser> { user ->
+            updateUI(user)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,35 +87,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) { // The Task returned from this call is always completed, no need to attach
-                                   // a listener.
+        if (requestCode == RC_SIGN_IN) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
-                Log.w("mytag", "Google sign in failed", e)
                 updateUI(null)
             }
         }
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d("mytag", "firebaseAuthWithGoogle:" + acct.id!!)
-
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d("mytag", "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    Log.w("mytag", "signInWithCredential:failure", task.exception)
-                    updateUI(null)
-                }
-            }
+        authViewModel.signInWithGoogle(credential)
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -118,8 +120,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        auth.signOut()
-
+        authViewModel.signOut()
         googleSignInClient.signOut().addOnCompleteListener(this) {
             updateUI(null)
         }
