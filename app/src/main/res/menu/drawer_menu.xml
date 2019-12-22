@@ -28,6 +28,10 @@
             android:icon="@drawable/ic_launcher_background"
             android:title="@string/about"/>
         <item
+            android:id="@+id/fireBaseBooksFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/books_in_net"/>
+        <item
             android:id="@+id/sign_in"
             android:onClick="onClick"
             android:title="@string/sign_in_google" />

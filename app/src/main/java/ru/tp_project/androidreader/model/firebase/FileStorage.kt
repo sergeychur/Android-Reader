@@ -71,6 +71,14 @@ class FileStorage {
             }
     }
 
+    fun deleteFile(url: String, successCallback: () -> Unit, failCallback: (Exception) -> Unit) {
+        val fileRef = storage.child(url).delete().addOnSuccessListener {
+            successCallback()
+        }.addOnFailureListener {
+            failCallback(it)
+        }
+    }
+
     companion object {
         private var INSTANCE: FileStorage? = null
         fun getInstance() : FileStorage {
