@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO(sergeychur): fill in normal way-->
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
         <import type="android.view.View" />
         <variable
             name="data"
-            type="ru.tp_project.androidreader.model.data_models.Task" />
+            type="ru.tp_project.androidreader.model.data_models.TaskStat" />
     </data>
 
 
@@ -28,7 +25,8 @@
             android:layout_row="0"
             android:layout_column="0"
             android:layout_rowSpan="6"
-            android:src="@drawable/ic_launcher_background"/>
+            android:src="@drawable/ic_launcher_background"
+            android:contentDescription="@string/book_image" />
 
         <TextView
             android:id="@+id/item_name"
@@ -84,8 +82,8 @@
                     android:layout_marginStart="5dp"
                     android:backgroundTint="@color/colorPrimaryBlue"
                     android:foregroundTint="@color/colorPrimaryBlue"
-                    android:max="100"
-                    android:progress="80"
+                    android:max="@integer/maximum_progress"
+                    android:progress="@{(int) (((float)data.pagesRead / (float)data.pages) * 100)}"
                     android:progressBackgroundTint="@color/colorPrimaryBlue"
                     android:progressTint="@color/colorPrimaryBlue"
                     android:secondaryProgressTint="@color/colorPrimaryBlue"
@@ -106,19 +104,18 @@
                         android:layout_row="0"
                         android:layout_column="0"
                         android:layout_margin="5dp"
-                        android:text="@{@string/books_read + @string/space + data.books}"/>
-
+                        android:text="@{@string/books_read + @string/space + data.booksRead}"/>
                     <TextView
                         android:layout_row="0"
                         android:layout_column="1"
                         android:layout_margin="5dp"
-                        android:text="@{@string/words_read + @string/space + data.words}"/>
+                        android:text="@{@string/words_read + @string/space + data.wordsRead}"/>
 
                     <TextView
                         android:layout_row="0"
                         android:layout_column="2"
                         android:layout_margin="5dp"
-                        android:text="@{@string/pages_read + @string/space + data.pages}"/>
+                        android:text="@{@string/pages_read + @string/space + data.pagesRead}"/>
                 </GridLayout>
                 <GridLayout
                     android:layout_row="6"
@@ -129,25 +126,30 @@
                     android:layout_gravity="end"
                     >
                     <ImageButton
+                        android:id="@+id/delete_task"
                         android:layout_row="0"
                         android:layout_column="0"
                         android:src="@drawable/delete"
-                        />
+                        android:contentDescription="@string/delete" />
+
                     <ImageButton
+                        android:id="@+id/edit_task"
                         android:layout_row="0"
                         android:layout_column="1"
                         android:src="@drawable/edit"
-                        />
+                        android:contentDescription="@string/task_edit" />
                     <ImageButton
+                        android:id="@+id/share_task"
                         android:layout_row="0"
                         android:layout_column="2"
                         android:src="@drawable/share"
-                        />
+                        android:contentDescription="@string/share" />
                     <ImageButton
+                        android:id="@+id/task_stats"
                         android:layout_row="0"
                         android:layout_column="3"
                         android:src="@drawable/info"
-                        />
+                        android:contentDescription="@string/info" />
                 </GridLayout>
 
 

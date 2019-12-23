@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <data>
+
+            <import type="android.view.View" />
+            <variable
+                name="firebase_book"
+                type="ru.tp_project.androidreader.model.data_models.FireBaseBook" />
+        </data>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <GridLayout
+                android:id="@+id/firebase_book_header_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:orientation="vertical"
+                android:rowCount="2">
+                <ImageView
+                    android:id="@+id/fireBaseBookPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:layout_rowSpan="2"
+                    android:src="@drawable/ic_launcher_background"
+                    android:contentDescription="@string/book_image" />
+
+                <TextView
+                    android:id="@+id/firebase_book_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="0"
+                    android:layout_column="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="2dp"
+                    android:gravity="center_vertical"
+                    android:text="@{firebase_book.name}"
+                    android:textColor="@color/colorPrimaryBlue"
+                    android:textSize="20sp" />
+                <GridLayout
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:columnCount="2"
+                    android:rowCount="1"
+                    android:layout_gravity="end"
+                    >
+                    <ImageButton
+                        android:id="@+id/delete_firebase_book"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:src="@drawable/delete"
+                        android:contentDescription="@string/delete" />
+                    <ImageButton
+                        android:id="@+id/download_firebase_book"
+                        android:layout_row="0"
+                        android:layout_column="1"
+                        android:src="@drawable/download"
+                        android:contentDescription="@string/download" />
+                </GridLayout>
+            </GridLayout>
+        </LinearLayout>
+    </layout>

@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="ru.tp_project.androidreader.view.tasks_list.TasksListViewModel" />
     </data>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                >
 
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/active_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/taskActive" />
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/done_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/taskDone"
+                    />
+
+            </com.google.android.material.tabs.TabLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tasks_list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/tabs"
             android:visibility="@{safeUnbox(viewmodel.dataLoading) ? View.GONE : View.VISIBLE}" />
 
         <ProgressBar
@@ -24,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="@{safeUnbox(viewmodel.dataLoading) ? View.VISIBLE : View.GONE}" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +54,20 @@
             android:text="@string/error_no_tasks"
             android:textSize="18sp"
             android:visibility="@{safeUnbox(viewmodel.empty) ? View.VISIBLE : View.GONE}" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_tusk_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:fabSize="normal"
+            app:maxImageSize="57dp"
+            app:srcCompat="@drawable/ic_add_button" />
 
     </RelativeLayout>
 </layout>

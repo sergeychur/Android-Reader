@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "556b11e838bbd4e64012cf024d43cc32",
+    "identityHash": "eab3f9bca0d2660e427ce3f1c1357bf1",
     "entities": [
       {
         "tableName": "User",
@@ -253,12 +253,12 @@
       },
       {
         "tableName": "book",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `photo` TEXT NOT NULL, `author` TEXT NOT NULL, `size` REAL NOT NULL, `format` TEXT NOT NULL, `progress` REAL NOT NULL, `text` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `photo` TEXT NOT NULL, `author` TEXT NOT NULL, `date` TEXT NOT NULL, `source` TEXT NOT NULL, `genre` TEXT NOT NULL, `size` TEXT NOT NULL, `format` TEXT NOT NULL, `progress` REAL NOT NULL, `text` TEXT NOT NULL, `path` TEXT NOT NULL, `pages` INTEGER NOT NULL, `currPage` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -280,9 +280,27 @@
             "notNull": true
           },
           {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genre",
+            "columnName": "genre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "size",
             "columnName": "size",
-            "affinity": "REAL",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -302,24 +320,33 @@
             "columnName": "text",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pages",
+            "columnName": "pages",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currPage",
+            "columnName": "currPage",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
-        "indices": [
-          {
-            "name": "index_book_id",
-            "unique": false,
-            "columnNames": [
-              "id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_book_id` ON `${TABLE_NAME}` (`id`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": []
       },
       {
@@ -447,7 +474,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '556b11e838bbd4e64012cf024d43cc32')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eab3f9bca0d2660e427ce3f1c1357bf1')"
     ]
   }
 }

@@ -1,7 +1,7 @@
 package ru.tp_project.androidreader.model.data_models
 
-import android.graphics.Bitmap
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "book")

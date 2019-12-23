@@ -10,7 +10,7 @@
     <string name="new_task">New Task</string>
     <string name="task_edit">Task Edit</string>
     <string name="reading">Reading</string>
-    <string name="error_no_tasks">No tasks</string>
+    <string name="error_no_tasks">No content</string>
     <string name="read_header">Read</string>
     <string name="books_read">Books</string>
     <string name="pages_read">Pages</string>
@@ -23,6 +23,13 @@
     <string name="years_spent">Years</string>
     <string name="days_spent">Days</string>
     <string name="hours_spent">Hours</string>
+    <string name="task_name_header">Task name:</string>
+    <string name="selected_books_list_header">Selected books:</string>
+    <string name="no_selected_books">There aren\'t any book</string>
+    <string name="delete">delete</string>
+    <string name="google_books">Google books</string>
+    <string name="file_store">File store</string>
+    <string name="book_image">Book\'s image</string>
     <string name="space">\u0020</string>
     <string name="done">Done:</string>
     <string name="goal">Goal:</string>
@@ -39,4 +46,25 @@
     <string name="from">from</string>
     <string name="wrong_file_title">Wrong file format</string>
     <string name="wrong_file_message">Wrong file was provided. Our app supports only FB2.</string>
+    <string name="action_accept">accept</string>
+    <string name="ok">OK</string>
+    <string name="task_add_alert_header">Can\'t add task</string>
+    <string name="task_add_alert_text">Task\'s name and books list can\'t be empty</string>
+    <string name="taskDone">Finished</string>
+    <string name="taskActive">Active</string>
+    <string name="delete_question">Delete?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="share_task_text">I have task, named: %s. It\'s description is: %s. I had to read %d books, %d pages, %d words. I read %d books, %d pages, %d words</string>
+    <string name="share_text">I read - books: %d, pages: %d, words: %d; my speed - books per day: %d, words per min: %d, pages per hour: %d; I spent %d years, %d days, %d hours!</string>
+    <string name="share_title">Android-Reader</string>
+    <string name="task_stat">Task Statistics</string>
+    <string name="share">share</string>
+    <string name="info">info</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sign_out">Sign out</string>
+    <string name="books_in_net">Books in net</string>
+    <string name="download">Download</string>
+    <string name="user_avatar">user avatar</string>
+>>>>>>> 87597dede1fd762d4c6f776e20ec0bb610357d2f
 </resources>

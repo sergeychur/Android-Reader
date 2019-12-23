@@ -50,7 +50,7 @@ captures/
 .externalNativeBuild
 
 # Google Services (e.g. APIs or Firebase)
-google-services.json
+# google-services.json
 
 # Freeline
 freeline.py
@@ -66,3 +66,7 @@ fastlane/readme.md
 
 #idea
 .idea*
+app/schemas*
+
+app/release*
+key.jks

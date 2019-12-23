@@ -19,8 +19,8 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
-                        "databinding.incremental":"true",
-                        ]
+                        "room.schemaLocation": "$projectDir/schemas".toString()
+                ]
             }
         }
     }
@@ -57,14 +57,15 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_viewmodel_version"
 
     implementation "android.arch.persistence.room:runtime:1.1.1"
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
 
     // optional - ReactiveStreams support for LiveData
-    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version" // For Kotlin use lifecycle-reactivestreams-ktx
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
+    // For Kotlin use lifecycle-reactivestreams-ktx
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
@@ -106,4 +107,21 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
+    //Paging
+    implementation 'androidx.paging:paging-runtime:2.1.0'
+
+    // firebase
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    // firebase auth
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    // firebase storage
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
