@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AndroidReader</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -32,6 +33,19 @@
     <string name="space">\u0020</string>
     <string name="done">Done:</string>
     <string name="goal">Goal:</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="no_author">No author</string>
+    <string name="no_title">Unnnamedr</string>
+    <string name="genre">Genre:</string>
+    <string name="source">Source:</string>
+    <string name="not_set">not set</string>
+    <string name="b">B</string>
+    <string name="kb">kB</string>
+    <string name="mb">mB</string>
+    <string name="gb">gB</string>
+    <string name="from">from</string>
+    <string name="wrong_file_title">Wrong file format</string>
+    <string name="wrong_file_message">Wrong file was provided. Our app supports only FB2.</string>
     <string name="action_accept">accept</string>
     <string name="ok">OK</string>
     <string name="task_add_alert_header">Can\'t add task</string>
@@ -52,4 +66,5 @@
     <string name="books_in_net">Books in net</string>
     <string name="download">Download</string>
     <string name="user_avatar">user avatar</string>
+>>>>>>> 87597dede1fd762d4c6f776e20ec0bb610357d2f
 </resources>

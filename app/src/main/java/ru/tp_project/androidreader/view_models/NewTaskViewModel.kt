@@ -14,9 +14,15 @@ class NewTaskViewModel(val context: Context) : BaseViewModel() {
 
     init {
         selectedBooks.value = arrayListOf(
-            Book("1", "BookName", "???", "Name Secname", 100.13f, "fb2", 0.5f, "what"),
-            Book("2", "BookName", "???", "Name Secname", 100.13f, "fb2", 0.5f, "what"),
-            Book("3", "BookName", "???", "Name Secname", 100.13f, "fb2", 0.5f, "what")
+            Book(1, "BookName", "???", "Name Secname",
+                "12.12.2012","kotlin", "no","100Kb", "fb2",
+                0.5f, "what", "no path", 1,0),
+            Book(2, "BookName", "???", "Name Secname",
+                "12.12.2012","kotlin", "no","100Kb", "fb2",
+                0.5f, "what", "no path", 1,0),
+            Book(3, "BookName", "???", "Name Secname",
+                "12.12.2012","kotlin", "no","100Kb", "fb2",
+                0.5f, "what", "no path", 1,0)
         )
         empty.value = false // TODO(Kotyrich) temporary
     }

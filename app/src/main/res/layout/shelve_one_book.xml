@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_marginStart="4dp"
+            android:textAlignment="center"
             android:textSize="20sp"
             android:text="@{book.author}" />
 
@@ -54,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif"
                 android:text="@{book.format}"
                 android:textSize="18sp" />
 
@@ -62,14 +64,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@{book.name}"
+                android:fontFamily="sans-serif-light"
+                android:text="@{book.size}"
+                android:textAlignment="viewEnd"
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <SeekBar
+        <ProgressBar
             android:id="@+id/bookProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_weight="0"
             android:max="100"
             android:progress="80"
@@ -95,8 +100,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="1dp"
-                android:src="@drawable/delete_24px"
-                android:contentDescription="@string/delete" />
+                android:layout_marginBottom="4dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/delete_24px"/>
 
             <ImageButton
                 android:id="@+id/bookShare"
@@ -104,15 +111,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="1dp"
-                android:src="@drawable/share_24px"
-                android:contentDescription="@string/share" />
+                android:layout_marginBottom="4dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/share"
+                android:src="@drawable/share_24px"/>
 
             <ImageButton
                 android:id="@+id/bookAbout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:layout_margin="1dp"
+                android:layout_marginBottom="4dp"
                 android:src="@drawable/info_24px"
                 android:contentDescription="@string/info" />
         </LinearLayout>

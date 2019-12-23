@@ -4,14 +4,24 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "book", indices = [Index(value = ["id"])])
-data class Book(
-    @PrimaryKey val id: String,
+@Entity(tableName = "book")
+data class Book (
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val name: String,
     val photo: String,
     val author : String,
-    val size: Float,
+
+    val date: String,
+    val source: String,
+    val genre: String,
+
+    val size: String,
     var format: String,
     val progress: Float,
-    val text: String
-)
+    val text: String,
+    val path: String,
+
+    var pages: Int,
+    var currPage: Int
+) : java.io.Serializable
