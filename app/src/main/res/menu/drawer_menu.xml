@@ -27,6 +27,10 @@
     </group>
     <group>
         <item
+            android:id="@+id/fireBaseBooksFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/books_in_net"/>
+        <item
             android:id="@+id/sign_in"
             android:icon="@drawable/googleg_standard_color_18"
             android:onClick="onClick"

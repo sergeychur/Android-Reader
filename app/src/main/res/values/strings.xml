@@ -9,7 +9,7 @@
     <string name="new_task">New Task</string>
     <string name="task_edit">Task Edit</string>
     <string name="reading">Reading</string>
-    <string name="error_no_tasks">No tasks</string>
+    <string name="error_no_tasks">No content</string>
     <string name="read_header">Read</string>
     <string name="books_read">Books</string>
     <string name="pages_read">Pages</string>
@@ -49,5 +49,7 @@
     <string name="info">info</string>
     <string name="sign_in_google">Sign in with Google</string>
     <string name="sign_out">Sign out</string>
+    <string name="books_in_net">Books in net</string>
+    <string name="download">Download</string>
     <string name="user_avatar">user avatar</string>
 </resources>
