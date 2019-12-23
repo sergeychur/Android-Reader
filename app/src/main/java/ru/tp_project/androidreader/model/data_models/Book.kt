@@ -22,6 +22,6 @@ data class Book (
     val text: String,
     val path: String,
 
-    val pages: Int,
-    val currPage: Int
+    var pages: Int,
+    var currPage: Int
 ) : java.io.Serializable

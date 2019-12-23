@@ -1,6 +1,7 @@
 package ru.tp_project.androidreader.model.repos
 
 import android.content.Context
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,9 +42,10 @@ class BooksRepository {
     }
 
     fun updateBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
+        Log.d("updating", ""+book.pages +" "+ book.currPage)
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
-                BookDb.getInstance(context).booksDao().deleteBook(book)
+                BookDb.getInstance(context).booksDao().updateBook(book)
             }
             onResult(true)
         }

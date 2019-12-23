@@ -38,14 +38,18 @@ class PageContentsFragment() : PageContentsFragmentBase() {
         val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
         val imageView = layout.findViewById(R.id.image) as ImageView
-        imageView.setImageBitmap(
-            getResizedBitmap(
-                image,
-                (image.width * 1.5f).toInt(),
-                (image.height * 1.5f).toInt()
+        if (image != null) {
+            imageView.setImageBitmap(
+                getResizedBitmap(
+                    image,
+                    (image.width * 1.5f).toInt(),
+                    (image.height * 1.5f).toInt()
+                )
             )
-        )
-        imageView.visibility = View.VISIBLE
+            imageView.visibility = View.VISIBLE
+        } else {
+            imageView.visibility = View.GONE
+        }
 
         val title = layout.findViewById(R.id.title) as TextView
         title.setText(bookTitle)

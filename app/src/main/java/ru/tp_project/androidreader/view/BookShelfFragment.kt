@@ -3,6 +3,7 @@ package ru.tp_project.androidreader.view
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
@@ -17,9 +18,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -83,9 +86,21 @@ class BookShelfFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setup()
+    }
+
+    override fun onPause() {
+        super.onPause();
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setup()
+    }
+
+    fun setup() {
         val context = getActivity()?.getApplicationContext()
         val viewModel = viewDataBinding.viewmodel
-
         viewModel?.let {
             context?.let {  viewModel.getAll(context) }
             setupViews()
@@ -93,6 +108,7 @@ class BookShelfFragment : Fragment() {
             setupObservers(viewModel)
         }
     }
+
 
     private fun setupViews() {
         addBook.setOnClickListener(object : View.OnClickListener {
@@ -137,13 +153,19 @@ class BookShelfFragment : Fragment() {
 
             val book = loadBookXML(inputAsString)
             if (book == null) {
-
+                val builder = AlertDialog.Builder(activity)
+                builder.setTitle(getString(R.string.wrong_file_title))
+                builder.setMessage(getString(R.string.wrong_file_message))
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    Toast.makeText(activity,
+                        android.R.string.yes, Toast.LENGTH_SHORT).show()
+                }
+                builder.show()
             } else {
                 val viewModel = viewDataBinding.viewmodel
                 val bookBD = xmlToDB(book!!, path.path!!, size)
                 viewModel!!.load(context!!, bookBD)
-                val context = getActivity()?.getApplicationContext()
-                showContent(context!!, bookBD)
+                showContent(getActivity()!!, bookBD)
             }
         }
     }
@@ -191,6 +213,7 @@ class BookShelfFragment : Fragment() {
         fun showContent(context: Context, book : Book) {
             val intent = Intent(context, BookViewer::class.java)
             setToIntent(intent, book)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(context, intent, null)
         }
     }
@@ -289,6 +312,11 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
             } else {
                 imageView.setImageResource(R.drawable.nocover)
             }
+
+            val seekBar = itemView.findViewById(R.id.bookProgress) as SeekBar
+
+            seekBar.max = book.pages
+            seekBar.progress = book.currPage
 
             dataBinding.setVariable(BR.book, itemData)
             dataBinding.executePendingBindings()

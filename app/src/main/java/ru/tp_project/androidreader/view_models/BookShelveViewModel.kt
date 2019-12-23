@@ -59,4 +59,40 @@ class BooksShelveViewModel : BaseViewModel() {
             finish(isSuccess)
         }
     }
+
+    fun delete(context: Context, book: Book) {
+        start()
+        booksRep.deleteBook(context, book) { isSuccess ->
+            if (isSuccess) {
+                val list = data.value
+                list?.let {
+                    val arr = list.toMutableList()
+                    arr.add(book)
+                    data.postValue(arr)
+                }
+            }
+            finish(isSuccess)
+        }
+    }
+}
+
+class BookViewerViewModel : BaseViewModel() {
+    var data = MutableLiveData<List<Book>>()
+    var booksRep = BooksRepository()
+
+
+    fun update(context: Context, book: Book) {
+        start()
+        booksRep.updateBook(context, book) { isSuccess ->
+            if (isSuccess) {
+                val list = data.value
+                list?.let {
+                    val arr = list.toMutableList()
+                    arr.add(book)
+                    data.postValue(arr)
+                }
+            }
+            finish(isSuccess)
+        }
+    }
 }

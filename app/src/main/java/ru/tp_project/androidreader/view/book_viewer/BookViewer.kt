@@ -1,5 +1,6 @@
 package ru.tp_project.androidreader.view.book_viewer
 
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.text.TextPaint
 import android.util.DisplayMetrics
@@ -16,19 +17,11 @@ import android.widget.TableLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Book
-import ru.tp_project.androidreader.model.xml.BookXML
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR_FIRST
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR_LAST
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_DATE
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_GENRE
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_PAGE
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_PHOTO
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_SOURCE
-import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_TITLE
+import ru.tp_project.androidreader.view_models.BookViewerViewModel
 
 import java.util.HashMap
 
@@ -42,6 +35,7 @@ class BookViewer : AppCompatActivity() {
     private var mPagesAmount = 0
     private var mPagesCurrent = 0
     private var mDisplay: Display? = null
+    private var viewmodel: BookViewerViewModel? = null
 
     private val screenWidth: Int
         get() {
@@ -55,6 +49,8 @@ class BookViewer : AppCompatActivity() {
 
         setContentView(R.layout.book_viewer_main)
         mProgressBar = findViewById(R.id.progress) as ProgressBar
+
+        viewmodel = ViewModelProviders.of(this@BookViewer).get(BookViewerViewModel::class.java)
 
         val textviewPage = getLayoutInflater().inflate(
             R.layout.book_viewer_fragment,
@@ -80,7 +76,9 @@ class BookViewer : AppCompatActivity() {
             book!!.text
         )
 
-        val pt = PagerTask(mPager, mPagesCurrent, {v -> this.onPageProcessedUpdate(v, book!!)})
+        //initViewPager(book!!)
+
+        val pt = PagerTask(mPager, book!!.currPage, {v -> this.onPageProcessedUpdate(v, book!!)})
         pt.execute(vp)
     }
 
@@ -122,15 +120,18 @@ class BookViewer : AppCompatActivity() {
     fun onPageProcessedUpdate(progress: ProgressTracker, book: Book) {
         mPages = progress.pages
         // init the pager if necessary
+        Log.d("look currPage", ""+book.currPage)
         if (mPagerAdapter == null) {
             initViewPager(book)
             hideProgress()
-            addPageIndicator(0)
+            mPagesCurrent = book.currPage
+            addPageIndicator(book.currPage)
         } else {
             (mPagerAdapter as MyPagerAdapter).incrementPageCount()
-            addPageIndicator(progress.totalPages)
+            addPageIndicator(mPagesCurrent)
             mPagesAmount =  progress.totalPages+1
         }
+
     }
 
     private fun hideProgress() {
@@ -138,6 +139,11 @@ class BookViewer : AppCompatActivity() {
     }
 
     private fun addPageIndicator(pageNumber: Int) {
+        setIndicator(pageNumber)
+        setPages(pageNumber)
+    }
+
+    private fun setIndicator(pageNumber: Int) {
         mPageIndicator = findViewById(R.id.pageIndicator) as LinearLayout
         val view = View(this)
         val params = TableLayout.LayoutParams(
@@ -146,7 +152,6 @@ class BookViewer : AppCompatActivity() {
             1f
         )
         view.layoutParams = params
-        Log.d("view", "number "+pageNumber)
         if (pageNumber == 0) {
             view.setBackgroundResource(R.drawable.current_page_indicator)
         } else {
@@ -154,16 +159,38 @@ class BookViewer : AppCompatActivity() {
         }
         view.tag = pageNumber
         mPageIndicator!!.addView(view)
+    }
 
+    fun setColor(pageNumber: Int) {
+        val view = View(this)
+        val params = TableLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            1f
+        )
+        view.layoutParams = params
+        if (pageNumber == 0) {
+            view.setBackgroundResource(R.drawable.current_page_indicator)
+        } else {
+            view.setBackgroundResource(R.drawable.indicator_background)
+        }
+    }
+
+    fun setPages(position: Int) {
         var textview = findViewById(R.id.pages) as TextView
-        textview.setText((mPagesCurrent+1).toString()+" из "+mPagesAmount.toString())
+        val pages = (position+1).toString()+" "+getString(R.string.from)+" "+mPagesAmount.toString()
+        textview.setText(pages)
+
+        book!!.currPage = position
+        book!!.pages = mPagesAmount
 
 
+
+        viewmodel!!.update(getApplicationContext(), book!!)
     }
 
     protected fun showPageIndicator(position: Int) {
-        var textview = findViewById(R.id.pages) as TextView
-        textview.setText((position+1).toString()+" из "+mPagesAmount.toString())
+        setPages(position)
 
         try {
             mPageIndicator = findViewById(R.id.pageIndicator) as LinearLayout
@@ -186,7 +213,7 @@ class BookViewer : AppCompatActivity() {
 
     }
 
-    public fun getContents(pageNumber: Int): String {
+     fun getContents(pageNumber: Int): String {
         val page = pageNumber.toString()
         val textBoundaries = mPages[page]
         if (textBoundaries != null) {
