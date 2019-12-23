@@ -23,7 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:src="@drawable/share" />
+        android:src="@drawable/share"
+        android:contentDescription="@string/user_avatar"/>
     <TextView
         android:id="@+id/author"
         android:layout_width="match_parent"
