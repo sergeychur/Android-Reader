@@ -14,13 +14,13 @@ class FireBaseViewModel : BaseViewModel() {
     val booksListLive = MutableLiveData<MutableList<FireBaseBook>>()
     val changed = MutableLiveData<Boolean>()
 
-    fun clearBooksList() {
-        booksListLive.value?.clear()
-    }
+//    fun clearBooksList() {
+//        booksListLive.value?.clear()
+//    }
 
     fun fetchBooksList(context: Context) {
         dataLoading.postValue(true)
-        repository.getFireBaseBooksList(context) { isSuccess, books ->
+        repository.getFireBaseBooksList() { isSuccess, books ->
             dataLoading.postValue(false)
             if (isSuccess) {
                 booksListLive.postValue(books!!.toMutableList())
@@ -29,10 +29,8 @@ class FireBaseViewModel : BaseViewModel() {
                 empty.postValue(true)
             }
         }
-//        booksListLive.postValue(listOf(FireBaseBook("w", "w")).toMutableList())
     }
     fun deleteBook(context: Context, bookLink: String, successCallback: ()-> Unit) {
-        Log.d("kek", "deleted")
         repository.deleteFireBaseBook(bookLink, context) {isSuccess ->
             if (isSuccess) {
                 booksListLive.value?.removeAll { book -> book.link == bookLink }
@@ -45,7 +43,6 @@ class FireBaseViewModel : BaseViewModel() {
 
     fun downloadBook(context: Context, bookName: String, bookLink: String, successCallback: ()-> Unit) {
         val dirname = context.filesDir!!.absolutePath
-        //val resDir = context.getDir(dirname, Context.MODE_PRIVATE)
         val file = File(dirname, bookName)
         // create a new file
         val isNewFileCreated :Boolean = file.createNewFile()
@@ -55,14 +52,12 @@ class FireBaseViewModel : BaseViewModel() {
         } else{
             Log.println(Log.ERROR, "ERROR", "$bookName already exists.")
         }
-        repository.getFireBaseBook(bookLink, file, context) { isSuccess ->
+        repository.getFireBaseBook(bookLink, file) { isSuccess ->
             if (isSuccess) {
                 Log.println(Log.INFO, "kek", "success")
             } else {
                 Log.println(Log.ERROR, "kek", "fail")
             }
         }
-        val sm = file.readLines()
-        Log.d("lololo", file.path)
     }
 }

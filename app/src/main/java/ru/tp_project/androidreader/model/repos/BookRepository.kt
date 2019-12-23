@@ -29,7 +29,7 @@ class BookRepository {
         }
     }
 
-    fun getFireBaseBooksList(context: Context, onResult: (isSuccess: Boolean, books: List<FireBaseBook>?) -> Unit) {
+    fun getFireBaseBooksList(onResult: (isSuccess: Boolean, books: List<FireBaseBook>?) -> Unit) {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
                 val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -45,8 +45,6 @@ class BookRepository {
                     failCallback = {onResult(false, null)},
                     pageToken = null)
             }
-            //onResult(true, listOf(FireBaseBook("w", "w"), FireBaseBook("w", "w")))
-
         }
     }
 
@@ -63,7 +61,7 @@ class BookRepository {
         }
     }
 
-    fun getFireBaseBook(bookLink: String, destination: File, context: Context, onResult: (isSuccess: Boolean) -> Unit) {
+    fun getFireBaseBook(bookLink: String, destination: File, onResult: (isSuccess: Boolean) -> Unit) {
         GlobalScope.launch {
             FileStorage.getInstance().downloadFile(bookLink,
                 successCallback = {

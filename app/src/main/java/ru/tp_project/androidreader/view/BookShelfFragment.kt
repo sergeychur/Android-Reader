@@ -3,7 +3,6 @@ package ru.tp_project.androidreader.view
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.app.PendingIntent.getActivity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -11,7 +10,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,17 +24,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_book_shelve.*
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.ShelveOneBookBinding
 import ru.tp_project.androidreader.model.data_models.Book
-import ru.tp_project.androidreader.view_models.BookShelveViewModel
 import org.simpleframework.xml.core.Persister
 import ru.tp_project.androidreader.BR
+import ru.tp_project.androidreader.ReaderApp
 import ru.tp_project.androidreader.databinding.FragmentBookShelveBinding
 import ru.tp_project.androidreader.model.xml.BookXML
-import ru.tp_project.androidreader.view.BookShelfFragment.Companion.setToIntent
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment.Companion.getResizedBitmap
 import ru.tp_project.androidreader.view_models.BooksShelveViewModel
@@ -72,11 +68,11 @@ class BookShelfFragment : Fragment() {
         setup()
     }
 
-    fun setup() {
-        val context = getActivity()?.getApplicationContext()
+    private fun setup() {
+        val context = ReaderApp.getInstance()
         val viewModel = viewDataBinding.viewmodel
         viewModel?.let {
-            context?.let { viewModel.getAll(context) }
+            context.let { viewModel.getAll(context) }
             setupViews()
             setupAdapter(viewModel)
             setupObservers(viewModel)
@@ -120,11 +116,7 @@ class BookShelfFragment : Fragment() {
 
 
     private fun setupViews() {
-        addBook.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                showFileChooser()
-            }
-        })
+        addBook.setOnClickListener { showFileChooser() }
     }
 
     private fun setupObservers(viewModel: BooksShelveViewModel) {
@@ -135,7 +127,7 @@ class BookShelfFragment : Fragment() {
 
     private fun setupAdapter(viewModel: BooksShelveViewModel) {
         adapter =
-            ListAdapter(viewModel, { bookID -> onDelete(bookID) }, { book -> onShareBook(book) })
+            ListAdapter({ bookID -> onDelete(bookID) }, { book -> onShareBook(book) })
         val layoutManager = LinearLayoutManager(activity)
         listRecyclerView.layoutManager = layoutManager
         listRecyclerView.addItemDecoration(
@@ -147,7 +139,7 @@ class BookShelfFragment : Fragment() {
         listRecyclerView.adapter = adapter
     }
 
-    fun onDelete(bookID: Int) {
+    private fun onDelete(bookID: Int) {
         val viewModel = viewDataBinding.viewmodel
         viewModel!!.delete(context!!, bookID)
     }
@@ -157,7 +149,6 @@ class BookShelfFragment : Fragment() {
             .setType("*/*")
             .setAction(Intent.ACTION_GET_CONTENT)
 
-
         startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
     }
 
@@ -166,8 +157,8 @@ class BookShelfFragment : Fragment() {
 
         if (requestCode == 111 && resultCode == RESULT_OK) {
             val path = data!!.data!!
-            Log.d("roooot", path.path)
-            val input: InputStream? = getActivity()!!.getContentResolver().openInputStream(path)
+            val context =  ReaderApp.getInstance()
+            val input: InputStream? = context.contentResolver.openInputStream(path)
             val inputAsString = input!!.bufferedReader().use { it.readText() }
             val size = stringSize(inputAsString)
 
@@ -176,7 +167,7 @@ class BookShelfFragment : Fragment() {
                 val builder = AlertDialog.Builder(activity)
                 builder.setTitle(getString(R.string.wrong_file_title))
                 builder.setMessage(getString(R.string.wrong_file_message))
-                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                builder.setPositiveButton(android.R.string.yes) { _, _ ->
                     Toast.makeText(
                         activity,
                         android.R.string.yes, Toast.LENGTH_SHORT
@@ -185,14 +176,14 @@ class BookShelfFragment : Fragment() {
                 builder.show()
             } else {
                 val viewModel = viewDataBinding.viewmodel
-                val bookBD = xmlToDB(book!!, path.path!!, size)
-                viewModel!!.load(context!!, bookBD)
-                showContent(getActivity()!!, bookBD)
+                val bookBD = xmlToDB(book, path.path!!, size)
+                viewModel!!.load(context, bookBD)
+                showContent(context, bookBD)
             }
         }
     }
 
-    fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
+    private fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
         var str = ""
         for (s in bookXML.body.section) {
             str += s
@@ -208,7 +199,7 @@ class BookShelfFragment : Fragment() {
         )
     }
 
-    fun stringSize(raw: String): String {
+    private fun stringSize(raw: String): String {
         var size = raw.length.toFloat()
         var typeId = 0
         var type = ""
@@ -217,32 +208,31 @@ class BookShelfFragment : Fragment() {
             size /= 1024
             typeId++
         }
-        if (typeId == 0) {
-            type = getString(R.string.kb)
-        } else if (typeId == 1) {
-            type = getString(R.string.mb)
-        } else if (typeId == 2) {
-            type = getString(R.string.gb)
+        when (typeId) {
+            0 -> type = getString(R.string.kb)
+            1 -> type = getString(R.string.mb)
+            2 -> type = getString(R.string.gb)
+
         }
 
-        return "" + size + " " + type
+        return "$size $type"
     }
 
 
     companion object {
-        fun setToIntent(intent: Intent, book: Book) {
+        private fun setToIntent(intent: Intent, book: Book) {
             intent.putExtra("book", book)
         }
 
         fun showContent(context: Context, book: Book) {
             val intent = Intent(context, BookViewer::class.java)
             setToIntent(intent, book)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
             startActivity(context, intent, null)
         }
     }
 
-    fun getContent(xml: String): String? {
+    private fun getContent(xml: String): String? {
         val start = xml.indexOf("<section>") + "<section>".length
         val end = xml.indexOf("</section>")
         if (start >= end) {
@@ -252,10 +242,10 @@ class BookShelfFragment : Fragment() {
     }
 
     // addContentToModel add rows to BookXML. If no rows, add one row "No content"
-    fun addContentToModel(book: BookXML, content: String?): BookXML {
-        var rows: MutableList<String> = mutableListOf<String>()
+    private fun addContentToModel(book: BookXML, content: String?): BookXML {
+        val rows: MutableList<String> = mutableListOf<String>()
         if (content != null) {
-            var strs = content.split("</p>")
+            val strs = content.split("</p>")
             val s = 4
             for (str in strs) {
                 if (str.length < s) {
@@ -267,12 +257,12 @@ class BookShelfFragment : Fragment() {
         if (rows.size > 0) {
             book.body.section = rows
         } else {
-            book.body.section = listOf<String>("No content")
+            book.body.section = listOf("No content")
         }
         return book
     }
 
-    fun loadBookXML(xml: String): BookXML? {
+    private fun loadBookXML(xml: String): BookXML? {
         val reader = StringReader(xml)
         val serializer = Persister()
         var book: BookXML
@@ -289,16 +279,15 @@ class BookShelfFragment : Fragment() {
 }
 
 class ListAdapter(
-    private val books: BooksShelveViewModel,
     private val delete: (bookID: Int) -> Unit,
     private val shareListener: (Book) -> Unit
 ) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
-    var booksList: List<Book> = emptyList()
+    private var booksList: List<Book> = emptyList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ListViewHolder {
-        val inflatter = LayoutInflater.from(parent.getContext())
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+        val inflatter = LayoutInflater.from(parent.context)
         val binding = ShelveOneBookBinding.inflate(inflatter, parent, false)
-        return ListViewHolder(binding.root, binding, parent.getContext(), delete)
+        return ListViewHolder(binding.root, binding, parent.context, delete)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -323,10 +312,9 @@ class ListAdapter(
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init {
             itemView.setOnClickListener(this)
-
         }
 
-        var itemData: Book? = null
+        private var itemData: Book? = null
 
         fun setup(book: Book, shareListener: (Book) -> Unit) {
             val imageView = itemView.findViewById(R.id.bookPreview) as ImageView
@@ -351,7 +339,7 @@ class ListAdapter(
 
 
             val deleter = itemView.findViewById<ImageButton>(R.id.bookDelete)
-            deleter.setOnClickListener { v ->
+            deleter.setOnClickListener {
                 delete(itemData!!.id)
             }
 
@@ -360,7 +348,7 @@ class ListAdapter(
         }
 
         override fun onClick(v: View) {
-            BookShelfFragment.showContent(context!!, itemData!!)
+            BookShelfFragment.showContent(context, itemData!!)
         }
     }
 }
