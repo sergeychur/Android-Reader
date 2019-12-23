@@ -5,7 +5,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import ru.tp_project.androidreader.model.AppDb
 import java.io.File
-import java.lang.Exception
+import kotlin.Exception
 
 
 class FileStorage {
@@ -41,13 +41,16 @@ class FileStorage {
         }
     }
 
-    fun listFiles(isPublic: Boolean, userId: String, pageToken: String?,
+    fun listFiles(isPublic: Boolean, userId: String?, pageToken: String?,
                      successCallback: (MutableList<String>, MutableList<String>) -> Unit, failCallback: (Exception) -> Unit) {
         lateinit var listRef : StorageReference
-        if (isPublic) {
+        if (!isPublic) {
+            if (userId == null) {
+                failCallback(Exception("no user id"))
+            }
             listRef = storage.child("internal/${userId}")
         } else {
-            listRef = storage.child("public")
+            listRef = storage.child("public/")
         }
         val listPageTask = if (pageToken != null) {
             listRef.list(100, pageToken)

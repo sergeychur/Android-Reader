@@ -8,6 +8,7 @@ import ru.tp_project.androidreader.model.data_models.FireBaseBook
 import ru.tp_project.androidreader.model.repos.BookRepository
 import java.io.File
 
+
 class FireBaseViewModel : BaseViewModel() {
     private var repository = BookRepository()
     val booksListLive = MutableLiveData<MutableList<FireBaseBook>>()
@@ -42,13 +43,26 @@ class FireBaseViewModel : BaseViewModel() {
         }
     }
 
-    fun downloadBook(context: Context, bookLink: String, successCallback: ()-> Unit) {
-        repository.getFireBaseBook(bookLink, File.createTempFile("kek", "ekek"), context) { isSuccess ->
+    fun downloadBook(context: Context, bookName: String, bookLink: String, successCallback: ()-> Unit) {
+        val dirname = context.filesDir!!.absolutePath
+        //val resDir = context.getDir(dirname, Context.MODE_PRIVATE)
+        val file = File(dirname, bookName)
+        // create a new file
+        val isNewFileCreated :Boolean = file.createNewFile()
+
+        if(isNewFileCreated){
+            Log.println(Log.INFO, "INFO", "$bookName is created successfully.")
+        } else{
+            Log.println(Log.ERROR, "ERROR", "$bookName already exists.")
+        }
+        repository.getFireBaseBook(bookLink, file, context) { isSuccess ->
             if (isSuccess) {
                 Log.println(Log.INFO, "kek", "success")
             } else {
                 Log.println(Log.ERROR, "kek", "fail")
             }
         }
+        val sm = file.readLines()
+        Log.d("lololo", file.path)
     }
 }

@@ -1,6 +1,7 @@
 package ru.tp_project.androidreader.view.firebase_books
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,10 +53,13 @@ class FireBaseBooksFragment : Fragment() {
     private fun setupAdapter() {
         val viewModel = databinding.firebaseViewModel
         if (viewModel != null) {
-            adapter = FireBaseListAdapter(databinding.firebaseViewModel!!
-            ) { bookLink, callback:() -> Unit ->
+            adapter = FireBaseListAdapter(databinding.firebaseViewModel!!,
+            { bookLink, callback:() -> Unit ->
                 onDeleteBook(bookLink, callback)
-            }
+            }, {bookName, bookLink, callback:() -> Unit ->
+                onDownloadBook(bookName, bookLink, callback)
+            })
+
             val layoutManager = LinearLayoutManager(this.context)
             firebaseBooksListRv.layoutManager = layoutManager
             firebaseBooksListRv.addItemDecoration(DividerItemDecoration(this.context, layoutManager.orientation))
@@ -64,14 +68,16 @@ class FireBaseBooksFragment : Fragment() {
     }
 
     private fun onDeleteBook(bookLink: String, callback: () -> Unit) {
+        Log.println(Log.INFO, "kek", "delete")
         databinding.firebaseViewModel?.deleteBook(ReaderApp.getInstance(), bookLink) {
             callback()
         }
     }
 
-    /*private fun onDownloadBook(bookLink: String, callback: () -> Unit) {
-        databinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookLink) {
+    private fun onDownloadBook(bookName: String, bookLink: String, callback: () -> Unit) {
+        Log.println(Log.INFO, "kek", "download")
+        databinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookName, bookLink) {
             callback()
         }
-    }*/
+    }
 }
