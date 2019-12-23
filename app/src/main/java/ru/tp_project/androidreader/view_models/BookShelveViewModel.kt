@@ -60,14 +60,15 @@ class BooksShelveViewModel : BaseViewModel() {
         }
     }
 
-    fun delete(context: Context, book: Book) {
+    fun delete(context: Context, bookID: Int) {
         start()
-        booksRep.deleteBook(context, book) { isSuccess ->
+        booksRep.deleteBook(context, bookID) { isSuccess ->
             if (isSuccess) {
                 val list = data.value
                 list?.let {
                     val arr = list.toMutableList()
-                    arr.add(book)
+                    val book = arr.find { book -> book.id==bookID }
+                    arr.remove(book)
                     data.postValue(arr)
                 }
             }
@@ -88,7 +89,11 @@ class BookViewerViewModel : BaseViewModel() {
                 val list = data.value
                 list?.let {
                     val arr = list.toMutableList()
-                    arr.add(book)
+                    for (i in 0..arr.size ) {
+                        if (book.id==arr[i].id) {
+                            arr[i] = book
+                        }
+                    }
                     data.postValue(arr)
                 }
             }

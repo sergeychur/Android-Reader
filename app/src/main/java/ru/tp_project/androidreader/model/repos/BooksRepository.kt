@@ -32,10 +32,10 @@ class BooksRepository {
         }
     }
 
-    fun deleteBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
+    fun deleteBook(context: Context, bookID: Int, onResult: (isSuccess: Boolean) -> Unit) {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
-                BookDb.getInstance(context).booksDao().deleteBook(book)
+                BookDb.getInstance(context).booksDao().deleteBook(bookID)
             }
             onResult(true)
         }

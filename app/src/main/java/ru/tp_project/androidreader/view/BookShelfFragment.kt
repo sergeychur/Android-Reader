@@ -4,6 +4,7 @@ package ru.tp_project.androidreader.view
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.app.PendingIntent.getActivity
 import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
@@ -15,17 +16,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.os.bundleOf
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -125,11 +125,16 @@ class BookShelfFragment : Fragment() {
     }
 
     private fun setupAdapter(viewModel : BooksShelveViewModel) {
-        adapter = ListAdapter(viewModel)
+        adapter = ListAdapter(viewModel) {bookID -> onDelete(bookID) }
         val layoutManager = LinearLayoutManager(activity)
         listRecyclerView.layoutManager = layoutManager
         listRecyclerView.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
         listRecyclerView.adapter = adapter
+    }
+
+    fun onDelete(bookID:Int) {
+        val viewModel = viewDataBinding.viewmodel
+        viewModel!!.delete(context!!, bookID)
     }
 
     fun showFileChooser() {
@@ -265,15 +270,14 @@ class BookShelfFragment : Fragment() {
     }
 }
 
-class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
+class ListAdapter(private val books: BooksShelveViewModel,
+                  var delete : (bookID:Int) -> Unit) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
     var booksList: List<Book> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ListViewHolder {
         val inflatter = LayoutInflater.from(parent.getContext())
         val binding =  ShelveOneBookBinding.inflate(inflatter,parent, false)
-
-
-        return ListViewHolder(binding.root, binding, parent.getContext() )
+        return ListViewHolder(binding.root, binding, parent.getContext(), delete )
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -291,7 +295,8 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
 
     class ListViewHolder(itemView: View,
                          private val dataBinding: ViewDataBinding,
-                         val context: Context
+                         val context: Context,
+                         var delete : (bookID:Int) -> Unit
     ) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init {
@@ -308,15 +313,21 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
             val imageBytes = Base64.decode(book.photo, 0)
             val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             if (image != null) {
-                imageView.setImageBitmap(image)
+                imageView.setImageBitmap(getResizedBitmap(image, 300, 480))
             } else {
                 imageView.setImageResource(R.drawable.nocover)
             }
 
-            val seekBar = itemView.findViewById(R.id.bookProgress) as SeekBar
+            val seekBar = itemView.findViewById(R.id.bookProgress) as ProgressBar
 
             seekBar.max = book.pages
             seekBar.progress = book.currPage
+
+
+            val deleter = itemView.findViewById<ImageButton>(R.id.bookDelete)
+            deleter.setOnClickListener { v ->
+                delete(itemData!!.id)
+            }
 
             dataBinding.setVariable(BR.book, itemData)
             dataBinding.executePendingBindings()

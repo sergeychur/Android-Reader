@@ -58,8 +58,9 @@ interface BooksDao {
     suspend fun getAll(): List<Book>
     @Insert
     suspend fun addBook(book: Book)
-    @Delete
-    suspend fun deleteBook(book: Book)
+
+    @Query("DElETE FROM book WHERE id = :id")
+    suspend fun deleteBook(id: Int)
     @Update
     suspend fun updateBook(book: Book)
 }
