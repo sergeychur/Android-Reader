@@ -14,7 +14,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
@@ -31,6 +34,10 @@ import ru.tp_project.androidreader.model.data_models.Book
 import org.simpleframework.xml.core.Persister
 import ru.tp_project.androidreader.BR
 import ru.tp_project.androidreader.ReaderApp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.tp_project.androidreader.databinding.FragmentBookShelveBinding
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
@@ -74,7 +81,7 @@ class BookShelfFragment : Fragment() {
         viewModel?.let {
             context.let { viewModel.getAll(context) }
             setupViews()
-            setupAdapter(viewModel)
+            setupAdapter()
             setupObservers(viewModel)
         }
     }
@@ -93,25 +100,28 @@ class BookShelfFragment : Fragment() {
         return mimeType
     }
 
-    @Suppress("UNUSED_PARAMETER")
     @SuppressLint("SdCardPath")
     private fun onShareBook(book: Book) {
-        val intentShareFile = Intent(Intent.ACTION_SEND)
-        // TODO change hardcoded path to book.path
-        val path = "/sdcard/rar/Vedmak_Sapkovskiy_Andzhey/00_Дорога без возврата.fb2"
-        val file = File(path)
-        val uri = FileProvider.getUriForFile(
-            context!!,
-            context!!.applicationContext.packageName + ".provider",
-            file
-        )
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val intentShareFile = Intent(Intent.ACTION_SEND)
+                val path = "/sdcard/" + book.path.split(":")[1]
+                val file = File(path)
+                val uri = FileProvider.getUriForFile(
+                    context!!,
+                    context!!.applicationContext.packageName + ".provider",
+                    file
+                )
 
-        if (file.exists()) {
-            intentShareFile.type = getMimeType(uri)
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, uri)
-            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(Intent.createChooser(intentShareFile, "Share book"))
+                if (file.exists()) {
+                    intentShareFile.type = getMimeType(uri)
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM, uri)
+                    intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(Intent.createChooser(intentShareFile, "Share book"))
+                }
+            }
         }
+
     }
 
 
@@ -125,7 +135,7 @@ class BookShelfFragment : Fragment() {
         })
     }
 
-    private fun setupAdapter(viewModel: BooksShelveViewModel) {
+    private fun setupAdapter() {
         adapter =
             ListAdapter({ bookID -> onDelete(bookID) }, { book -> onShareBook(book) })
         val layoutManager = LinearLayoutManager(activity)
@@ -144,7 +154,7 @@ class BookShelfFragment : Fragment() {
         viewModel!!.delete(context!!, bookID)
     }
 
-    fun showFileChooser() {
+    private fun showFileChooser() {
         val intent = Intent()
             .setType("*/*")
             .setAction(Intent.ACTION_GET_CONTENT)
@@ -227,7 +237,7 @@ class BookShelfFragment : Fragment() {
         fun showContent(context: Context, book: Book) {
             val intent = Intent(context, BookViewer::class.java)
             setToIntent(intent, book)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(context, intent, null)
         }
     }
@@ -243,11 +253,11 @@ class BookShelfFragment : Fragment() {
 
     // addContentToModel add rows to BookXML. If no rows, add one row "No content"
     private fun addContentToModel(book: BookXML, content: String?): BookXML {
-        val rows: MutableList<String> = mutableListOf<String>()
+        val rows: MutableList<String> = mutableListOf()
         if (content != null) {
-            val strs = content.split("</p>")
+            val strings = content.split("</p>")
             val s = 4
-            for (str in strs) {
+            for (str in strings) {
                 if (str.length < s) {
                     continue
                 }

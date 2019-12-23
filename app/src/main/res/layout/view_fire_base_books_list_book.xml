@@ -9,10 +9,6 @@
                 name="firebase_book"
                 type="ru.tp_project.androidreader.model.data_models.FireBaseBook" />
         </data>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <GridLayout
                 android:id="@+id/firebase_book_header_container"
                 android:layout_width="match_parent"
@@ -67,5 +63,4 @@
                         android:contentDescription="@string/download" />
                 </GridLayout>
             </GridLayout>
-        </LinearLayout>
     </layout>
