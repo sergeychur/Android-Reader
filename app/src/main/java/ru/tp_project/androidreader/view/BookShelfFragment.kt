@@ -6,7 +6,9 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -48,6 +50,7 @@ import ru.tp_project.androidreader.databinding.FragmentTasksListBinding
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
+import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment.Companion.getResizedBitmap
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase
 import ru.tp_project.androidreader.view.tasks_list.TasksListAdapter
 import ru.tp_project.androidreader.view.tasks_list.TasksListViewModel
@@ -125,32 +128,63 @@ class BookShelfFragment : Fragment() {
 
         if (requestCode == 111 && resultCode == RESULT_OK) {
 
-            val input: InputStream? = getActivity()!!.getContentResolver().openInputStream(data!!.data!!)
-
+            val path = data!!.data!!
+            val input: InputStream? = getActivity()!!.getContentResolver().openInputStream(path)
             val inputAsString = input!!.bufferedReader().use { it.readText() }
-            val book = loadBookXML(inputAsString!!)
+            val size = stringSize(inputAsString)
+
+            val book = loadBookXML(inputAsString)
             if (book == null) {
 
             } else {
+                val viewModel = viewDataBinding.viewmodel
+                val context = getActivity()?.getApplicationContext()
+                val bookBD = xmlToDB(book!!, path.path!!, size)
+                viewModel!!.load(context!!, bookBD)
                 val intent = Intent(this.context, BookViewer::class.java)
-                // To pass any data to next activity
-                setToIntent(intent, book)
+                setToIntent(intent, bookBD)
                 startActivity(intent)
             }
         }
     }
 
-    fun setToIntent(intent:Intent, book: BookXML){
+    fun xmlToDB(bookXML: BookXML, path:String, size:String) : Book {
+        var str = ""
+        for (s in bookXML.body.section) {
+            str += s
+        }
+        return Book(0, bookXML.description.titleInfo.book_title,
+            bookXML.binary, bookXML.description.titleInfo.author.first_name+
+                    bookXML.description.titleInfo.author.last_name,
+            bookXML.description.titleInfo.date,
+            bookXML.description.publishInfo.publisher,
+            bookXML.description.titleInfo.genre,
+            size, "fb2", 0f, str, path, 0, 0)
+    }
 
-        intent.putStringArrayListExtra("book", ArrayList(book.body.section))
-        intent.putExtra("pages_count", book.body.section.size)
-        intent.putExtra("pages_current", 0)
-        intent.putExtra(PageContentsFragmentBase.ARG_PHOTO, book.binary)
-        intent.putExtra(PageContentsFragmentBase.ARG_AUTHOR_FIRST, book.description.titleInfo.author.first_name)
-        intent.putExtra(PageContentsFragmentBase.ARG_AUTHOR_LAST, book.description.titleInfo.author.last_name)
-        intent.putExtra(PageContentsFragmentBase.ARG_SOURCE, book.description.publishInfo.publisher)
-        intent.putExtra(PageContentsFragmentBase.ARG_DATE, book.description.titleInfo.date)
-        intent.putExtra(PageContentsFragmentBase.ARG_TITLE, book.description.titleInfo.book_title)
+    fun stringSize(raw:String) : String {
+        var size = raw.length.toFloat()
+        var typeId = 0
+        var type = ""
+        size /= 1024
+        while (size > 1024) {
+            size /= 1024
+            typeId++
+        }
+        if (typeId == 0) {
+            type = getString(R.string.kb)
+        } else if (typeId == 1) {
+            type = getString(R.string.mb)
+        } else if (typeId == 2) {
+            type = getString(R.string.gb)
+        }
+
+        return ""+size+" "+type
+    }
+
+
+    fun setToIntent(intent:Intent, book: Book){
+        intent.putExtra("book",book)
     }
 
     fun getContent(xml : String) : String? {
@@ -215,6 +249,8 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ListViewHolder {
         val inflatter = LayoutInflater.from(parent.getContext())
         val binding =  ShelveOneBookBinding.inflate(inflatter,parent, false)
+
+
         return ListViewHolder(binding.root, binding, parent.getContext() )
     }
 
@@ -225,14 +261,11 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
     fun updateTasksList(booksList: List<Book>) {
         this.booksList = booksList
         notifyDataSetChanged()
+
     }
 
     override fun getItemCount() = booksList.size
 
-    @BindingAdapter("bind:imageUrl")
-    fun loadImage( imageView : ImageView, v:String) {
-        Picasso.with(imageView.getContext()).load(v).into(imageView);
-    }
 
     class ListViewHolder(itemView: View,
                          private val dataBinding: ViewDataBinding,
@@ -241,9 +274,21 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init {
             itemView.setOnClickListener(this)
+
         }
 
         fun setup(itemData: Book) {
+            val imageView = itemView.findViewById(R.id.bookPreview) as ImageView
+
+            val imageBytes = Base64.decode(itemData.photo, 0)
+            val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            if (image != null) {
+                imageView.setImageBitmap(image)
+            } else {
+                imageView.setImageResource(R.drawable.nocover)
+            }
+
+
             dataBinding.setVariable(BR.book, itemData)
             dataBinding.executePendingBindings()
         }

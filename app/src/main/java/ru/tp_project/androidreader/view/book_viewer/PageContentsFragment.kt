@@ -21,7 +21,8 @@ class PageContentsFragment() : PageContentsFragmentBase() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.book_viewer_fragment, container, false) as ViewGroup
+        val rootView =
+            inflater.inflate(R.layout.book_viewer_fragment, container, false) as ViewGroup
 
         val layout = rootView.findViewById(R.id.mText) as LinearLayout
         if (pageNumber == 0) {
@@ -32,12 +33,18 @@ class PageContentsFragment() : PageContentsFragmentBase() {
         return rootView
     }
 
-    fun setBookCover(layout:LinearLayout) {
+    fun setBookCover(layout: LinearLayout) {
         val imageBytes = Base64.decode(bookPhoto, 0)
         val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
         val imageView = layout.findViewById(R.id.image) as ImageView
-        imageView.setImageBitmap(getResizedBitmap(image, (image.width*1.5f).toInt(), (image.height*1.5f).toInt()))
+        imageView.setImageBitmap(
+            getResizedBitmap(
+                image,
+                (image.width * 1.5f).toInt(),
+                (image.height * 1.5f).toInt()
+            )
+        )
         imageView.visibility = View.VISIBLE
 
         val title = layout.findViewById(R.id.title) as TextView
@@ -63,29 +70,30 @@ class PageContentsFragment() : PageContentsFragmentBase() {
         source.visibility = View.VISIBLE
     }
 
-    fun setBookContent(layout:LinearLayout) {
+    fun setBookContent(layout: LinearLayout) {
         val contentTextView = layout.findViewById(R.id.text) as TextView
         val contents = (activity as BookViewer).getContents(pageNumber)
         contentTextView.setText(contents)
         contentTextView.movementMethod = ScrollingMovementMethod()
     }
 
-    fun getResizedBitmap(bitmap: Bitmap, newWidth: Int, newHeight: Int): Bitmap {
-        val resizedBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
+    companion object {
+        fun getResizedBitmap(bitmap: Bitmap, newWidth: Int, newHeight: Int): Bitmap {
+            val resizedBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
 
-        val scaleX = newWidth / bitmap.width.toFloat()
-        val scaleY = newHeight / bitmap.height.toFloat()
-        val pivotX = 0f
-        val pivotY = 0f
+            val scaleX = newWidth / bitmap.width.toFloat()
+            val scaleY = newHeight / bitmap.height.toFloat()
+            val pivotX = 0f
+            val pivotY = 0f
 
-        val scaleMatrix = Matrix()
-        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY)
+            val scaleMatrix = Matrix()
+            scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY)
 
-        val canvas = Canvas(resizedBitmap)
-        canvas.setMatrix(scaleMatrix)
-        canvas.drawBitmap(bitmap, 0f, 0f, Paint(Paint.FILTER_BITMAP_FLAG))
+            val canvas = Canvas(resizedBitmap)
+            canvas.setMatrix(scaleMatrix)
+            canvas.drawBitmap(bitmap, 0f, 0f, Paint(Paint.FILTER_BITMAP_FLAG))
 
-        return resizedBitmap
+            return resizedBitmap
+        }
     }
-
 }

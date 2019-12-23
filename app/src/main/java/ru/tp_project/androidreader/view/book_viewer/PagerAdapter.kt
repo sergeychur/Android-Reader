@@ -3,11 +3,13 @@ package ru.tp_project.androidreader.view.book_viewer
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.xml.BookXML
 
 
 class MyPagerAdapter(fragmentManager: FragmentManager,
-                     totalPages: Int, var bookXML: BookXML) :
+                     totalPages: Int, var book: Book
+) :
     FragmentPagerAdapter(fragmentManager) {
     override fun getCount(): Int {
         return count
@@ -22,12 +24,8 @@ class MyPagerAdapter(fragmentManager: FragmentManager,
 
     override fun getItem(position: Int): Fragment {
         return PageContentsFragmentBase.create(position,
-            bookXML.description.titleInfo.author.first_name+
-                    bookXML.description.titleInfo.author.last_name,
-            bookXML.description.titleInfo.genre, bookXML.binary,
-            bookXML.description.publishInfo.publisher,
-            bookXML.description.titleInfo.book_title,
-            bookXML.description.titleInfo.date)
+            book.author, book.genre, book.photo,
+            book.source, book.name, book.date)
     }
 
     fun incrementPageCount() {

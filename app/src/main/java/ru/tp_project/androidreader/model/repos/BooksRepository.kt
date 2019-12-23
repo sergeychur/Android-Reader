@@ -24,8 +24,26 @@ class BooksRepository {
 
     fun loadBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
         GlobalScope.launch {
-            var books = withContext(Dispatchers.Default) {
+            withContext(Dispatchers.Default) {
                 BookDb.getInstance(context).booksDao().addBook(book)
+            }
+            onResult(true)
+        }
+    }
+
+    fun deleteBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
+        GlobalScope.launch {
+            withContext(Dispatchers.Default) {
+                BookDb.getInstance(context).booksDao().deleteBook(book)
+            }
+            onResult(true)
+        }
+    }
+
+    fun updateBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
+        GlobalScope.launch {
+            withContext(Dispatchers.Default) {
+                BookDb.getInstance(context).booksDao().deleteBook(book)
             }
             onResult(true)
         }

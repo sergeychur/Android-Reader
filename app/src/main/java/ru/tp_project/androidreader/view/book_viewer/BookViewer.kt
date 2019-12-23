@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import ru.tp_project.androidreader.R
+import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase.Companion.ARG_AUTHOR_FIRST
@@ -37,7 +38,7 @@ class BookViewer : AppCompatActivity() {
     private var mPages: Map<String, String> = HashMap()
     private var mPageIndicator: LinearLayout? = null
     private var mProgressBar: ProgressBar? = null
-    private var mContentString = ""
+    private var book : Book? = null
     private var mPagesAmount = 0
     private var mPagesCurrent = 0
     private var mDisplay: Display? = null
@@ -66,7 +67,7 @@ class BookViewer : AppCompatActivity() {
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = findViewById(R.id.pager) as ViewPager
 
-        var bookXML = getFromIntent()
+        book = getFromIntent()
 
         // obtaining screen dimensions
         mDisplay = getWindowManager().getDefaultDisplay()
@@ -76,10 +77,10 @@ class BookViewer : AppCompatActivity() {
             textviewPage,
             screenWidth,
             getMaxLineCount(contentTextView),
-            mContentString
+            book!!.text
         )
 
-        val pt = PagerTask(mPager, mPagesCurrent, {v -> this.onPageProcessedUpdate(v, bookXML)})
+        val pt = PagerTask(mPager, mPagesCurrent, {v -> this.onPageProcessedUpdate(v, book!!)})
         pt.execute(vp)
     }
 
@@ -103,27 +104,12 @@ class BookViewer : AppCompatActivity() {
         return maxLineCount+2
     }
 
-    fun getFromIntent() : BookXML{
-        var bookXML = BookXML()
-        var strs = intent.getSerializableExtra("book") as ArrayList<String>
-
-        mPagesCurrent = intent.getIntExtra(ARG_PAGE,0)!!
-        bookXML.description.titleInfo.author.first_name = intent.getStringExtra(ARG_AUTHOR_FIRST)!!
-        bookXML.description.titleInfo.author.last_name = intent.getStringExtra(ARG_AUTHOR_LAST)!!
-        bookXML.binary = intent.getStringExtra(ARG_PHOTO)!!
-        bookXML.description.publishInfo.publisher = intent.getStringExtra(ARG_SOURCE)!!
-        bookXML.description.titleInfo.date = intent.getStringExtra(ARG_DATE)!!
-        bookXML.description.titleInfo.book_title = intent.getStringExtra(ARG_TITLE)!!
-
-        mContentString = ""
-        for (str in strs) {
-            mContentString += str
-        }
-        return bookXML
+    fun getFromIntent() : Book {
+        return intent.getSerializableExtra("book") as Book
     }
 
-    private fun initViewPager(bookXml: BookXML) {
-        mPagerAdapter = MyPagerAdapter(getSupportFragmentManager(), 1, bookXml)
+    private fun initViewPager(book: Book) {
+        mPagerAdapter = MyPagerAdapter(getSupportFragmentManager(), 1, book)
         mPager!!.setAdapter(mPagerAdapter)
         mPager!!.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
@@ -133,11 +119,11 @@ class BookViewer : AppCompatActivity() {
         })
     }
 
-    fun onPageProcessedUpdate(progress: ProgressTracker, bookXML: BookXML) {
+    fun onPageProcessedUpdate(progress: ProgressTracker, book: Book) {
         mPages = progress.pages
         // init the pager if necessary
         if (mPagerAdapter == null) {
-            initViewPager(bookXML)
+            initViewPager(book)
             hideProgress()
             addPageIndicator(0)
         } else {
@@ -208,7 +194,7 @@ class BookViewer : AppCompatActivity() {
                 textBoundaries.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val startIndex = Integer.valueOf(bounds[0])
             val endIndex = Integer.valueOf(bounds[1])
-            return mContentString.substring(startIndex, endIndex).trim { it <= ' ' }
+            return book!!.text.substring(startIndex, endIndex).trim { it <= ' ' }
         }
         return ""
     }
