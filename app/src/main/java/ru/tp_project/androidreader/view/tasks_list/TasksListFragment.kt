@@ -28,7 +28,8 @@ class TasksListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = FragmentTasksListBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(this@TasksListFragment).get(TasksListViewModel::class.java)
+            viewmodel =
+                ViewModelProviders.of(this@TasksListFragment).get(TasksListViewModel::class.java)
             lifecycleOwner = viewLifecycleOwner
         }
         return viewDataBinding.root
@@ -83,14 +84,20 @@ class TasksListFragment : Fragment() {
     private fun setupAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            adapter = TasksListAdapter(viewDataBinding.viewmodel!!, {taskId, callback:() -> Unit ->
-                onDeleteTask(taskId, callback)
-            },
-                {task: TaskStat -> onShareTask(task)}
-            )
+            adapter =
+                TasksListAdapter(viewDataBinding.viewmodel!!, { taskId, callback: () -> Unit ->
+                    onDeleteTask(taskId, callback)
+                },
+                    { task: TaskStat -> onShareTask(task) }
+                )
             val layoutManager = LinearLayoutManager(activity)
             tasks_list_rv.layoutManager = layoutManager
-            tasks_list_rv.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
+            tasks_list_rv.addItemDecoration(
+                DividerItemDecoration(
+                    activity,
+                    layoutManager.orientation
+                )
+            )
             tasks_list_rv.adapter = adapter
         }
     }
@@ -103,9 +110,11 @@ class TasksListFragment : Fragment() {
 
     private fun onShareTask(task: TaskStat) {
         Log.d("kek", "share")
-        val str = getString(R.string.share_task_text).format(task.name, task.description,
+        val str = getString(R.string.share_task_text).format(
+            task.name, task.description,
             task.books, task.pages, task.words,
-            task.booksRead, task.pagesRead, task.wordsRead)
+            task.booksRead, task.pagesRead, task.wordsRead
+        )
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TITLE, getString(R.string.share_title))
@@ -113,7 +122,7 @@ class TasksListFragment : Fragment() {
             type = "text/plain"
         }
 
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 }
