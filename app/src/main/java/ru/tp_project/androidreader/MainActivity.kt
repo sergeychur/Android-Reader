@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.android.synthetic.main.action_view_userheader.view.*
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.tp_project.androidreader.view_models.AuthViewModel
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+    private lateinit var hostFragment: NavHostFragment
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -38,9 +40,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val host: NavHostFragment = supportFragmentManager
+        hostFragment = supportFragmentManager
             .findFragmentById(R.id.navFragment) as NavHostFragment? ?: return
-        navController = host.navController
+        navController = hostFragment.navController
 
         val sideBar = findViewById<NavigationView>(R.id.nav_view)
         sideBar?.setupWithNavController(navController)
@@ -105,10 +107,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         val sideBar = findViewById<NavigationView>(R.id.nav_view)
+
         if (user != null) {
+            sideBar.inflateHeaderView(R.layout.action_view_userheader)
+            val header = sideBar.getHeaderView(0)
+            authViewModel.loadAvatarToView(header.avatar)
+            header.nickname.text = user.displayName
+
             sideBar.menu.findItem(R.id.sign_out).isVisible = true
             sideBar.menu.findItem(R.id.sign_in).isVisible = false
         } else {
+            sideBar.removeHeaderView(sideBar.getHeaderView(0))
             sideBar.menu.findItem(R.id.sign_out).isVisible = false
             sideBar.menu.findItem(R.id.sign_in).isVisible = true
         }

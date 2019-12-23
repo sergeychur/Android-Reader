@@ -2,9 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <group >
-
-    </group>
 
     <group android:checkableBehavior="single">
         <item
@@ -27,18 +24,22 @@
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_launcher_background"
             android:title="@string/about"/>
+    </group>
+    <group>
         <item
             android:id="@+id/fireBaseBooksFragment"
             android:icon="@drawable/ic_launcher_background"
             android:title="@string/books_in_net"/>
         <item
             android:id="@+id/sign_in"
+            android:icon="@drawable/googleg_standard_color_18"
             android:onClick="onClick"
             android:title="@string/sign_in_google" />
         <item
             android:id="@+id/sign_out"
+            android:icon="@drawable/googleg_standard_color_18"
             android:onClick="onClick"
             android:title="@string/sign_out"
-            android:visible="false"/>
+            android:visible="false" />
     </group>
 </menu>

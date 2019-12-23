@@ -53,4 +53,5 @@
     <string name="sign_out">Выйти из аккаунта</string>
     <string name="books_in_net">Книги из сети</string>
     <string name="download">Скачать</string>
+    <string name="user_avatar">Аватар</string>
 </resources>
