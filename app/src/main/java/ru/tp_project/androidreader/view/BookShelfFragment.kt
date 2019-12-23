@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
@@ -49,6 +50,7 @@ import ru.tp_project.androidreader.databinding.FragmentBookShelveBinding
 import ru.tp_project.androidreader.databinding.FragmentTasksListBinding
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.xml.BookXML
+import ru.tp_project.androidreader.view.BookShelfFragment.Companion.setToIntent
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment.Companion.getResizedBitmap
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragmentBase
@@ -138,12 +140,10 @@ class BookShelfFragment : Fragment() {
 
             } else {
                 val viewModel = viewDataBinding.viewmodel
-                val context = getActivity()?.getApplicationContext()
                 val bookBD = xmlToDB(book!!, path.path!!, size)
                 viewModel!!.load(context!!, bookBD)
-                val intent = Intent(this.context, BookViewer::class.java)
-                setToIntent(intent, bookBD)
-                startActivity(intent)
+                val context = getActivity()?.getApplicationContext()
+                showContent(context!!, bookBD)
             }
         }
     }
@@ -183,8 +183,16 @@ class BookShelfFragment : Fragment() {
     }
 
 
-    fun setToIntent(intent:Intent, book: Book){
-        intent.putExtra("book",book)
+    companion object {
+        fun setToIntent(intent: Intent, book: Book) {
+            intent.putExtra("book", book)
+        }
+
+        fun showContent(context: Context, book : Book) {
+            val intent = Intent(context, BookViewer::class.java)
+            setToIntent(intent, book)
+            startActivity(context, intent, null)
+        }
     }
 
     fun getContent(xml : String) : String? {
@@ -224,21 +232,12 @@ class BookShelfFragment : Fragment() {
         try {
             book = serializer.read(BookXML::class.java, reader, false)
         } catch (e: Exception) {
-            //Log.e("SimpleTest", "ddd")
-            Log.e("Wrong book", e.message!!)
             return null
         }
 
         val content = getContent(xml)
         book = addContentToModel(book, content)
 
-        for (str in book.body.section) {
-            Log.e("texttexttext: ", str)
-        }
-
-
-        Log.d("SimpleTest", "success "+book!!.body.title.p)
-        Log.d("SimpleTest", "mars "+book!!.body.section.size)
         return book
     }
 }
@@ -277,10 +276,13 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
 
         }
 
-        fun setup(itemData: Book) {
+        var itemData: Book? = null
+
+        fun setup(book : Book) {
             val imageView = itemView.findViewById(R.id.bookPreview) as ImageView
 
-            val imageBytes = Base64.decode(itemData.photo, 0)
+            itemData = book
+            val imageBytes = Base64.decode(book.photo, 0)
             val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             if (image != null) {
                 imageView.setImageBitmap(image)
@@ -288,13 +290,12 @@ class ListAdapter(private val books: BooksShelveViewModel) : RecyclerView.Adapte
                 imageView.setImageResource(R.drawable.nocover)
             }
 
-
             dataBinding.setVariable(BR.book, itemData)
             dataBinding.executePendingBindings()
         }
 
         override fun onClick(v: View) {
-
+            BookShelfFragment.showContent(context!!, itemData!!)
         }
     }
 }

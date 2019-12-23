@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:textSize="20sp"
             android:text="@{book.author}" />
 
@@ -52,7 +52,8 @@
                 android:id="@+id/bookFormat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif"
                 android:text="@{book.format}"
                 android:textSize="18sp" />
 
@@ -60,8 +61,9 @@
                 android:id="@+id/bookSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:text="@{book.name}"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@{book.size}"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -77,7 +79,7 @@
             android:secondaryProgressTint="#2196F3"
             android:backgroundTint="#2196F3"
             android:foregroundTint="#2196F3"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             />
 
         <LinearLayout
@@ -85,7 +87,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:orientation="horizontal">
 
             <ImageButton
@@ -94,6 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="1dp"
+                android:layout_marginBottom="4dp"
+                android:background="@android:color/transparent"
                 android:src="@drawable/delete_24px"/>
 
             <ImageButton
@@ -101,7 +105,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="1dp"
+                android:layout_margin="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@android:color/transparent"
                 android:src="@drawable/share_24px"/>
 
             <ImageButton
@@ -109,7 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:layout_margin="1dp"
+                android:layout_marginBottom="4dp"
                 android:src="@drawable/info_24px"/>
         </LinearLayout>
 
