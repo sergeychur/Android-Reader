@@ -20,6 +20,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.ShelveOneBookBinding
 import ru.tp_project.androidreader.model.data_models.Book
@@ -132,22 +136,27 @@ class BookShelfFragment : Fragment() {
     @Suppress("UNUSED_PARAMETER")
     @SuppressLint("SdCardPath")
     private fun onShareBook(book: Book) {
-        val intentShareFile = Intent(Intent.ACTION_SEND)
-        // TODO change hardcoded path to book.path
-        val path = "/sdcard/rar/Vedmak_Sapkovskiy_Andzhey/00_Дорога без возврата.fb2"
-        val file = File(path)
-        val uri = FileProvider.getUriForFile(
-            context!!,
-            context!!.applicationContext.packageName + ".provider",
-            file
-        )
+        GlobalScope.launch {
+            withContext(Dispatchers.IO) {
+                val intentShareFile = Intent(Intent.ACTION_SEND)
+                // TODO change hardcoded path to book.path
+                val path = "/sdcard/rar/Vedmak_Sapkovskiy_Andzhey/00_Дорога без возврата.fb2"
+                val file = File(path)
+                val uri = FileProvider.getUriForFile(
+                    context!!,
+                    context!!.applicationContext.packageName + ".provider",
+                    file
+                )
 
-        if (file.exists()) {
-            intentShareFile.type = getMimeType(uri)
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, uri)
-            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(Intent.createChooser(intentShareFile, "Share book"))
+                if (file.exists()) {
+                    intentShareFile.type = getMimeType(uri)
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM, uri)
+                    intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(Intent.createChooser(intentShareFile, "Share book"))
+                }
+            }
         }
+
     }
 
 }
