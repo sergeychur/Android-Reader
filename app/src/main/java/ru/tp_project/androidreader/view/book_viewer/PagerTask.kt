@@ -1,18 +1,19 @@
 package ru.tp_project.androidreader.view.book_viewer
 
-import android.content.Context
 import android.os.AsyncTask
-import android.text.TextPaint
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
-import ru.tp_project.androidreader.R
 
 
 /**
  * Created by gkoros on 12/03/2017.
  */
 
-class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: BookViewer.ProgressTracker) -> Unit) :
+class PagerTask(
+    private val mPager: ViewPager?,
+    private val currPage: Int,
+    val f: (progress: BookViewer.ProgressTracker) -> Unit
+) :
     AsyncTask<BookViewer.ViewAndPaint, BookViewer.ProgressTracker, Void>() {
 
     override fun doInBackground(vararg vps: BookViewer.ViewAndPaint): Void? {
@@ -27,7 +28,7 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
         // contentString is the whole string of the book
         var totalPages = 0
         Log.d("write! ", "bigstart")
-        var parts = vp.contentString.split("\n")
+        val parts = vp.contentString.split("\n")
         var stringToBeDisplayed = ""
         var first = true
         addpage(progress, totalPages, 0, 0)
@@ -35,12 +36,12 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
         for (onePart in parts) {
             var part = onePart
             if (!first) {
-                part = "\n"+part
+                part = "\n" + part
                 lineCount++
             }
             first = false
             Log.d("part", part)
-            while (part.length > 0) {
+            while (part.isNotEmpty()) {
                 var numChars = 0
                 while (lineCount < maxLineCount && numChars < part.length) {
                     val value = paint.breakText(
@@ -61,9 +62,9 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
                     continue
                 }
 
-                var start = totalCharactersProcessedSoFar
+                val start = totalCharactersProcessedSoFar
                 totalCharactersProcessedSoFar += stringToBeDisplayed.length
-                var end = totalCharactersProcessedSoFar
+                val end = totalCharactersProcessedSoFar
                 addpage(progress, totalPages, start, end)
 
                 Log.d("expected! ", stringToBeDisplayed)
@@ -77,18 +78,20 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
             }
         }
         if (lineCount != 0) {
-            var start = totalCharactersProcessedSoFar
+            val start = totalCharactersProcessedSoFar
             totalCharactersProcessedSoFar += stringToBeDisplayed.length
-            var end = totalCharactersProcessedSoFar
+            val end = totalCharactersProcessedSoFar
             addpage(progress, totalPages, start, end)
-            totalPages++
+            totalPages += 1
         }
 
         return null
     }
 
-    fun addpage(progress : BookViewer.ProgressTracker, totalPages : Int,
-                start: Int, end : Int) {
+    private fun addpage(
+        progress: BookViewer.ProgressTracker, totalPages: Int,
+        start: Int, end: Int
+    ) {
         // publish progress
         progress.totalPages = totalPages
         progress.addPage(totalPages, start, end)

@@ -1,16 +1,10 @@
 package ru.tp_project.androidreader.view.book_viewer
 
-import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
-import android.util.Xml
-import android.view.Display
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TableLayout
@@ -22,8 +16,8 @@ import androidx.viewpager.widget.ViewPager
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.view_models.BookViewerViewModel
-
-import java.util.HashMap
+import java.util.*
+import kotlin.math.abs
 
 class BookViewer : AppCompatActivity() {
     private var mPager: ViewPager? = null
@@ -31,7 +25,7 @@ class BookViewer : AppCompatActivity() {
     private var mPages: Map<String, String> = HashMap()
     private var mPageIndicator: LinearLayout? = null
     private var mProgressBar: ProgressBar? = null
-    private var book : Book? = null
+    private var book: Book? = null
     private var mPagesAmount = 0
     private var mPagesCurrent = 0
     private var mDisplay: Display? = null
@@ -40,7 +34,7 @@ class BookViewer : AppCompatActivity() {
     private val screenWidth: Int
         get() {
             val horizontalMargin =
-                getResources().getDimension(R.dimen.activity_horizontal_margin) * 2
+                resources.getDimension(R.dimen.activity_horizontal_margin) * 2
             return (mDisplay!!.width - horizontalMargin).toInt()
         }
 
@@ -48,29 +42,28 @@ class BookViewer : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.book_viewer_main)
-        mProgressBar = findViewById(R.id.progress) as ProgressBar
+        mProgressBar = findViewById(R.id.progress)
 
         viewmodel = ViewModelProviders.of(this@BookViewer).get(BookViewerViewModel::class.java)
 
-        val textviewPage = getLayoutInflater().inflate(
+        val textviewPage = layoutInflater.inflate(
             R.layout.book_viewer_fragment,
-            getWindow().getDecorView().findViewById(android.R.id.content) as ViewGroup,
+            window.decorView.findViewById(android.R.id.content) as ViewGroup,
             false
         ) as ViewGroup
         val layout = textviewPage.findViewById(R.id.mText) as LinearLayout
         val contentTextView = layout.findViewById(R.id.text) as TextView
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = findViewById(R.id.pager) as ViewPager
+        mPager = findViewById(R.id.pager)
 
         book = getFromIntent()
 
         // obtaining screen dimensions
-        mDisplay = getWindowManager().getDefaultDisplay()
+        mDisplay = windowManager.defaultDisplay
 
         val vp = ViewAndPaint(
             contentTextView.paint,
-            textviewPage,
             screenWidth,
             getMaxLineCount(contentTextView),
             book!!.text
@@ -78,7 +71,7 @@ class BookViewer : AppCompatActivity() {
 
         //initViewPager(book!!)
 
-        val pt = PagerTask(mPager, book!!.currPage, {v -> this.onPageProcessedUpdate(v, book!!)})
+        val pt = PagerTask(mPager, book!!.currPage) { v -> this.onPageProcessedUpdate(v, book!!) }
         pt.execute(vp)
     }
 
@@ -87,40 +80,40 @@ class BookViewer : AppCompatActivity() {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val height = displayMetrics.heightPixels
-        val width = displayMetrics.widthPixels
+        displayMetrics.widthPixels
 
-        val verticalMargin = getResources().getDimension(R.dimen.activity_vertical_margin)
+        val verticalMargin = resources.getDimension(R.dimen.activity_vertical_margin)
         val paint = view.paint
 
         //Working Out How Many Lines Can Be Entered In The Screen
         val fm = paint.fontMetrics
         var textHeight = fm.top - fm.bottom
-        textHeight = Math.abs(textHeight)
+        textHeight = abs(textHeight)
 
-        var maxLineCount = ((height - verticalMargin) / textHeight).toInt()
+        val maxLineCount = ((height - verticalMargin) / textHeight).toInt()
 
-        return maxLineCount+2
+        return maxLineCount + 2
     }
 
-    fun getFromIntent() : Book {
+    private fun getFromIntent(): Book {
         return intent.getSerializableExtra("book") as Book
     }
 
     private fun initViewPager(book: Book) {
-        mPagerAdapter = MyPagerAdapter(getSupportFragmentManager(), 1, book)
-        mPager!!.setAdapter(mPagerAdapter)
+        mPagerAdapter = MyPagerAdapter(supportFragmentManager, 1, book)
+        mPager!!.adapter = mPagerAdapter
         mPager!!.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                Log.d("notag", ""+position)
+                Log.d("notag", "" + position)
                 showPageIndicator(position)
             }
         })
     }
 
-    fun onPageProcessedUpdate(progress: ProgressTracker, book: Book) {
+    private fun onPageProcessedUpdate(progress: ProgressTracker, book: Book) {
         mPages = progress.pages
         // init the pager if necessary
-        Log.d("look currPage", ""+book.currPage)
+        Log.d("look currPage", "" + book.currPage)
         if (mPagerAdapter == null) {
             initViewPager(book)
             hideProgress()
@@ -129,7 +122,7 @@ class BookViewer : AppCompatActivity() {
         } else {
             (mPagerAdapter as MyPagerAdapter).incrementPageCount()
             addPageIndicator(mPagesCurrent)
-            mPagesAmount =  progress.totalPages+1
+            mPagesAmount = progress.totalPages + 1
         }
 
     }
@@ -144,7 +137,7 @@ class BookViewer : AppCompatActivity() {
     }
 
     private fun setIndicator(pageNumber: Int) {
-        mPageIndicator = findViewById(R.id.pageIndicator) as LinearLayout
+        mPageIndicator = findViewById(R.id.pageIndicator)
         val view = View(this)
         val params = TableLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -161,39 +154,25 @@ class BookViewer : AppCompatActivity() {
         mPageIndicator!!.addView(view)
     }
 
-    fun setColor(pageNumber: Int) {
-        val view = View(this)
-        val params = TableLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            1f
-        )
-        view.layoutParams = params
-        if (pageNumber == 0) {
-            view.setBackgroundResource(R.drawable.current_page_indicator)
-        } else {
-            view.setBackgroundResource(R.drawable.indicator_background)
-        }
-    }
-
-    fun setPages(position: Int) {
-        var textview = findViewById(R.id.pages) as TextView
-        val pages = (position+1).toString()+" "+getString(R.string.from)+" "+mPagesAmount.toString()
-        textview.setText(pages)
+    private fun setPages(position: Int) {
+        val textview = findViewById<TextView>(R.id.pages)
+        val pages =
+            (position + 1).toString() + " " + getString(R.string.from) + " " + mPagesAmount.toString()
+        textview.text = pages
 
         book!!.currPage = position
         book!!.pages = mPagesAmount
 
 
 
-        viewmodel!!.update(getApplicationContext(), book!!)
+        viewmodel!!.update(applicationContext, book!!)
     }
 
-    protected fun showPageIndicator(position: Int) {
+    private fun showPageIndicator(position: Int) {
         setPages(position)
 
         try {
-            mPageIndicator = findViewById(R.id.pageIndicator) as LinearLayout
+            mPageIndicator = findViewById(R.id.pageIndicator)
             val selectedIndexIndicator = mPageIndicator!!.getChildAt(position)
             selectedIndexIndicator.setBackgroundResource(R.drawable.current_page_indicator)
             // dicolorize the neighbours
@@ -213,7 +192,7 @@ class BookViewer : AppCompatActivity() {
 
     }
 
-     fun getContents(pageNumber: Int): String {
+    fun getContents(pageNumber: Int): String {
         val page = pageNumber.toString()
         val textBoundaries = mPages[page]
         if (textBoundaries != null) {
@@ -228,7 +207,7 @@ class BookViewer : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
@@ -242,7 +221,6 @@ class BookViewer : AppCompatActivity() {
 
     class ViewAndPaint(
         var paint: TextPaint,
-        var textviewPage: ViewGroup,
         var screenWidth: Int,
         var maxLineCount: Int,
         var contentString: String
@@ -261,7 +239,6 @@ class BookViewer : AppCompatActivity() {
     }
 
     companion object {
-
-        private val TAG = "BookView"
+        private const val TAG = "BookView"
     }
 }

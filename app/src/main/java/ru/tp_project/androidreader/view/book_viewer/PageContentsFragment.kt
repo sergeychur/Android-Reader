@@ -10,11 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import ru.tp_project.androidreader.MainActivity
 import ru.tp_project.androidreader.R
-import ru.tp_project.androidreader.model.xml.BookXML
 
-class PageContentsFragment() : PageContentsFragmentBase() {
+class PageContentsFragment : PageContentsFragmentBase() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +31,7 @@ class PageContentsFragment() : PageContentsFragmentBase() {
         return rootView
     }
 
-    fun setBookCover(layout: LinearLayout) {
+    private fun setBookCover(layout: LinearLayout) {
         val imageBytes = Base64.decode(bookPhoto, 0)
         val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
@@ -52,32 +50,32 @@ class PageContentsFragment() : PageContentsFragmentBase() {
         }
 
         val title = layout.findViewById(R.id.title) as TextView
-        title.setText(bookTitle)
+        title.text = bookTitle
         title.visibility = View.VISIBLE
 
         val author = layout.findViewById(R.id.author) as TextView
-        author.setText(bookAuthor)
+        author.text = bookAuthor
         author.visibility = View.VISIBLE
 
         val genre = layout.findViewById(R.id.genres) as TextView
         val genreContent = getString(R.string.genre) + bookGenre
-        genre.setText(genreContent)
+        genre.text = genreContent
         genre.visibility = View.VISIBLE
 
         val date = layout.findViewById(R.id.data) as TextView
-        date.setText(bookDate)
+        date.text = bookDate
         date.visibility = View.VISIBLE
 
         val source = layout.findViewById(R.id.source) as TextView
         val sourceContent = getString(R.string.source) + bookSource
-        source.setText(sourceContent)
+        source.text = sourceContent
         source.visibility = View.VISIBLE
     }
 
-    fun setBookContent(layout: LinearLayout) {
+    private fun setBookContent(layout: LinearLayout) {
         val contentTextView = layout.findViewById(R.id.text) as TextView
         val contents = (activity as BookViewer).getContents(pageNumber)
-        contentTextView.setText(contents)
+        contentTextView.text = contents
         contentTextView.movementMethod = ScrollingMovementMethod()
     }
 
