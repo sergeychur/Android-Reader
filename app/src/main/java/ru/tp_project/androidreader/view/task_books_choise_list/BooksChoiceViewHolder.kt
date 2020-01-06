@@ -1,10 +1,8 @@
 package ru.tp_project.androidreader.view.task_books_choise_list
 
 
-import android.content.ClipData.Item
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
 import ru.tp_project.androidreader.BR
 import ru.tp_project.androidreader.R
@@ -13,19 +11,22 @@ import ru.tp_project.androidreader.model.data_models.Book
 
 class BooksChoiceViewHolder(private val dataBinding: ViewDataBinding) :
     RecyclerView.ViewHolder(dataBinding.root) {
+    var data: SelectableItem? = null
+    var itemSelectedListener: OnItemSelectedListener? = null
 
-    fun bind(itemData: Book, isActivated: Boolean = false) {
-        dataBinding.setVariable(BR.data, itemData.name)
+    fun bind(itemData: SelectableItem, listener: OnItemSelectedListener) {
+        dataBinding.setVariable(BR.data, itemData.book.name)
         dataBinding.executePendingBindings()
-        itemView.findViewById<TextView>(R.id.book_choice_name).text = itemData.name
-        itemView.isActivated = isActivated
+        itemView.findViewById<TextView>(R.id.book_choice_name).text = itemData.book.name
+        data = itemData
+        itemSelectedListener = listener
     }
 
-    fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
-        object : ItemDetailsLookup.ItemDetails<Long>() {
-            override fun getPosition(): Int = adapterPosition
-            override fun getSelectionKey(): Long? = itemId
-        }
+    fun setChecked(value: Boolean) {
+        itemView.isActivated = value
+        data?.isSelected = value
+//        itemView.findViewById<TextView>(R.id.book_choice_name).setChecked(value)
+    }
 
     class SelectableItem(val book: Book, isSelected: Boolean) {
         var isSelected = false
@@ -33,5 +34,9 @@ class BooksChoiceViewHolder(private val dataBinding: ViewDataBinding) :
         init {
             this.isSelected = isSelected
         }
+    }
+
+    interface OnItemSelectedListener {
+        fun onItemSelected(item: SelectableItem?)
     }
 }
