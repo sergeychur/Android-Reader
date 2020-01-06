@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.fragment_new_task.*
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.FragmentNewTaskBinding
 import ru.tp_project.androidreader.view.books_choise_list.BooksChoiceListAdapter
-import ru.tp_project.androidreader.view_models.BaseViewModelFactory
 import ru.tp_project.androidreader.view_models.NewTaskViewModel
 
 class NewTaskFragment : Fragment() {
@@ -26,9 +25,7 @@ class NewTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = FragmentNewTaskBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(
-                this@NewTaskFragment,
-                BaseViewModelFactory { NewTaskViewModel(context!!.applicationContext) })
+            viewmodel = ViewModelProviders.of(this@NewTaskFragment)
                 .get(NewTaskViewModel::class.java)
             lifecycleOwner = viewLifecycleOwner
         }
@@ -37,18 +34,10 @@ class NewTaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        add_book_to_tusk_btn.setOnClickListener { v: View ->
-            run {
-                v.visibility = View.INVISIBLE
-                hided_btns.visibility = View.VISIBLE
-            }
+        add_book_to_tusk_btn.setOnClickListener {
+            findNavController().navigate(R.id.booksChoiceFragment)
         }
-        hide_btn.setOnClickListener {
-            run {
-                hided_btns.visibility = View.INVISIBLE
-                add_book_to_tusk_btn.show()
-            }
-        }
+
         setupAdapter()
         setupObservers()
     }
@@ -67,7 +56,7 @@ class NewTaskFragment : Fragment() {
         if (item.itemId == R.id.action_accept) {
             val taskName = task_name_input.text.toString()
             if (viewDataBinding.viewmodel!!.validateTask(taskName)) {
-                viewDataBinding.viewmodel!!.addTask(taskName)
+                viewDataBinding.viewmodel!!.addTask(taskName, context!!)
                 findNavController().navigateUp()
             } else {
                 showInvalidTaskAlert()

@@ -9,22 +9,11 @@ import ru.tp_project.androidreader.model.repos.TasksRepository
 import ru.tp_project.androidreader.model.repos.UserRepository
 
 
-class NewTaskViewModel(val context: Context) : BaseViewModel() {
+class NewTaskViewModel : BaseViewModel() {
     private val selectedBooks = MutableLiveData<ArrayList<Book>>()
 
     init {
-        selectedBooks.value = arrayListOf(
-            Book(1, "BookName", "???", "Name Secname",
-                "12.12.2012","kotlin", "no","100Kb", "fb2",
-                0.5f, "what", "no path", 1,0),
-            Book(2, "BookName", "???", "Name Secname",
-                "12.12.2012","kotlin", "no","100Kb", "fb2",
-                0.5f, "what", "no path", 1,0),
-            Book(3, "BookName", "???", "Name Secname",
-                "12.12.2012","kotlin", "no","100Kb", "fb2",
-                0.5f, "what", "no path", 1,0)
-        )
-        empty.value = false // TODO(Kotyrich) temporary
+        empty.value = true
     }
 
     fun getSelectedBooks(): LiveData<ArrayList<Book>> {
@@ -35,7 +24,7 @@ class NewTaskViewModel(val context: Context) : BaseViewModel() {
         return taskName.isNotEmpty() && selectedBooks.value!!.size > 0
     }
 
-    fun addTask(taskName: String) {
+    fun addTask(taskName: String, context: Context) {
         val userId = UserRepository().getCurrentUserID(context)
         TasksRepository.getInstance()
             .createTask(context, userId, taskName, selectedBooks.value!!.toList())
