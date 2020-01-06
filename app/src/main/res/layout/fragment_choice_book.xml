@@ -24,7 +24,7 @@
         android:layout_centerInParent="true"
         android:text="@string/no_selected_books"
         android:textSize="18sp"
-        android:visibility="@{safeUnbox(viewmodel.empty) ? View.VISIBLE : View.GONE}" />
+        android:visibility="@{safeUnbox(viewmodel.emptyToChoose) ? View.VISIBLE : View.GONE}" />
 
 </RelativeLayout>
 

@@ -14,9 +14,11 @@ import ru.tp_project.androidreader.view.task_books_choise_list.BooksChoiceViewHo
 class NewTaskViewModel : BaseViewModel() {
     private val selectedBooks = MutableLiveData<ArrayList<Book>>()
     val booksFromShelf = MutableLiveData<List<BooksChoiceViewHolder.SelectableItem>>()
+    var emptyToChoose = MutableLiveData<Boolean>()
 
     init {
         empty.value = true
+        emptyToChoose.value = true
         booksFromShelf.value = emptyList()
     }
 
@@ -47,9 +49,9 @@ class NewTaskViewModel : BaseViewModel() {
                     }
                 }
                 booksFromShelf.postValue(list)
-                empty.postValue(shelfBooks.isEmpty())
+                emptyToChoose.postValue(shelfBooks.isEmpty())
             } else {
-                empty.postValue(true)
+                emptyToChoose.postValue(true)
             }
         }
     }
@@ -64,7 +66,14 @@ class NewTaskViewModel : BaseViewModel() {
         selectedBooks.value = selectedBooks.value
 
         if (selectedBooks.value!!.size == 0) {
-            empty.value = true
+            empty.postValue(true)
         }
+    }
+
+    fun clearSelected() {
+        if (selectedBooks.value != null) {
+            selectedBooks.value?.clear()
+        }
+        empty.postValue(true)
     }
 }

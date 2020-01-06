@@ -58,6 +58,7 @@ class NewTaskFragment : Fragment() {
             val taskName = task_name_input.text.toString()
             if (viewDataBinding.viewmodel!!.validateTask(taskName)) {
                 viewDataBinding.viewmodel!!.addTask(taskName, context!!)
+                viewDataBinding.viewmodel!!.clearSelected()
                 findNavController().navigateUp()
             } else {
                 showInvalidTaskAlert()

@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/booksChoiceFragment"
         android:name="ru.tp_project.androidreader.view.task_books_choise_list.BookChoiceFragment"
-        android:label="Choose task"
+        android:label="@string/book_choice_title"
         tools:layout="@layout/fragment_new_task" />
     <fragment
         android:id="@+id/settingsFragment"

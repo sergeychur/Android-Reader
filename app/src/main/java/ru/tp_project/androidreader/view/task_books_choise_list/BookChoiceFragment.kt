@@ -73,7 +73,7 @@ class BookChoiceFragment : Fragment() {
         viewDataBinding.viewmodel?.booksFromShelf?.observe(viewLifecycleOwner, Observer {
             adapter.updateBooksList(it)
         })
-        viewDataBinding.viewmodel?.empty?.observe(viewLifecycleOwner, Observer {
+        viewDataBinding.viewmodel?.emptyToChoose?.observe(viewLifecycleOwner, Observer {
             books_to_choose_empty_text.visibility = if (it) View.VISIBLE else View.GONE
         })
     }

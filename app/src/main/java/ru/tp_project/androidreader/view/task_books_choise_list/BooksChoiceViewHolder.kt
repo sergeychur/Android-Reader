@@ -1,7 +1,6 @@
 package ru.tp_project.androidreader.view.task_books_choise_list
 
 
-import android.widget.TextView
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import ru.tp_project.androidreader.BR
@@ -15,9 +14,9 @@ class BooksChoiceViewHolder(private val dataBinding: ViewDataBinding) :
     private var itemSelectedListener: OnItemSelectedListener? = null
 
     fun bind(itemData: SelectableItem, listener: OnItemSelectedListener) {
-        dataBinding.setVariable(BR.data, itemData.book.name)
+        dataBinding.setVariable(BR.data, itemData.book)
         dataBinding.executePendingBindings()
-        itemView.findViewById<TextView>(R.id.book_choice_name).text = itemData.book.name
+        itemData.book.setImageToImageView(itemView.findViewById(R.id.BookChoicePreview))
         data = itemData
         itemView.isActivated = data!!.isSelected
         itemSelectedListener = listener

@@ -3,45 +3,52 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="android.view.View" />
-
         <variable
-            name="book"
-            type="String" />
+            name="data"
+            type="ru.tp_project.androidreader.model.data_models.Book" />
     </data>
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/book_choice_header_container"
-        android:background="@drawable/book_choice_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/book_choice_background"
         android:columnCount="2"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
         android:rowCount="2">
 
         <ImageView
             android:id="@+id/BookChoicePreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_rowSpan="2"
-            android:layout_column="0"
             android:layout_gravity="fill_vertical"
             android:contentDescription="@string/book_image"
             android:src="@drawable/ic_launcher_background" />
 
-        <TextView
-            android:id="@+id/book_choice_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_row="0"
-            android:layout_rowWeight="2"
-            android:layout_column="1"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="2dp"
-            android:gravity="center_vertical"
-            android:text="@{book}"
-            android:textColor="@color/colorPrimaryBlue"
-            android:textSize="20sp" />
-    </GridLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/book_choice_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{data.name}"
+                android:textColor="@color/colorPrimaryBlue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/book_choice_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{data.author}"
+                android:textColor="@color/colorPrimaryBlue"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
 </layout>

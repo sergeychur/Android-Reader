@@ -67,5 +67,6 @@
     <string name="download">Download</string>
     <string name="user_avatar">user avatar</string>
     <string name="no_shelf_books">There aren\'t any book</string>
+    <string name="book_choice_title">Choose book</string>
     >>>>>>> 87597dede1fd762d4c6f776e20ec0bb610357d2f
 </resources>
