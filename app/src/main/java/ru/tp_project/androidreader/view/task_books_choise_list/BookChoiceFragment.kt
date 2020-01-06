@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_choice_book.*
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.FragmentChoiceBookBinding
-import ru.tp_project.androidreader.view_models.BookChoiceViewModel
+import ru.tp_project.androidreader.view_models.NewTaskViewModel
 
 class BookChoiceFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentChoiceBookBinding
@@ -24,8 +24,9 @@ class BookChoiceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = FragmentChoiceBookBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(this@BookChoiceFragment)
-                .get(BookChoiceViewModel::class.java)
+            viewmodel = activity?.run {
+                ViewModelProviders.of(this)[NewTaskViewModel::class.java]
+            }
             lifecycleOwner = viewLifecycleOwner
         }
         return viewDataBinding.root
@@ -53,6 +54,7 @@ class BookChoiceFragment : Fragment() {
         tracker?.onSaveInstanceState(outState)
     }
 
+
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_accept).isVisible = true
         super.onPrepareOptionsMenu(menu)
@@ -60,7 +62,7 @@ class BookChoiceFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_accept) {
-            // TODO communication with task adding fragment should be here
+            adapter.getSelectedItems()?.let { viewDataBinding.viewmodel!!.setBooks(it) }
             findNavController().navigateUp()
         }
 
@@ -68,8 +70,11 @@ class BookChoiceFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewDataBinding.viewmodel?.books?.observe(viewLifecycleOwner, Observer {
+        viewDataBinding.viewmodel?.booksFromShelf?.observe(viewLifecycleOwner, Observer {
             adapter.updateBooksList(it)
+        })
+        viewDataBinding.viewmodel?.empty?.observe(viewLifecycleOwner, Observer {
+            books_to_choose_empty_text.visibility = if (it) View.VISIBLE else View.GONE
         })
     }
 

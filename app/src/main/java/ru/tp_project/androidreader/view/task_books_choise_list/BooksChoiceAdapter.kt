@@ -29,10 +29,11 @@ class BooksChoiceAdapter :
         }
     }
 
-    fun updateBooksList(booksList: List<Book>) {
-        this.booksList.clear()
-        for (book in booksList) {
-            this.booksList.add(SelectableItem(book, false))
+    fun updateBooksList(booksList: List<SelectableItem>) {
+        if (booksList.isEmpty()) {
+            this.booksList.clear()
+        } else {
+            this.booksList = booksList as ArrayList<SelectableItem>
         }
         notifyDataSetChanged()
     }
@@ -48,6 +49,6 @@ class BooksChoiceAdapter :
     }
 
     override fun onItemSelected(item: SelectableItem?) {
-
+        // TODO fix it
     }
 }

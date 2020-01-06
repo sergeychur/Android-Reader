@@ -25,8 +25,9 @@ class NewTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewDataBinding = FragmentNewTaskBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(this@NewTaskFragment)
-                .get(NewTaskViewModel::class.java)
+            viewmodel = activity?.run {
+                ViewModelProviders.of(this)[NewTaskViewModel::class.java]
+            }
             lifecycleOwner = viewLifecycleOwner
         }
         return viewDataBinding.root
@@ -80,8 +81,11 @@ class NewTaskFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewDataBinding.viewmodel?.getSelectedBooks()?.observe(viewLifecycleOwner, Observer {
+        viewDataBinding.viewmodel?.getSelectedBooks()!!.observe(viewLifecycleOwner, Observer {
             adapter.updateBooksList(it)
+        })
+        viewDataBinding.viewmodel?.empty!!.observe(viewLifecycleOwner, Observer {
+            chosen_books_empty_text.visibility = if (it) View.VISIBLE else View.GONE
         })
     }
 
