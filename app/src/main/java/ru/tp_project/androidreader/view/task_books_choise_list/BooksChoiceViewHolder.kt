@@ -11,15 +11,13 @@ import ru.tp_project.androidreader.model.data_models.Book
 class BooksChoiceViewHolder(private val dataBinding: ViewDataBinding) :
     RecyclerView.ViewHolder(dataBinding.root) {
     var data: SelectableItem? = null
-    private var itemSelectedListener: OnItemSelectedListener? = null
 
-    fun bind(itemData: SelectableItem, listener: OnItemSelectedListener) {
+    fun bind(itemData: SelectableItem) {
         dataBinding.setVariable(BR.data, itemData.book)
         dataBinding.executePendingBindings()
         itemData.book.setImageToImageView(itemView.findViewById(R.id.BookChoicePreview))
         data = itemData
         itemView.isActivated = data!!.isSelected
-        itemSelectedListener = listener
     }
 
     fun setChecked(value: Boolean) {
@@ -33,9 +31,5 @@ class BooksChoiceViewHolder(private val dataBinding: ViewDataBinding) :
         init {
             this.isSelected = isSelected
         }
-    }
-
-    interface OnItemSelectedListener {
-        fun onItemSelected(item: SelectableItem?)
     }
 }

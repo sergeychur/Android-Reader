@@ -28,6 +28,7 @@ data class Book(
     val path: String,
 
     var pages: Int,
+    var words: Long,
     var currPage: Int
 ) : java.io.Serializable {
 

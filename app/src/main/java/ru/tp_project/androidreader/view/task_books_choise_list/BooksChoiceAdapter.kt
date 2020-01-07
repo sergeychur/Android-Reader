@@ -8,8 +8,7 @@ import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.view.task_books_choise_list.BooksChoiceViewHolder.SelectableItem
 
 
-class BooksChoiceAdapter :
-    RecyclerView.Adapter<BooksChoiceViewHolder>(), BooksChoiceViewHolder.OnItemSelectedListener {
+class BooksChoiceAdapter : RecyclerView.Adapter<BooksChoiceViewHolder>() {
     private var booksList: ArrayList<SelectableItem> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooksChoiceViewHolder {
@@ -23,7 +22,7 @@ class BooksChoiceAdapter :
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun onBindViewHolder(holder: BooksChoiceViewHolder, position: Int) {
-        holder.bind(booksList[position], this)
+        holder.bind(booksList[position])
         holder.itemView.setOnClickListener {
             holder.setChecked(!holder.data!!.isSelected)
         }
@@ -46,9 +45,5 @@ class BooksChoiceAdapter :
             }
         }
         return selectedItems
-    }
-
-    override fun onItemSelected(item: SelectableItem?) {
-        // TODO fix it
     }
 }

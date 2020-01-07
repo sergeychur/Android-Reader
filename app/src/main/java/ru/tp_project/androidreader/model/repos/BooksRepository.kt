@@ -14,7 +14,7 @@ class BooksRepository {
 
     fun getBooks(context: Context, onResult: (isSuccess: Boolean, books: List<Book>) -> Unit) {
         GlobalScope.launch {
-            var books = withContext(Dispatchers.Default) {
+            val books = withContext(Dispatchers.Default) {
                 AppDb.getInstance(context).booksDao().getAll()
             }
             onResult(true, books)
@@ -42,7 +42,9 @@ class BooksRepository {
     fun updateBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).booksDao().updateBook(book)
+                val db = AppDb.getInstance(context)
+                db.booksDao().updateBook(book)
+                db.taskDao().recountTasksStats(book.id)
             }
             onResult(true)
         }

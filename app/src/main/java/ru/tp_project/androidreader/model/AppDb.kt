@@ -51,17 +51,6 @@ abstract class AppDb : RoomDatabase() {
                             "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 0)",
                             intArrayOf(context.resources.getInteger(R.integer.single_user_id)).toTypedArray()
                         )
-                        // remove in future
-                        db.execSQL("INSERT INTO task VALUES(1, 'task#1', 'vip task', 1, 181881, 21212, 1, 2, 3)")
-
-                        db.execSQL("INSERT INTO task_stat VALUES(1, 1, 1, 1, 1, 'false')")
-                        db.execSQL(
-                            "INSERT INTO book VALUES( 1, \"Война и мир\", \"no\",\n" +
-                                    "                            \"Лев Николаевич Толстой\", " +
-                                    "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
-                                    "\"23.3kb\", " + "\"FB2\", 0.3," +
-                                    "\"nopath\",  \"Это какой то текст\", 1, 8)")
-                        //intArrayOf(R.integer.single_user_id).toTypedArray()
                     }
                 }
             ).build()
@@ -70,48 +59,3 @@ abstract class AppDb : RoomDatabase() {
         }
     }
 }
-
-
-//
-//@Database(entities = [Book::class], version = 1)
-//abstract class BookDb : RoomDatabase() {
-//    abstract fun bookDao(): BookDao
-//    abstract fun booksDao(): BooksDao
-//
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: BookDb? = null
-//
-//        fun getInstance(context: Context): BookDb {
-//            val tempInstance = INSTANCE
-//            if (tempInstance != null) {
-//                return tempInstance
-//            }
-//
-//            synchronized(BookDb::class) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    BookDb::class.java,
-//                    "book_database"
-//                ).addCallback(
-//                    object : RoomDatabase.Callback() {
-//                        override fun onCreate(db: SupportSQLiteDatabase) {
-//                            super.onCreate(db)
-//                            db.execSQL(
-//                                "INSERT INTO book VALUES( 1, \"Война и мир\", \"no\",\n" +
-//                                        "                            \"Лев Николаевич Толстой\", " +
-//                                        "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
-//                                        "\"23.3kb\", " + "\"FB2\", 0.3," +
-//                                        "\"nopath\",  \"Это какой то текст\", 1, 8)"
-//                                //intArrayOf(R.integer.single_user_id).toTypedArray()
-//                            )
-//                        }
-//                    }
-//                )
-//                    .build()
-//                INSTANCE = instance
-//                return instance
-//            }
-//        }
-//    }
-//}
