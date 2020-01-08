@@ -1,8 +1,6 @@
 package ru.tp_project.androidreader.view.book_viewer
 
 import android.os.Bundle
-import android.text.TextPaint
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
@@ -17,8 +15,7 @@ import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Pages
 import ru.tp_project.androidreader.view_models.BookViewerViewModel
-import java.util.*
-import kotlin.math.abs
+
 
 class BookViewer : AppCompatActivity() {
     private var mPager: ViewPager? = null
@@ -27,7 +24,6 @@ class BookViewer : AppCompatActivity() {
     private var mProgressBar: ProgressBar? = null
     private var book: Book? = null
     private var pages: Pages? = null
-    private var mDisplay: Display? = null
     private var viewmodel: BookViewerViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +54,6 @@ class BookViewer : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun getFromIntent(): Book {
         return intent.getSerializableExtra("book") as Book
@@ -130,8 +124,6 @@ class BookViewer : AppCompatActivity() {
                 val rightView = mPageIndicator!!.getChildAt(position + 1)
                 rightView.setBackgroundResource(R.drawable.indicator_background)
             }
-
-
         } catch (e: Exception) {
             Log.e("tag", e.toString())
         }
@@ -161,6 +153,7 @@ class BookViewer : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
@@ -171,25 +164,5 @@ class BookViewer : AppCompatActivity() {
         return if (id == R.id.action_settings) {
             true
         } else super.onOptionsItemSelected(item)
-    }
-
-    class ViewAndPaint(
-        var paint: TextPaint,
-        var screenWidth: Int,
-        var maxLineCount: Int,
-        var contentString: String
-    )
-
-    class ProgressTracker {
-
-        var totalPages: Int = 0
-        var pages: MutableMap<String, String> = HashMap()
-
-        fun addPage(startIndex: Int, endIndex: Int) {
-            val thePage = totalPages.toString()
-            val indexMarker = "$startIndex,$endIndex"
-            pages[thePage] = indexMarker
-            totalPages++
-        }
     }
 }

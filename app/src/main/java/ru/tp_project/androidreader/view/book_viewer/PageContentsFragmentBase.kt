@@ -2,8 +2,6 @@ package ru.tp_project.androidreader.view.book_viewer
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.book_viewer_text_view.view.*
-import ru.tp_project.androidreader.R
 
 open class PageContentsFragmentBase : Fragment() {
     /**
@@ -19,31 +17,29 @@ open class PageContentsFragmentBase : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageNumber = getArguments()!!.getInt(ARG_PAGE)
-        bookGenre = getArguments()!!.getString(ARG_GENRE)!!
-        bookTitle = getArguments()!!.getString(ARG_TITLE)!!
-        bookPhoto = getArguments()!!.getString(ARG_PHOTO)!!
-        bookSource = getArguments()!!.getString(ARG_SOURCE)!!
-        bookAuthor  = getArguments()!!.getString(ARG_AUTHOR)!!
-        bookDate  = getArguments()!!.getString(ARG_DATE)!!
+        pageNumber = arguments!!.getInt(ARG_PAGE)
+        bookGenre = arguments!!.getString(ARG_GENRE)!!
+        bookTitle = arguments!!.getString(ARG_TITLE)!!
+        bookPhoto = arguments!!.getString(ARG_PHOTO)!!
+        bookSource = arguments!!.getString(ARG_SOURCE)!!
+        bookAuthor  = arguments!!.getString(ARG_AUTHOR)!!
+        bookDate  = arguments!!.getString(ARG_DATE)!!
     }
 
     companion object {
 
-        val ARG_PAGE = "page"
-        val ARG_TITLE = "title"
-        val ARG_AUTHOR = "author"
-        val ARG_AUTHOR_FIRST = "author_first"
-        val ARG_AUTHOR_LAST = "author_last"
-        val ARG_GENRE = "genre"
-        val ARG_PHOTO = "photo"
-        val ARG_SOURCE = "source"
-        val ARG_DATE = "date"
+        const val ARG_PAGE = "page"
+        const val ARG_TITLE = "title"
+        const val ARG_AUTHOR = "author"
+        const val ARG_GENRE = "genre"
+        const val ARG_PHOTO = "photo"
+        const val ARG_SOURCE = "source"
+        const val ARG_DATE = "date"
 
         fun create(pageNumber: Int, author:String, genre:String,
                    photo:String, source:String, title:String,
                    date:String): PageContentsFragmentBase {
-            var fragment: PageContentsFragmentBase? = null
+            val fragment: PageContentsFragmentBase?
 
             fragment = PageContentsFragment()
 
@@ -55,7 +51,7 @@ open class PageContentsFragmentBase : Fragment() {
             args.putString(ARG_SOURCE, source)
             args.putString(ARG_TITLE, title)
             args.putString(ARG_DATE, date)
-            fragment!!.setArguments(args)
+            fragment.arguments = args
             return fragment
         }
     }

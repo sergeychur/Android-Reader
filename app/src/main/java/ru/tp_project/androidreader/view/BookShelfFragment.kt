@@ -240,7 +240,7 @@ class BookShelfFragment : Fragment() {
             bookXML.description.titleInfo.date,
             bookXML.description.publishInfo.publisher,
             bookXML.description.titleInfo.genre,
-            size, "fb2", 0f, str, path, 0, 0
+            size, "fb2", 0f, str, path, 0, 0, 0
         )
     }
 

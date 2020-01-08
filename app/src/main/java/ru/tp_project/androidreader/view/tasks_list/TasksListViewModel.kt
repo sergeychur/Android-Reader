@@ -22,10 +22,9 @@ class TasksListViewModel : BaseViewModel() {
     fun setTabNum(num: Int?) {
         tabNumber.value = num ?: 0
     }
-    fun fetchTasksList(context: Context, done: Boolean?) {
+    fun fetchTasksList(context: Context, done: Boolean) {
         dataLoading.postValue(true)
-        val doneVal = done ?: false
-        TasksRepository.getInstance().getTasksList(doneVal, context) { isSuccess, tasks ->
+        TasksRepository.getInstance().getTasksList(done, context) { isSuccess, tasks ->
             dataLoading.postValue(false)
             if (isSuccess) {
                 tasksListLive.postValue(tasks?.toMutableList())

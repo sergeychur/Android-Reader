@@ -21,6 +21,8 @@ class TasksRepository {
                 name = taskName,
                 userID = userId,
                 books = books.size,
+                pages = books.sumBy { it.pages },
+                words = books.sumBy { it.words.toInt() }.toLong(),
                 created = Date(Calendar.getInstance().time.time)
             )
             withContext(Dispatchers.Default) {

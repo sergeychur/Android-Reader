@@ -50,35 +50,6 @@ abstract class AppDb : RoomDatabase() {
                             "INSERT INTO user VALUES(?, 0, 0, 0, 0, 0, 0, 0, 0, 0)",
                             intArrayOf(context.resources.getInteger(R.integer.single_user_id)).toTypedArray()
                         )
-                        // remove in future
-                        db.execSQL("INSERT INTO task VALUES(1, 'task#1', 'vip task', 1, 181881, 21212, 1, 2, 3)")
-
-                        db.execSQL("INSERT INTO task_stat VALUES(1, 1, 1, 1, 1, 'false')")
-                        db.execSQL(
-                            "INSERT INTO book VALUES( 1, \"Война и мир\", \"no\",\n" +
-                                    "                            \"Лев Николаевич Толстой\", " +
-                                    "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
-                                    "\"23.3kb\", " + "\"FB2\", 0.3," +
-                                    "\"nopath\",  \"Это какой то текст\", 1, 8)")
-                        db.execSQL(
-                            "INSERT INTO book VALUES( 2, \"Война и мир\", \"no\",\n" +
-                                    "                            \"Лев Николаевич Толстой\", " +
-                                    "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
-                                    "\"23.3kb\", " + "\"FB2\", 0.3," +
-                                    "\"nopath\",  \"Это какой то текст\", 1, 8)")
-                        db.execSQL(
-                            "INSERT INTO book VALUES( 3, \"Война и мир\", \"no\",\n" +
-                                    "                            \"Лев Николаевич Толстой\", " +
-                                    "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
-                                    "\"23.3kb\", " + "\"FB2\", 0.3," +
-                                    "\"nopath\",  \"Это какой то текст\", 1, 8)")
-                        db.execSQL("INSERT INTO pages VALUES( 1,1, \"(0,0)\", \"(0,0)\""+
-                                ",0,0,0,1)")
-                        db.execSQL("INSERT INTO pages VALUES( 2,2, \" (0,0)\", \"(0,0)\""+
-                                ",0,0,0,1)")
-                        db.execSQL("INSERT INTO pages VALUES( 3,3, \" (0,0)\", \"(0,0)\""+
-                                ",0,0,0,1)")
-                        //intArrayOf(R.integer.single_user_id).toTypedArray()
                     }
                 }
             ).build()

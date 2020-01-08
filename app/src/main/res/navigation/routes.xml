@@ -57,6 +57,11 @@
         android:label="@string/new_task"
         tools:layout="@layout/fragment_new_task" />
     <fragment
+        android:id="@+id/booksChoiceFragment"
+        android:name="ru.tp_project.androidreader.view.task_books_choise_list.BookChoiceFragment"
+        android:label="@string/book_choice_title"
+        tools:layout="@layout/fragment_new_task" />
+    <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.tp_project.androidreader.view.SettingsFragment"
         android:label="@string/settings"
