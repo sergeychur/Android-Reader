@@ -67,4 +67,6 @@
     <string name="books_in_net">Книги из сети</string>
     <string name="download">Скачать</string>
     <string name="user_avatar">Аватар</string>
+    <string name="noPages">Содержание страниц не задано</string>
+    <string name="noBook">Содержание книги не задано</string>
 </resources>

@@ -112,28 +112,28 @@ class PagerTask(
 }
 
 
-class PagesDraw() {
-    fun execute(pages : Pages) {
-        doAsync {
-            draw(pages)
-        }.execute()
+class PagesDraw(val f: () -> Unit):
+    AsyncTask<Pages, BookViewer.ProgressTracker, Void>() {
+
+    override fun doInBackground(vararg pages: Pages?): Void? {
+        draw(pages[0]!!)
+        return null
     }
 
     fun draw(pages : Pages) {
+        Log.d("draw(pages)", "draw(pages)")
         val progress = BookViewer.ProgressTracker()
         for (page in pages.pageStartEnd) {
+            Log.d("draw(pages)", "page "+page.first+" "+page.second)
             addpage(progress, page.first, page.second)
         }
+        f()
     }
 
     private fun addpage(progress: BookViewer.ProgressTracker, start: Int, end: Int) {
         progress.addPage(start, end)
+        publishProgress(progress)
     }
-
-//    override fun onProgressUpdate(vararg values: BookViewer.ProgressTracker) {
-//        Log.d("write! ", "update ")
-//        f(values[0])
-//    }
 }
 
 class TextSize(
@@ -157,26 +157,16 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
             ArrayList(),ts.screenWidth, ts.lineMax,0, 0)
 
         var lineCount = 0
+        var content = ts.content
         addpage(pages, 0, 0, "") // добавляем обложку
         var symbolsCount = 0
         var pageContent = ""
 
-        val parts = ts.content.split("\n")
-        var first = true
-
-        for (onePart in parts) {
-            var part = onePart
-            if (!first) {
-                part = "\n" + part
-                lineCount++
-            }
-            first = false
-            Log.d("part", part)
-            while (part.isNotEmpty()) {
+            while (content.isNotEmpty()) {
                 var numChars = 0
-                while (lineCount < ts.lineMax && numChars < part.length) {
+                while (lineCount < ts.lineMax && numChars < ts.content.length) {
                     val value = ts.paint.breakText(
-                        part.substring(numChars),
+                        content.substring(numChars),
                         true,
                         ts.screenWidth.toFloat(),
                         null
@@ -186,23 +176,19 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
                 }
 
                 // Retrieve the String to be displayed in the current textview
-                pageContent += part.substring(0, numChars)
-                part = part.substring(numChars)
-
-                if (lineCount < ts.lineMax) {
-                    continue
-                }
+                pageContent += content.substring(0, numChars)
+                content = content.substring(numChars)
 
                 val start = symbolsCount
                 symbolsCount += pageContent.length
-                val end = symbolsCount + pageContent.length
+                val end = symbolsCount
 
                 addpage(pages, start, end, ts.content)
 
                 lineCount = 0
                 pageContent = ""
             }
-        }
+
         if (lineCount != 0) {
             val start = symbolsCount
             symbolsCount += pageContent.length
@@ -221,6 +207,7 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
         val part  = content.substring(start, end)
         val words = part.split(" ").size
         val symbols = part.length
+        Log.d("addpage!", ""+start+" "+end+" "+content.length)
 
         pages.pageWordsSymbols.add(Pair(words, symbols))
     }

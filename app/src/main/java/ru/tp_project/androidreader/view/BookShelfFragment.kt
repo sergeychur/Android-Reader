@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.tp_project.androidreader.databinding.FragmentBookShelveBinding
+import ru.tp_project.androidreader.model.data_models.Pages
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment.Companion.getResizedBitmap
@@ -130,7 +132,10 @@ class BookShelfFragment : Fragment() {
 
     private fun setupObservers(viewModel: BooksShelveViewModel) {
         viewModel.data.observe(viewLifecycleOwner, Observer {
-            adapter.updateTasksList(it)
+            adapter.updateBooksList(it)
+        })
+        viewModel.pages.observe(viewLifecycleOwner, Observer {
+            adapter.updatePagesList(it)
         })
     }
 
@@ -187,8 +192,10 @@ class BookShelfFragment : Fragment() {
                 val viewModel = viewDataBinding.viewmodel
                 val bookBD = xmlToDB(book, path.path!!, size)
                 val pc = PagesCount{pages ->
-                    viewModel!!.load(context, bookBD, pages)
-                    showContent(context, bookBD)
+                    viewModel!!.load(context, bookBD, pages) { id ->
+                        bookBD.id = id.toInt()
+                        showContent(context, bookBD)
+                    }
                 }
                 pc.execute(createTextSize(book.body.section.joinToString(""), 0))
             }
@@ -321,6 +328,7 @@ class ListAdapter(
     private val shareListener: (Book) -> Unit
 ) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
     private var booksList: List<Book> = emptyList()
+    private var pagesList: List<Pages> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val inflatter = LayoutInflater.from(parent.context)
@@ -329,14 +337,22 @@ class ListAdapter(
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.setup(booksList[position], shareListener)
+        Log.d("sizes", ""+booksList.size + " " + pagesList.size)
+        if (position < booksList.size && booksList.size == pagesList.size) {
+            holder.setup(pagesList[position], booksList[position], shareListener)
+        }
     }
 
-    fun updateTasksList(booksList: List<Book>) {
+    fun updateBooksList(booksList: List<Book>) {
         this.booksList = booksList
         notifyDataSetChanged()
-
     }
+
+    fun updatePagesList(pagesList: List<Pages>) {
+        this.pagesList = pagesList
+        notifyDataSetChanged()
+    }
+
 
     override fun getItemCount() = booksList.size
 
@@ -354,7 +370,7 @@ class ListAdapter(
 
         private var itemData: Book? = null
 
-        fun setup(book: Book, shareListener: (Book) -> Unit) {
+        fun setup(pages: Pages, book: Book, shareListener: (Book) -> Unit) {
             val imageView = itemView.findViewById(R.id.bookPreview) as ImageView
 
             itemData = book
@@ -368,8 +384,8 @@ class ListAdapter(
 
             val seekBar = itemView.findViewById(R.id.bookProgress) as ProgressBar
 
-            seekBar.max = book.pages
-            seekBar.progress = book.currPage
+            seekBar.max = pages.pageCount
+            seekBar.progress = pages.pageCurrent
 
             itemView.findViewById<ImageButton>(R.id.bookShare).setOnClickListener {
                 shareListener(book)

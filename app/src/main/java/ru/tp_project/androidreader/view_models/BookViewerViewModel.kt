@@ -11,12 +11,13 @@ class BookViewerViewModel : BaseViewModel() {
     private var pagesRep = PagesRepository()
 
     // get pages of book
-    fun get(context: Context, bookID : Int) {
+    fun get(context: Context, bookID : Int, action: (pages: Pages)-> Unit) {
         start()
         pagesRep.get(context, bookID) { isSuccess, pages ->
             if (isSuccess) {
                 data.postValue(pages)
             }
+            action(pages)
             finish(isSuccess)
         }
     }

@@ -16,7 +16,8 @@ import ru.tp_project.androidreader.model.data_models.*
 
 @Database(
     entities = [User::class, Task::class, BookTaskStat::class,
-        Book::class, TaskStatDB::class, TaskBook::class], version = 1
+        Book::class, TaskStatDB::class, TaskBook::class,
+        Pages::class], version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
@@ -71,6 +72,12 @@ abstract class AppDb : RoomDatabase() {
                                     "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
                                     "\"23.3kb\", " + "\"FB2\", 0.3," +
                                     "\"nopath\",  \"Это какой то текст\", 1, 8)")
+                        db.execSQL("INSERT INTO pages VALUES( 1,1, \"(0,0)\", \"(0,0)\""+
+                                ",0,0,0,1)")
+                        db.execSQL("INSERT INTO pages VALUES( 2,2, \" (0,0)\", \"(0,0)\""+
+                                ",0,0,0,1)")
+                        db.execSQL("INSERT INTO pages VALUES( 3,3, \" (0,0)\", \"(0,0)\""+
+                                ",0,0,0,1)")
                         //intArrayOf(R.integer.single_user_id).toTypedArray()
                     }
                 }

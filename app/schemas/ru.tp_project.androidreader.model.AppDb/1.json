@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eab3f9bca0d2660e427ce3f1c1357bf1",
+    "identityHash": "27d1f96b6cb0631db4def93260cb4f3b",
     "entities": [
       {
         "tableName": "User",
@@ -469,12 +469,74 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "pages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `bookID` INTEGER NOT NULL, `pageStartEnd` TEXT NOT NULL, `pageWordsSymbols` TEXT NOT NULL, `width` INTEGER NOT NULL, `maxLines` INTEGER NOT NULL, `pageCurrent` INTEGER NOT NULL, `pageCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bookID",
+            "columnName": "bookID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pageStartEnd",
+            "columnName": "pageStartEnd",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pageWordsSymbols",
+            "columnName": "pageWordsSymbols",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "width",
+            "columnName": "width",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxLines",
+            "columnName": "maxLines",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pageCurrent",
+            "columnName": "pageCurrent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pageCount",
+            "columnName": "pageCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eab3f9bca0d2660e427ce3f1c1357bf1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '27d1f96b6cb0631db4def93260cb4f3b')"
     ]
   }
 }

@@ -13,7 +13,7 @@ open class BaseViewModel : ViewModel() {
 
     // start one task
     fun start() {
-        dataLoading.value = true
+        dataLoading.postValue(true)
     }
 
     // finish one task
@@ -25,7 +25,7 @@ open class BaseViewModel : ViewModel() {
 
     // start N task
     fun startMultiple(N : Int) {
-        dataLoading.value = true
+        dataLoading.postValue(true)
         taskMax = N
         taskCounter.set(0)
         taskSuccess = true

@@ -5,6 +5,21 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 
+@TypeConverters(PagesConverters::class)
+@Entity(tableName = "pages")
+data class Pages (
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+
+    var bookID : Int,
+    var pageStartEnd : ArrayList<Pair<Int, Int>>,
+    var pageWordsSymbols : ArrayList<Pair<Int, Int>>,
+    var width : Int,
+    var maxLines : Int,
+    var pageCurrent : Int,
+    var pageCount : Int
+    //var times : ArrayList<Long>
+) : java.io.Serializable
 
 class PagesConverters {
     @TypeConverter
@@ -24,19 +39,3 @@ class PagesConverters {
         return arr
     }
 }
-
-@Entity(tableName = "pages")
-@TypeConverters(PagesConverters::class)
-data class Pages (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-
-    var bookID : Int,
-    var pageStartEnd : ArrayList<Pair<Int, Int>>,
-    var pageWordsSymbols : ArrayList<Pair<Int, Int>>,
-    var width : Int,
-    var maxLines : Int,
-    var pageCurrent : Int,
-    var pageCount : Int
-    //var times : ArrayList<Long>
-) : java.io.Serializable

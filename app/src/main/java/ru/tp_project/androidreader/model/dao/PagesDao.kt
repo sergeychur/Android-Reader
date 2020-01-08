@@ -6,6 +6,9 @@ import ru.tp_project.androidreader.model.data_models.Pages
 
 @Dao
 interface PagesDao {
+    @Query("SELECT * FROM pages")
+    suspend fun getAll(): List<Pages>
+
     @Query("SELECT * FROM pages where bookID = :id")
     suspend fun get(id: Int): Pages
 

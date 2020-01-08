@@ -66,5 +66,7 @@
     <string name="books_in_net">Books in net</string>
     <string name="download">Download</string>
     <string name="user_avatar">user avatar</string>
->>>>>>> 87597dede1fd762d4c6f776e20ec0bb610357d2f
+    <string name="noPages">pages is null</string>
+    <string name="noBook">book is null</string>
+    >>>>>>> 87597dede1fd762d4c6f776e20ec0bb610357d2f
 </resources>
