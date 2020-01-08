@@ -24,5 +24,5 @@ data class Task(
     val deadline: Date = Date.valueOf("5999-1-1"),
     val books: Int = 0,
     val pages: Int = 0,
-    val words: Int = 0
+    val words: Long = 0
 )

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="data"
+            type="ru.tp_project.androidreader.model.data_models.Book" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/book_choice_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/book_choice_background"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:rowCount="2">
+
+        <ImageView
+            android:id="@+id/BookChoicePreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:contentDescription="@string/book_image"
+            android:src="@drawable/ic_launcher_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/book_choice_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{data.name}"
+                android:textColor="@color/colorPrimaryBlue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/book_choice_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{data.author}"
+                android:textColor="@color/colorPrimaryBlue"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

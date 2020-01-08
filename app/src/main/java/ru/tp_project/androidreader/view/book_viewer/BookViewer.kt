@@ -59,8 +59,6 @@ class BookViewer : AppCompatActivity() {
         }
     }
 
-
-
     private fun getFromIntent(): Book {
         return intent.getSerializableExtra("book") as Book
     }
@@ -116,7 +114,6 @@ class BookViewer : AppCompatActivity() {
 
     private fun showPageIndicator(position: Int) {
         setCurrentPage(position)
-
         try {
             mPageIndicator = findViewById(R.id.pageIndicator)
             val selectedIndexIndicator = mPageIndicator!!.getChildAt(position)

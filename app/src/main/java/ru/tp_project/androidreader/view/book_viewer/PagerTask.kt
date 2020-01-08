@@ -14,7 +14,6 @@ class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
     }
 }
 
-
 class PagerTask(
     private val mPager: ViewPager?,
     private val currPage: Int,
