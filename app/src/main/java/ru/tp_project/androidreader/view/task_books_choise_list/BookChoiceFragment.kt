@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_choice_book.*
@@ -17,7 +16,6 @@ import ru.tp_project.androidreader.view_models.NewTaskViewModel
 class BookChoiceFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentChoiceBookBinding
     private lateinit var adapter: BooksChoiceAdapter
-    private var tracker: SelectionTracker<Long>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,16 +42,7 @@ class BookChoiceFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        if (savedInstanceState != null) {
-            tracker?.onRestoreInstanceState(savedInstanceState)
-        }
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        tracker?.onSaveInstanceState(outState)
-    }
-
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_accept).isVisible = true

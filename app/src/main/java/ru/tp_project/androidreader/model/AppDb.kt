@@ -8,10 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ru.tp_project.androidreader.R
-import ru.tp_project.androidreader.model.dao.BookDao
-import ru.tp_project.androidreader.model.dao.BooksDao
-import ru.tp_project.androidreader.model.dao.TaskDao
-import ru.tp_project.androidreader.model.dao.UserStatisticDao
+import ru.tp_project.androidreader.model.dao.*
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.data_models.User
@@ -19,7 +16,8 @@ import ru.tp_project.androidreader.model.data_models.*
 
 @Database(
     entities = [User::class, Task::class, BookTaskStat::class,
-        Book::class, TaskStatDB::class, TaskBook::class], version = 1
+        Book::class, TaskStatDB::class, TaskBook::class,
+        Pages::class], version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
@@ -27,6 +25,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun bookDao(): BookDao
     abstract fun booksDao(): BooksDao
+    abstract fun pagesDao(): PagesDao
 
     companion object {
         @Volatile

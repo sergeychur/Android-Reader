@@ -21,12 +21,12 @@ class BooksRepository {
         }
     }
 
-    fun loadBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
+    fun loadBook(context: Context, book: Book, onResult: (id: Long, isSuccess: Boolean) -> Unit) {
         GlobalScope.launch {
-            withContext(Dispatchers.Default) {
+            val id = withContext(Dispatchers.Default) {
                 AppDb.getInstance(context).booksDao().addBook(book)
             }
-            onResult(true)
+            onResult(id, true)
         }
     }
 

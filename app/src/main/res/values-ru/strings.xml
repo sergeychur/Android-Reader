@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">Андроид Читалка</string>
+    <string name="app_name">Читалка</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_shelf">Книжная полка</string>
     <string name="tasks_list">Задачи</string>
@@ -68,5 +68,7 @@
     <string name="books_in_net">Книги из сети</string>
     <string name="download">Скачать</string>
     <string name="user_avatar">Аватар</string>
+    <string name="noPages">Содержание страниц не задано</string>
+    <string name="noBook">Содержание книги не задано</string>
     <string name="book_choice_title">Выберите книги</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidReader</string>
+    <string name="app_name">Reader</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="book_shelf">Book Shelf</string>
     <string name="tasks_list">Tasks</string>
@@ -66,7 +66,8 @@
     <string name="books_in_net">Books in net</string>
     <string name="download">Download</string>
     <string name="user_avatar">user avatar</string>
+    <string name="noPages">pages is null</string>
+    <string name="noBook">book is null</string>
     <string name="no_shelf_books">There aren\'t any book</string>
     <string name="book_choice_title">Choose book</string>
-    >>>>>>> 87597dede1fd762d4c6f776e20ec0bb610357d2f
 </resources>

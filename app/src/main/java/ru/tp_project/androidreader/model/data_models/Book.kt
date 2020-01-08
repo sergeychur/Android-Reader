@@ -4,7 +4,6 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.ImageView
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment
@@ -12,7 +11,7 @@ import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment
 @Entity(tableName = "book")
 data class Book(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int,
     val name: String,
     val photo: String,
     val author: String,

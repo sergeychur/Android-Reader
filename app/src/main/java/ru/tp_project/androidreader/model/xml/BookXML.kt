@@ -160,3 +160,7 @@ class P {
     @set:Element(required=false, name = "p")
     var p: String = "-"
 }
+
+class BookPages {
+
+}
