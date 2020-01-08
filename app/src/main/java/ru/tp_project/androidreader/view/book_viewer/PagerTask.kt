@@ -1,18 +1,25 @@
 package ru.tp_project.androidreader.view.book_viewer
 
-import android.content.Context
 import android.os.AsyncTask
 import android.text.TextPaint
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
-import ru.tp_project.androidreader.R
+import ru.tp_project.androidreader.model.data_models.Pages
 
 
-/**
- * Created by gkoros on 12/03/2017.
- */
+class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+    override fun doInBackground(vararg params: Void?): Void? {
+        handler()
+        return null
+    }
+}
 
-class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: BookViewer.ProgressTracker) -> Unit) :
+
+class PagerTask(
+    private val mPager: ViewPager?,
+    private val currPage: Int,
+    val f: (progress: BookViewer.ProgressTracker) -> Unit
+) :
     AsyncTask<BookViewer.ViewAndPaint, BookViewer.ProgressTracker, Void>() {
 
     override fun doInBackground(vararg vps: BookViewer.ViewAndPaint): Void? {
@@ -27,7 +34,7 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
         // contentString is the whole string of the book
         var totalPages = 0
         Log.d("write! ", "bigstart")
-        var parts = vp.contentString.split("\n")
+        val parts = vp.contentString.split("\n")
         var stringToBeDisplayed = ""
         var first = true
         addpage(progress, totalPages, 0, 0)
@@ -35,12 +42,12 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
         for (onePart in parts) {
             var part = onePart
             if (!first) {
-                part = "\n"+part
+                part = "\n" + part
                 lineCount++
             }
             first = false
             Log.d("part", part)
-            while (part.length > 0) {
+            while (part.isNotEmpty()) {
                 var numChars = 0
                 while (lineCount < maxLineCount && numChars < part.length) {
                     val value = paint.breakText(
@@ -61,9 +68,9 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
                     continue
                 }
 
-                var start = totalCharactersProcessedSoFar
+                val start = totalCharactersProcessedSoFar
                 totalCharactersProcessedSoFar += stringToBeDisplayed.length
-                var end = totalCharactersProcessedSoFar
+                val end = totalCharactersProcessedSoFar
                 addpage(progress, totalPages, start, end)
 
                 Log.d("expected! ", stringToBeDisplayed)
@@ -77,21 +84,23 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
             }
         }
         if (lineCount != 0) {
-            var start = totalCharactersProcessedSoFar
+            val start = totalCharactersProcessedSoFar
             totalCharactersProcessedSoFar += stringToBeDisplayed.length
-            var end = totalCharactersProcessedSoFar
+            val end = totalCharactersProcessedSoFar
             addpage(progress, totalPages, start, end)
-            totalPages++
+            totalPages += 1
         }
 
         return null
     }
 
-    fun addpage(progress : BookViewer.ProgressTracker, totalPages : Int,
-                start: Int, end : Int) {
+    private fun addpage(
+        progress: BookViewer.ProgressTracker, totalPages: Int,
+        start: Int, end: Int
+    ) {
         // publish progress
+        progress.addPage(start, end)
         progress.totalPages = totalPages
-        progress.addPage(totalPages, start, end)
         publishProgress(progress)
     }
 
@@ -99,6 +108,121 @@ class PagerTask(val mPager: ViewPager?, val currPage: Int, val f :  (progress: B
         Log.d("write! ", "update ")
         f(values[0])
         mPager!!.currentItem = currPage
+    }
+}
+
+
+class PagesDraw() {
+    fun execute(pages : Pages) {
+        doAsync {
+            draw(pages)
+        }.execute()
+    }
+
+    fun draw(pages : Pages) {
+        val progress = BookViewer.ProgressTracker()
+        for (page in pages.pageStartEnd) {
+            addpage(progress, page.first, page.second)
+        }
+    }
+
+    private fun addpage(progress: BookViewer.ProgressTracker, start: Int, end: Int) {
+        progress.addPage(start, end)
+    }
+
+//    override fun onProgressUpdate(vararg values: BookViewer.ProgressTracker) {
+//        Log.d("write! ", "update ")
+//        f(values[0])
+//    }
+}
+
+class TextSize(
+    var paint: TextPaint,
+    var screenWidth: Int,
+    var lineMax: Int,
+    var content: String,
+    var bookID: Int
+)
+
+class PagesCount(val finish: (pages: Pages) -> Unit) {
+    fun execute(ts: TextSize) {
+        doAsync {
+            count(ts)
+        }.execute()
+    }
+
+    fun count(ts: TextSize){
+
+        var pages = Pages(0,ts.bookID, ArrayList(),
+            ArrayList(),ts.screenWidth, ts.lineMax,0, 0)
+
+        var lineCount = 0
+        addpage(pages, 0, 0, "") // добавляем обложку
+        var symbolsCount = 0
+        var pageContent = ""
+
+        val parts = ts.content.split("\n")
+        var first = true
+
+        for (onePart in parts) {
+            var part = onePart
+            if (!first) {
+                part = "\n" + part
+                lineCount++
+            }
+            first = false
+            Log.d("part", part)
+            while (part.isNotEmpty()) {
+                var numChars = 0
+                while (lineCount < ts.lineMax && numChars < part.length) {
+                    val value = ts.paint.breakText(
+                        part.substring(numChars),
+                        true,
+                        ts.screenWidth.toFloat(),
+                        null
+                    )
+                    numChars += value
+                    lineCount++
+                }
+
+                // Retrieve the String to be displayed in the current textview
+                pageContent += part.substring(0, numChars)
+                part = part.substring(numChars)
+
+                if (lineCount < ts.lineMax) {
+                    continue
+                }
+
+                val start = symbolsCount
+                symbolsCount += pageContent.length
+                val end = symbolsCount + pageContent.length
+
+                addpage(pages, start, end, ts.content)
+
+                lineCount = 0
+                pageContent = ""
+            }
+        }
+        if (lineCount != 0) {
+            val start = symbolsCount
+            symbolsCount += pageContent.length
+            val end = symbolsCount + pageContent.length
+
+            addpage(pages, start, end, ts.content)
+        }
+        finish(pages)
+    }
+
+    private fun addpage(pages: Pages, start: Int, end: Int,
+                        content: String) {
+        pages.pageCount++
+        pages.pageStartEnd.add(Pair(start, end))
+
+        val part  = content.substring(start, end)
+        val words = part.split(" ").size
+        val symbols = part.length
+
+        pages.pageWordsSymbols.add(Pair(words, symbols))
     }
 
 }

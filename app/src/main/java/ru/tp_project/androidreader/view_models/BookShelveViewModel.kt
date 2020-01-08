@@ -5,48 +5,30 @@ import android.util.Log
 import androidx.lifecycle.*
 import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.Book
-import ru.tp_project.androidreader.model.repos.BookRepository
+import ru.tp_project.androidreader.model.data_models.Pages
 import ru.tp_project.androidreader.model.repos.BooksRepository
-import javax.inject.Inject
-
-// https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate
-// https://www.fandroid.info/viewmodels-with-saved-state/
-class BookShelveViewModel @Inject constructor(val context: Context) : ViewModel() {
-    var data = MutableLiveData<Book>()// LiveData<Book> = repository.getBook(userId!!)
-    var repository = BookRepository()
-    var all = BooksRepository()
-    var fail = MutableLiveData<Boolean>().apply { value = false }
-
-    fun refresh() {
-        repository.getBook(context) { isSuccess, book ->
-            if (isSuccess) {
-                Log.d("we get book", "book:$book")
-                data.postValue(book)
-            } else {
-                Log.d("we dont get book", "book:$book")
-                fail.postValue(true)
-            }
-        }
-    }
-}
+import ru.tp_project.androidreader.model.repos.PagesRepository
 
 class BooksShelveViewModel : BaseViewModel() {
     var data = MutableLiveData<List<Book>>()
-    var booksRep = BooksRepository()
+    private var booksRep = BooksRepository()
+    private var pagesRep = PagesRepository()
 
+    // get list of books
     fun getAll(context: Context) {
         start()
         booksRep.getBooks(context) { isSuccess, books ->
             if (isSuccess) {
-                Log.d("we get book", "book:"+ books)
+                Log.d("we get book", "book:$books")
                 data.postValue(books)
             }
             finish(isSuccess)
         }
     }
 
-    fun load(context: Context, book: Book) {
-        start()
+    // add new book and it's pages
+    fun load(context: Context, book: Book, pages: Pages) {
+        startMultiple(2)
         booksRep.loadBook(context, book) { isSuccess ->
             if (isSuccess) {
                 val list = data.value
@@ -56,12 +38,17 @@ class BooksShelveViewModel : BaseViewModel() {
                     data.postValue(arr)
                 }
             }
-            finish(isSuccess)
+            finishMultiple(isSuccess)
+            pages.bookID=book.id
+            pagesRep.load(context, pages) {isSuccess2 ->
+                finishMultiple(isSuccess2)
+            }
         }
     }
 
+    // delete book and it's pages
     fun delete(context: Context, bookID: Int) {
-        start()
+        startMultiple(2)
         booksRep.deleteBook(context, bookID) { isSuccess ->
             if (isSuccess) {
                 val list = data.value
@@ -72,32 +59,10 @@ class BooksShelveViewModel : BaseViewModel() {
                     data.postValue(arr)
                 }
             }
-            finish(isSuccess)
+            finishMultiple(isSuccess)
         }
-    }
-}
-
-class BookViewerViewModel : BaseViewModel() {
-    var data = MutableLiveData<List<Book>>()
-    var booksRep = BooksRepository()
-
-
-    fun update(context: Context, book: Book) {
-        start()
-        booksRep.updateBook(context, book) { isSuccess ->
-            if (isSuccess) {
-                val list = data.value
-                list?.let {
-                    val arr = list.toMutableList()
-                    for (i in 0..arr.size ) {
-                        if (book.id==arr[i].id) {
-                            arr[i] = book
-                        }
-                    }
-                    data.postValue(arr)
-                }
-            }
-            finish(isSuccess)
+        pagesRep.delete(context, bookID) {isSuccess ->
+            finishMultiple(isSuccess)
         }
     }
 }

@@ -10,14 +10,12 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
@@ -42,11 +40,14 @@ import ru.tp_project.androidreader.databinding.FragmentBookShelveBinding
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.book_viewer.BookViewer
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment.Companion.getResizedBitmap
+import ru.tp_project.androidreader.view.book_viewer.PagesCount
+import ru.tp_project.androidreader.view.book_viewer.TextSize
 import ru.tp_project.androidreader.view_models.BooksShelveViewModel
 import java.io.File
 import java.io.InputStream
 import java.io.StringReader
 import java.util.*
+import kotlin.math.abs
 
 
 class BookShelfFragment : Fragment() {
@@ -121,9 +122,7 @@ class BookShelfFragment : Fragment() {
                 }
             }
         }
-
     }
-
 
     private fun setupViews() {
         addBook.setOnClickListener { showFileChooser() }
@@ -187,10 +186,39 @@ class BookShelfFragment : Fragment() {
             } else {
                 val viewModel = viewDataBinding.viewmodel
                 val bookBD = xmlToDB(book, path.path!!, size)
-                viewModel!!.load(context, bookBD)
-                showContent(context, bookBD)
+                val pc = PagesCount{pages ->
+                    viewModel!!.load(context, bookBD, pages)
+                    showContent(context, bookBD)
+                }
+                pc.execute(createTextSize(book.body.section.joinToString(""), 0))
             }
         }
+    }
+
+    private fun createTextSize(content: String, bookID : Int): TextSize {
+        val textviewPage = layoutInflater.inflate(
+            R.layout.book_viewer_fragment, null,
+            false
+        ) as ViewGroup
+        val layout = textviewPage.findViewById(R.id.mText) as LinearLayout
+        val view = layout.findViewById(R.id.text) as TextView
+
+        val displayMetrics = DisplayMetrics()
+        activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+        val width = displayMetrics.widthPixels
+
+        val verticalMargin = resources.getDimension(R.dimen.activity_vertical_margin)
+        val paint = view.paint
+
+        //Working Out How Many Lines Can Be Entered In The Screen
+        val fm = paint.fontMetrics
+        var textHeight = fm.top - fm.bottom
+        textHeight = abs(textHeight)
+
+        val maxLineCount = ((height - verticalMargin) / textHeight).toInt()
+
+        return TextSize (paint, width, maxLineCount, content, bookID)
     }
 
     private fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
@@ -224,8 +252,8 @@ class BookShelfFragment : Fragment() {
             2 -> type = getString(R.string.gb)
 
         }
-
-        return "$size $type"
+        val sizeString = "%.2f".format(size)
+        return sizeString+" $type"
     }
 
 

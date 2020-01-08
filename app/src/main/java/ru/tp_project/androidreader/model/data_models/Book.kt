@@ -1,7 +1,6 @@
 package ru.tp_project.androidreader.model.data_models
 
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "book")
@@ -25,3 +24,4 @@ data class Book (
     var pages: Int,
     var currPage: Int
 ) : java.io.Serializable
+

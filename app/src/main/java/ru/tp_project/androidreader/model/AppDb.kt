@@ -8,10 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ru.tp_project.androidreader.R
-import ru.tp_project.androidreader.model.dao.BookDao
-import ru.tp_project.androidreader.model.dao.BooksDao
-import ru.tp_project.androidreader.model.dao.TaskDao
-import ru.tp_project.androidreader.model.dao.UserStatisticDao
+import ru.tp_project.androidreader.model.dao.*
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Task
 import ru.tp_project.androidreader.model.data_models.User
@@ -27,6 +24,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun bookDao(): BookDao
     abstract fun booksDao(): BooksDao
+    abstract fun pagesDao(): PagesDao
 
     companion object {
         @Volatile
@@ -61,6 +59,18 @@ abstract class AppDb : RoomDatabase() {
                                     "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
                                     "\"23.3kb\", " + "\"FB2\", 0.3," +
                                     "\"nopath\",  \"Это какой то текст\", 1, 8)")
+                        db.execSQL(
+                            "INSERT INTO book VALUES( 2, \"Война и мир\", \"no\",\n" +
+                                    "                            \"Лев Николаевич Толстой\", " +
+                                    "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
+                                    "\"23.3kb\", " + "\"FB2\", 0.3," +
+                                    "\"nopath\",  \"Это какой то текст\", 1, 8)")
+                        db.execSQL(
+                            "INSERT INTO book VALUES( 3, \"Война и мир\", \"no\",\n" +
+                                    "                            \"Лев Николаевич Толстой\", " +
+                                    "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
+                                    "\"23.3kb\", " + "\"FB2\", 0.3," +
+                                    "\"nopath\",  \"Это какой то текст\", 1, 8)")
                         //intArrayOf(R.integer.single_user_id).toTypedArray()
                     }
                 }
@@ -70,48 +80,3 @@ abstract class AppDb : RoomDatabase() {
         }
     }
 }
-
-
-//
-//@Database(entities = [Book::class], version = 1)
-//abstract class BookDb : RoomDatabase() {
-//    abstract fun bookDao(): BookDao
-//    abstract fun booksDao(): BooksDao
-//
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: BookDb? = null
-//
-//        fun getInstance(context: Context): BookDb {
-//            val tempInstance = INSTANCE
-//            if (tempInstance != null) {
-//                return tempInstance
-//            }
-//
-//            synchronized(BookDb::class) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    BookDb::class.java,
-//                    "book_database"
-//                ).addCallback(
-//                    object : RoomDatabase.Callback() {
-//                        override fun onCreate(db: SupportSQLiteDatabase) {
-//                            super.onCreate(db)
-//                            db.execSQL(
-//                                "INSERT INTO book VALUES( 1, \"Война и мир\", \"no\",\n" +
-//                                        "                            \"Лев Николаевич Толстой\", " +
-//                                        "\"15.12.2012\", " + "\"kotlin\", " + "\"android\", " +
-//                                        "\"23.3kb\", " + "\"FB2\", 0.3," +
-//                                        "\"nopath\",  \"Это какой то текст\", 1, 8)"
-//                                //intArrayOf(R.integer.single_user_id).toTypedArray()
-//                            )
-//                        }
-//                    }
-//                )
-//                    .build()
-//                INSTANCE = instance
-//                return instance
-//            }
-//        }
-//    }
-//}
