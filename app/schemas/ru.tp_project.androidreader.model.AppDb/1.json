@@ -2,7 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
+<<<<<<< HEAD
     "identityHash": "63d6e773a47cc70d17919248ca388357",
+=======
+<<<<<<< HEAD
+    "identityHash": "27d1f96b6cb0631db4def93260cb4f3b",
+=======
+    "identityHash": "1e7cf7a75abcca99a6f9ffffebbf9d7c",
+>>>>>>> 470c7f709bbff65305335f96410cac433dd39d91
+>>>>>>> 13a8f5a9c2ba15f6167c880f066df9ab34d4a671
     "entities": [
       {
         "tableName": "User",
@@ -542,7 +550,15 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+<<<<<<< HEAD
       "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63d6e773a47cc70d17919248ca388357')"
+=======
+<<<<<<< HEAD
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '27d1f96b6cb0631db4def93260cb4f3b')"
+=======
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1e7cf7a75abcca99a6f9ffffebbf9d7c')"
+>>>>>>> 470c7f709bbff65305335f96410cac433dd39d91
+>>>>>>> 13a8f5a9c2ba15f6167c880f066df9ab34d4a671
     ]
   }
 }
