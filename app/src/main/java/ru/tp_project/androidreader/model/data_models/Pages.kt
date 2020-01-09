@@ -27,7 +27,7 @@ class PagesConverters {
 
     @TypeConverter
     fun fromString(str: String) : ArrayList<Pair<Int, Int>> {
-        var arr = ArrayList<Pair<Int, Int>>()
+        val arr = ArrayList<Pair<Int, Int>>()
         val s =  str.split(")")
         for (a in s) {
             val b = a.removePrefix(", (").removePrefix("(").split(", ")

@@ -38,15 +38,4 @@ class BooksRepository {
             onResult(true)
         }
     }
-
-    fun updateBook(context: Context, book: Book, onResult: (isSuccess: Boolean) -> Unit) {
-        GlobalScope.launch {
-            withContext(Dispatchers.Default) {
-                val db = AppDb.getInstance(context)
-                db.booksDao().updateBook(book)
-                db.taskDao().recountTasksStats(book.id)
-            }
-            onResult(true)
-        }
-    }
 }

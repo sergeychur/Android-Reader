@@ -16,26 +16,38 @@ import java.util.*
 class TasksRepository {
 
     fun createTask(context: Context, userId: Int, taskName: String, books: List<Book>) {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Default) {
+            var words = 0L
+            var pages = 0
+
+            for (book in books) {
+                val page = AppDb.getInstance(context).pagesDao().get(book.id)
+                words += page.pageWordsSymbols.sumBy { it.first }
+                pages += page.pageCount
+            }
+
             val task = Task(
                 name = taskName,
                 userID = userId,
                 books = books.size,
-                pages = books.sumBy { it.pages },
-                words = books.sumBy { it.words.toInt() }.toLong(),
+                pages = pages,
+                words = words,
                 created = Date(Calendar.getInstance().time.time)
             )
-            withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).taskDao().createTask(task, books)
-            }
+
+            AppDb.getInstance(context).taskDao().createTask(task, books)
         }
     }
 
-    fun getTasksList(done: Boolean, context: Context, onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit) {
+    fun getTasksList(
+        done: Boolean,
+        context: Context,
+        onResult: (isSuccess: Boolean, tasks: List<TaskStat>?) -> Unit
+    ) {
         GlobalScope.launch {
             val tasks = withContext(Dispatchers.Default) {
                 AppDb.getInstance(context).taskDao()
-                .loadAllTasks(context.resources.getInteger(R.integer.single_user_id), done)
+                    .loadAllTasks(context.resources.getInteger(R.integer.single_user_id), done)
             }
             onResult(tasks.isNotEmpty(), tasks)
         }
@@ -51,7 +63,11 @@ class TasksRepository {
     }
 
     @Suppress("unused")
-    fun getTask(taskId: Int, context: Context, onResult: (isSuccess: Boolean, task: TaskStat) -> Unit) {
+    fun getTask(
+        taskId: Int,
+        context: Context,
+        onResult: (isSuccess: Boolean, task: TaskStat) -> Unit
+    ) {
         GlobalScope.launch {
             val task = withContext(Dispatchers.Default) {
                 AppDb.getInstance(context).taskDao()

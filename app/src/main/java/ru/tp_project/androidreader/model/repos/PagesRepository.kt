@@ -63,7 +63,9 @@ class PagesRepository {
     fun update(context: Context, pages: Pages, onResult: (isSuccess: Boolean) -> Unit) {
         GlobalScope.launch {
             withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).pagesDao().update(pages)
+                val db = AppDb.getInstance(context)
+                db.pagesDao().update(pages)
+                db.taskDao().recountTasksStats(pages.bookID)
             }
             onResult(true)
         }

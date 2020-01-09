@@ -62,6 +62,9 @@ interface TaskDao {
         }
     }
 
+    @Query("SELECT * FROM pages where bookID = :id")
+    suspend fun getBookPages(id: Int): Pages
+
     @Transaction
     suspend fun countTaskStat(taskStatDB: TaskStatDB) {
         val books = getTaskBooks(taskStatDB.taskID)
@@ -71,11 +74,10 @@ interface TaskDao {
         var wordsRead = 0L
 
         for (book in books) {
-            pagesRead += book.currPage
-            // TODO remove this in future
-            //  Checks for zero because number of pages is zero until book was opened at least once
-            wordsRead += if (book.pages == 0) 0 else book.words / book.pages * book.currPage
-            if (book.pages == book.currPage && book.pages != 0) {
+            val pages = getBookPages(book.id)
+            pagesRead += pages.pageCurrent + 1
+            wordsRead += pages.pageWordsSymbols.slice(0..pages.pageCurrent).sumBy { it.first }
+            if (pages.pageCurrent + 1 == pages.pageCount) {
                 booksRead += 1
             }
         }

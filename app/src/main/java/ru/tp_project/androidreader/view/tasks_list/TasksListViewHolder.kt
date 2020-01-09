@@ -28,19 +28,5 @@ class TasksListViewHolder(private val dataBinding: ViewDataBinding)
         sharer.setOnClickListener {
             shareListener(itemData)
         }
-
-        val editor = itemView.findViewById<ImageButton>(R.id.edit_task)
-        editor.setOnClickListener {v ->
-            Log.d("kek", "Move to edit task")
-            val bundle = bundleOf("taskId" to itemData.id)
-            findNavController(v).navigate(R.id.action_tasksListFragment_to_taskEditingFragment, bundle)
-        }
-
-        val stater = itemView.findViewById<ImageButton>(R.id.task_stats)
-        stater.setOnClickListener {v->
-            Log.d("kek", "move to statistics of task")
-            val bundle = bundleOf("taskId" to itemData.id)
-            findNavController(v).navigate(R.id.action_tasksListFragment_to_taskStatFragment, bundle)
-        }
     }
 }
