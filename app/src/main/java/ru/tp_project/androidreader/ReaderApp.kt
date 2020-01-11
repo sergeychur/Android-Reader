@@ -22,6 +22,4 @@ class ReaderApp : Application() {
         // Required initialization logic here!
         AppDb.getInstance(this)
     }
-
-
 }

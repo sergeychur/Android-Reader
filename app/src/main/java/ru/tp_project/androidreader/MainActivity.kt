@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.action_view_userheader.view.*
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.tp_project.androidreader.model.firebase.FileStorage
 import ru.tp_project.androidreader.view_models.AuthViewModel
 
 
@@ -61,6 +62,26 @@ class MainActivity : AppCompatActivity() {
         initGoogleSignInClient()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account!!)
+            } catch (e: ApiException) {
+                updateUI(null)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.tollbar_menu, menu)
+        menu.findItem(R.id.action_accept).isVisible = false
+        menu.findItem(R.id.action_share).isVisible = false
+        return true
+    }
+
     private fun initAuthViewModel() {
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
@@ -78,26 +99,6 @@ class MainActivity : AppCompatActivity() {
         authViewModel.authenticatedUserLiveData.observe(this, Observer<FirebaseUser> { user ->
             updateUI(user)
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.tollbar_menu, menu)
-        menu.findItem(R.id.action_accept).isVisible = false
-        menu.findItem(R.id.action_share).isVisible = false
-        return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {
-                updateUI(null)
-            }
-        }
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {

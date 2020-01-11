@@ -70,4 +70,8 @@
     <string name="noBook">book is null</string>
     <string name="no_shelf_books">There aren\'t any book</string>
     <string name="book_choice_title">Choose book</string>
+    <string name="failed_to_download">Failed to download</string>
+    <string name="download_started">Download started</string>
+    <string name="delete_success">Deleted</string>
+    <string name="delete_fail">Hey, It is not your file</string>
 </resources>

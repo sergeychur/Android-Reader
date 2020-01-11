@@ -1,21 +1,23 @@
 package ru.tp_project.androidreader.view.firebase_books
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_book_shelve.*
 import kotlinx.android.synthetic.main.fragment_fire_base_books.*
-import kotlinx.android.synthetic.main.view_fire_base_books_list_book.*
+import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.ReaderApp
 import ru.tp_project.androidreader.databinding.FragmentFireBaseBooksBinding
+import ru.tp_project.androidreader.utils.*
+import java.io.File
 
 class FireBaseBooksFragment : Fragment() {
     private lateinit var databinding: FragmentFireBaseBooksBinding
@@ -54,10 +56,11 @@ class FireBaseBooksFragment : Fragment() {
         val viewModel = databinding.firebaseViewModel
         if (viewModel != null) {
             adapter = FireBaseListAdapter(databinding.firebaseViewModel!!,
-            { bookLink, callback:() -> Unit ->
-                onDeleteBook(bookLink, callback)
-            }, {bookName, bookLink, callback:() -> Unit ->
-                onDownloadBook(bookName, bookLink, callback)
+            { bookLink ->
+                onDeleteBook(bookLink)
+            },
+            {bookName, bookLink ->
+                onDownloadBook(bookName, bookLink)
             })
 
             val layoutManager = LinearLayoutManager(this.context)
@@ -67,17 +70,48 @@ class FireBaseBooksFragment : Fragment() {
         }
     }
 
-    private fun onDeleteBook(bookLink: String, callback: () -> Unit) {
+    private fun onDeleteBook(bookLink: String) {
         Log.println(Log.INFO, "kek", "delete")
-        databinding.firebaseViewModel?.deleteBook(ReaderApp.getInstance(), bookLink) {
-            callback()
+        val successCallback = {
+            Toast.makeText(
+                activity,
+                getText(R.string.delete_success),
+                Toast.LENGTH_LONG
+            ).show()
         }
+        val failCallback = {
+            Toast.makeText(
+                activity,
+                getText(R.string.delete_fail),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        databinding.firebaseViewModel?.deleteBook(ReaderApp.getInstance(), bookLink,
+            successCallback, failCallback)
     }
 
-    private fun onDownloadBook(bookName: String, bookLink: String, callback: () -> Unit) {
+    private fun onDownloadBook(bookName: String, bookLink: String) {
         Log.println(Log.INFO, "kek", "download")
-        databinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookName, bookLink) {
-            callback()
+        val dirname = ReaderApp.getInstance().filesDir!!.absolutePath
+        Toast.makeText(
+            activity,
+            getText(R.string.download_started),
+            Toast.LENGTH_LONG
+        ).show()
+        val successCallback = {
+            val viewModel = checkNotNull(databinding.firebaseViewModel)
+            // mb crutch, think about it
+            launchBook(this, Uri.fromFile(File(dirname, bookName)), viewModel::load)
         }
+
+        val failCallback = {
+            Toast.makeText(
+                activity,
+                getText(R.string.failed_to_download),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        databinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookName, bookLink, successCallback, failCallback)
     }
 }

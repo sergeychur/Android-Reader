@@ -9,8 +9,8 @@ import ru.tp_project.androidreader.databinding.ViewFireBaseBooksListBookBinding
 import ru.tp_project.androidreader.model.data_models.FireBaseBook
 
 class FireBaseListAdapter(private val firebasebookViewModel: FireBaseViewModel,
-                       private val deleteListener: (String, () -> Unit) -> Unit,
-                        private val downloadListener: (String, String, () -> Unit) -> Unit)
+                       private val deleteListener: (String) -> Unit,
+                        private val downloadListener: (String, String) -> Unit)
     : RecyclerView.Adapter<FireBaseListViewHolder>() {
     var booksList: List<FireBaseBook> = emptyList()
 
