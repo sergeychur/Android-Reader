@@ -1,11 +1,16 @@
 package ru.tp_project.androidreader
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -27,7 +32,6 @@ import ru.tp_project.androidreader.view_models.AuthViewModel
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var hostFragment: NavHostFragment
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var authViewModel: AuthViewModel
+
+    private val code = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +65,27 @@ class MainActivity : AppCompatActivity() {
         initAuthViewModel()
         initObserver()
         initGoogleSignInClient()
+        workWithPermissions()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account!!)
+            } catch (e: ApiException) {
+                updateUI(null)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.tollbar_menu, menu)
+        menu.findItem(R.id.action_accept).isVisible = false
+        menu.findItem(R.id.action_share).isVisible = false
+        return true
     }
 
     private fun initAuthViewModel() {
@@ -78,26 +105,6 @@ class MainActivity : AppCompatActivity() {
         authViewModel.authenticatedUserLiveData.observe(this, Observer<FirebaseUser> { user ->
             updateUI(user)
         })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.tollbar_menu, menu)
-        menu.findItem(R.id.action_accept).isVisible = false
-        menu.findItem(R.id.action_share).isVisible = false
-        return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-            } catch (e: ApiException) {
-                updateUI(null)
-            }
-        }
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
@@ -139,6 +146,62 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.sign_in -> signIn()
             R.id.sign_out -> signOut()
+        }
+    }
+
+    private fun getNeededPermissions() : MutableList<String> {
+        val info = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+        val permissions = info.requestedPermissions
+        val neededPermissions = mutableListOf<String>()
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                neededPermissions.add(permission)
+            }
+        }
+        return neededPermissions
+    }
+
+    private fun requestPermissions(perms: MutableList<String>) {
+        if (perms.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, perms.toTypedArray(), code)
+        }
+    }
+
+    private fun workWithPermissions() {
+        val perms = getNeededPermissions()
+        requestPermissions(perms)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            code -> {
+                // If request is cancelled, the result arrays are empty.
+                for (grantResult in grantResults) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        Log.println(Log.INFO, "kek", "permissions granted")
+                        Toast.makeText(
+                            this,
+                            getText(R.string.permission_ok),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Log.println(Log.ERROR, "kek", "permissions denied")
+                        Toast.makeText(
+                            this,
+                            getText(R.string.permission_fail),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
         }
     }
 

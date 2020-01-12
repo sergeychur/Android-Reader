@@ -1,5 +1,6 @@
 package ru.tp_project.androidreader.view_models
 
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
@@ -89,5 +90,16 @@ class BooksShelveViewModel : BaseViewModel() {
             }
             finishMultiple(isSuccess)
         }
+    }
+
+    fun uploadBook(book: Book, successCallback: () -> Unit, failCallback: () -> Unit) {
+        val onResult = {success: Boolean ->
+            if (success) {
+                successCallback()
+            } else {
+                failCallback()
+            }
+        }
+        booksRep.uploadOnFireBase(book, onResult)
     }
 }

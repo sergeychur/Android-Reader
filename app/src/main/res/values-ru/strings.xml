@@ -71,4 +71,13 @@
     <string name="noPages">Содержание страниц не задано</string>
     <string name="noBook">Содержание книги не задано</string>
     <string name="book_choice_title">Выберите книги</string>
+    <string name="failed_to_download">Не удалось скачать</string>
+    <string name="download_started">Загрузка началась</string>
+    <string name="upload_started">Выгрузка началась</string>
+    <string name="upload_success">Книга в облаке</string>
+    <string name="upload_fail">Провал</string>
+    <string name="delete_success">Удалено</string>
+    <string name="delete_fail">Ээй, это не твой файл!!!</string>
+    <string name="permission_fail">Разрешения не получены</string>
+    <string name="permission_ok">Разрешения получены</string>
 </resources>

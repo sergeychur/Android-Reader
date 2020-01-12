@@ -74,7 +74,6 @@ class TasksListFragment : Fragment() {
             adapter.updateTasksList(it)
         })
 
-        // TODO(sergeychur): crutch again, move to PagedList
         viewDataBinding.viewmodel?.changed?.observe(viewLifecycleOwner, Observer {
             adapter.updateTasksList(viewDataBinding.viewmodel?.tasksListLive?.value!!.toList())
         })

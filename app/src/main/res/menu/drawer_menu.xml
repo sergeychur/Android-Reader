@@ -16,10 +16,10 @@
             android:id="@+id/commonStatsFragment"
             android:icon="@drawable/ic_launcher_background"
             android:title="@string/stats"/>
-        <item
+        <!--<item
             android:id="@+id/settingsFragment"
             android:icon="@drawable/ic_launcher_background"
-            android:title="@string/settings"/>
+            android:title="@string/settings"/>-->
         <item
             android:id="@+id/aboutFragment"
             android:icon="@drawable/ic_launcher_background"

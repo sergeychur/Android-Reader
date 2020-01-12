@@ -101,7 +101,6 @@
                 android:layout_weight="1"
                 android:layout_margin="1dp"
                 android:layout_marginBottom="4dp"
-                android:background="@android:color/transparent"
                 android:contentDescription="@string/delete"
                 android:src="@drawable/delete_24px"/>
 
@@ -112,16 +111,24 @@
                 android:layout_weight="1"
                 android:layout_margin="1dp"
                 android:layout_marginBottom="4dp"
-                android:background="@android:color/transparent"
                 android:contentDescription="@string/share"
                 android:src="@drawable/share_24px"/>
+
+            <ImageButton
+                android:id="@+id/bookUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="1dp"
+                android:layout_marginBottom="4dp"
+                android:contentDescription="@string/share"
+                android:src="@drawable/upload"/>
 
             <ImageButton
                 android:id="@+id/bookAbout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
                 android:layout_margin="1dp"
                 android:layout_marginBottom="4dp"
                 android:src="@drawable/info_24px"
