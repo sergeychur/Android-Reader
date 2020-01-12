@@ -6,15 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/bookShelveFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/book_shelf"
             android:title="@string/book_shelf"/>
         <item
             android:id="@+id/tasksListFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/tasks_list"
             android:title="@string/tasks_list"/>
         <item
             android:id="@+id/commonStatsFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/common_stats"
             android:title="@string/stats"/>
         <!--<item
             android:id="@+id/settingsFragment"
@@ -22,13 +22,13 @@
             android:title="@string/settings"/>-->
         <item
             android:id="@+id/aboutFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/about"
             android:title="@string/about"/>
     </group>
     <group>
         <item
             android:id="@+id/fireBaseBooksFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/firebase_books"
             android:title="@string/books_in_net"/>
         <item
             android:id="@+id/sign_in"
