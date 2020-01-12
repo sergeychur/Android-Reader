@@ -118,6 +118,31 @@ class BookShelfFragment : Fragment() {
         }
     }
 
+    private fun onUploadBook(book: Book) {
+        Toast.makeText(
+            activity,
+            getText(R.string.upload_started),
+            Toast.LENGTH_LONG
+        ).show()
+        val successCallback = {
+            Toast.makeText(
+                activity,
+                getText(R.string.upload_success),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        val failCallback = {
+            Toast.makeText(
+                activity,
+                getText(R.string.upload_fail),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        val viewmodel = checkNotNull(viewDataBinding.viewmodel)
+        viewmodel.uploadBook(book, successCallback, failCallback)
+    }
+
     private fun setupViews() {
         addBook.setOnClickListener { showFileChooser() }
     }
@@ -133,7 +158,8 @@ class BookShelfFragment : Fragment() {
 
     private fun setupAdapter() {
         adapter =
-            ListAdapter({ bookID -> onDelete(bookID) }, { book -> onShareBook(book) })
+            ListAdapter({ bookID -> onDelete(bookID) }, { book -> onShareBook(book) },
+                { book -> onUploadBook(book) })
         val layoutManager = LinearLayoutManager(activity)
         listRecyclerView.layoutManager = layoutManager
         listRecyclerView.addItemDecoration(
@@ -184,7 +210,8 @@ class BookShelfFragment : Fragment() {
 
 class ListAdapter(
     private val delete: (bookID: Int) -> Unit,
-    private val shareListener: (Book) -> Unit
+    private val shareListener: (Book) -> Unit,
+    private val uploadListener: (Book) -> Unit
 ) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
     private var booksList: List<Book> = emptyList()
     private var pagesList: List<Pages> = emptyList()
@@ -198,7 +225,7 @@ class ListAdapter(
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         Log.d("sizes", ""+booksList.size + " " + pagesList.size)
         if (position < booksList.size && booksList.size == pagesList.size) {
-            holder.setup(pagesList[position], booksList[position], shareListener)
+            holder.setup(pagesList[position], booksList[position], shareListener, uploadListener)
         }
     }
 
@@ -229,7 +256,8 @@ class ListAdapter(
 
         private var itemData: Book? = null
 
-        fun setup(pages: Pages, book: Book, shareListener: (Book) -> Unit) {
+        fun setup(pages: Pages, book: Book, shareListener: (Book) -> Unit,
+                  uploadListener: (Book) -> Unit) {
             val imageView = itemView.findViewById(R.id.bookPreview) as ImageView
 
             itemData = book
@@ -248,6 +276,10 @@ class ListAdapter(
 
             itemView.findViewById<ImageButton>(R.id.bookShare).setOnClickListener {
                 shareListener(book)
+            }
+
+            itemView.findViewById<ImageButton>(R.id.bookUpload).setOnClickListener {
+                uploadListener(book)
             }
 
 

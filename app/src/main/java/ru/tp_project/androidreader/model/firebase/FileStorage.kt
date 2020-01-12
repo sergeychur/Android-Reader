@@ -5,30 +5,26 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import ru.tp_project.androidreader.model.AppDb
 import java.io.File
+import java.lang.NullPointerException
 import kotlin.Exception
 
 
 class FileStorage {
     private val storage = FirebaseStorage.getInstance().reference
 
-    fun uploadFile(userId: String, uri: String, successCallback: (Uri?) -> Unit, failCallback: () -> Unit): Task<Uri> {
-        val filePath = Uri.fromFile(File(uri))
-        val fileRef = storage.child("internal/${userId}/${filePath.lastPathSegment}")
-        return fileRef.putFile(filePath).continueWithTask {task ->
-            if (!task.isSuccessful) {
-                task.exception?.let {
-                    throw it
-                }
-            }
-            fileRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-                successCallback(downloadUri)
-            } else {
-                failCallback()
+    fun uploadFile(userId: String?, book: File, successCallback: () -> Unit, failCallback: (Exception) -> Unit) {
+        if (userId == null) {
+            try {
+                throw NullPointerException("No userId")
+            } catch (e: NullPointerException) {
+                failCallback(e)
             }
         }
+        val filePath = Uri.fromFile(book)
+        val fileRef = storage.child("internal/${userId}/${filePath.lastPathSegment}")
+        fileRef.putFile(filePath)
+            .addOnSuccessListener { successCallback() }
+            .addOnFailureListener { failCallback(it) }
     }
 
     fun downloadFile(url: String, destination: File,

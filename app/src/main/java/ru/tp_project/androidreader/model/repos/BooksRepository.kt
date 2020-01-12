@@ -93,4 +93,24 @@ class BooksRepository {
 
         }
     }
+
+    fun uploadOnFireBase(book: Book, onResult: (isSuccess: Boolean) -> Unit) {
+        val bookFile = File("", "")
+        // TODO(sergeychur): initialize in adequate way
+        GlobalScope.launch {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            FileStorage.getInstance().uploadFile(book = bookFile,
+                userId = userId,
+                successCallback = {
+                    Log.d("dad", "upload success")
+                    onResult(true)
+                },
+                failCallback = {
+                    Log.println(Log.ERROR, "exception", it.message!!)
+                    Log.d("dad", "upload fail")
+                    onResult(false)
+                })
+
+        }
+    }
 }

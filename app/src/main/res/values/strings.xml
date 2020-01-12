@@ -72,6 +72,9 @@
     <string name="book_choice_title">Choose book</string>
     <string name="failed_to_download">Failed to download</string>
     <string name="download_started">Download started</string>
+    <string name="upload_started">Upload started</string>
+    <string name="upload_success">Uploaded</string>
+    <string name="upload_fail">Upload failed</string>
     <string name="delete_success">Deleted</string>
     <string name="delete_fail">Hey, It is not your file</string>
 </resources>
