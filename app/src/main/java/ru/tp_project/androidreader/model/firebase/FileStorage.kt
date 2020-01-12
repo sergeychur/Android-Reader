@@ -1,14 +1,14 @@
 package ru.tp_project.androidreader.model.firebase
 import android.net.Uri
-import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import ru.tp_project.androidreader.model.AppDb
 import java.io.File
-import java.lang.NullPointerException
+import java.io.FileNotFoundException
 import kotlin.Exception
+import kotlin.NullPointerException
 
 
+@Suppress("UNUSED_VARIABLE")
 class FileStorage {
     private val storage = FirebaseStorage.getInstance().reference
 
@@ -20,10 +20,18 @@ class FileStorage {
                 failCallback(e)
             }
         }
+        if (!book.exists()) {
+            try {
+                throw FileNotFoundException("File Not Found")
+            } catch (e: FileNotFoundException) {
+                failCallback(e)
+            }
+        }
         val filePath = Uri.fromFile(book)
         val fileRef = storage.child("internal/${userId}/${filePath.lastPathSegment}")
         fileRef.putFile(filePath)
             .addOnSuccessListener { successCallback() }
+      // TODO(smbdy): comment addOnFailureListener if keeps falling
             .addOnFailureListener { failCallback(it) }
     }
 

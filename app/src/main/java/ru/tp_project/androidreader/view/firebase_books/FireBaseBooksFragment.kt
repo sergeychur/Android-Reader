@@ -1,5 +1,6 @@
 package ru.tp_project.androidreader.view.firebase_books
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -90,9 +91,10 @@ class FireBaseBooksFragment : Fragment() {
             successCallback, failCallback)
     }
 
+    @SuppressLint("SdCardPath")
     private fun onDownloadBook(bookName: String, bookLink: String) {
         Log.println(Log.INFO, "kek", "download")
-        val dirname = ReaderApp.getInstance().filesDir!!.absolutePath
+        val dirname = ReaderApp.getInstance().DOWNLOAD_PATH
         Toast.makeText(
             activity,
             getText(R.string.download_started),
@@ -100,7 +102,6 @@ class FireBaseBooksFragment : Fragment() {
         ).show()
         val successCallback = {
             val viewModel = checkNotNull(databinding.firebaseViewModel)
-            // mb crutch, think about it
             launchBook(this, Uri.fromFile(File(dirname, bookName)), viewModel::load)
         }
 
@@ -112,6 +113,11 @@ class FireBaseBooksFragment : Fragment() {
             ).show()
         }
 
-        databinding.firebaseViewModel?.downloadBook(ReaderApp.getInstance(), bookName, bookLink, successCallback, failCallback)
+        databinding.firebaseViewModel?.downloadBook(
+            bookName,
+            bookLink,
+            successCallback,
+            failCallback
+        )
     }
 }

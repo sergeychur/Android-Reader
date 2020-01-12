@@ -1,11 +1,14 @@
 package ru.tp_project.androidreader
 
+import android.annotation.SuppressLint
 import android.app.Application
 import ru.tp_project.androidreader.model.AppDb
 
 class ReaderApp : Application() {
     // Called when the application is starting, before any other application objects have been created.
     // Overriding this method is totally optional!
+    @SuppressLint("SdCardPath")
+    val DOWNLOAD_PATH = "/sdcard/Download"
     init {
         INSTANCE = this
     }

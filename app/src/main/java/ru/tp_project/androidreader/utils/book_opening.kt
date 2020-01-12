@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -12,7 +13,6 @@ import androidx.fragment.app.Fragment
 import org.simpleframework.xml.core.Persister
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.ReaderApp
-import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Pages
 import ru.tp_project.androidreader.model.xml.BookXML
@@ -152,7 +152,11 @@ fun launchBook(fragment: Fragment, path: Uri,
         }
         builder.show()
     } else {
-        val bookBD = xmlToDB(book, path.path!!, size)
+        val neededPath = FileUtils.getPath(ReaderApp.getInstance(), path)
+        if (neededPath == null) {
+            Log.d("kek", "failed with getting the path")
+        }
+        val bookBD = xmlToDB(book, neededPath!!, size)
         val pc = PagesCount{pages ->
             saveToDBCallback(ReaderApp.getInstance(), bookBD, pages) { id ->
                 bookBD.id = id.toInt()

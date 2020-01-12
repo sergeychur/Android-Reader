@@ -1,6 +1,7 @@
 package ru.tp_project.androidreader.model.repos
 
 import android.content.Context
+import android.os.Environment
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
@@ -95,10 +96,13 @@ class BooksRepository {
     }
 
     fun uploadOnFireBase(book: Book, onResult: (isSuccess: Boolean) -> Unit) {
-        val bookFile = File("", "")
-        // TODO(sergeychur): initialize in adequate way
+        val bookFile = File(book.path)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId == null) {
+            onResult(false)
+            return
+        }
         GlobalScope.launch {
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
             FileStorage.getInstance().uploadFile(book = bookFile,
                 userId = userId,
                 successCallback = {

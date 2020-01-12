@@ -78,4 +78,6 @@
     <string name="upload_fail">Провал</string>
     <string name="delete_success">Удалено</string>
     <string name="delete_fail">Ээй, это не твой файл!!!</string>
+    <string name="permission_fail">Разрешения не получены</string>
+    <string name="permission_ok">Разрешения получены</string>
 </resources>

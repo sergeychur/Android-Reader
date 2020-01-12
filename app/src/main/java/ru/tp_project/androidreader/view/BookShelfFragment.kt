@@ -100,7 +100,7 @@ class BookShelfFragment : Fragment() {
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
                 val intentShareFile = Intent(Intent.ACTION_SEND)
-                val path = "/sdcard/" + book.path.split(":")[1]
+                val path = book.path
                 val file = File(path)
                 val uri = FileProvider.getUriForFile(
                     context!!,

@@ -1,13 +1,14 @@
 package ru.tp_project.androidreader.view.firebase_books
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import ru.tp_project.androidreader.ReaderApp
 import ru.tp_project.androidreader.base.BaseViewModel
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.FireBaseBook
 import ru.tp_project.androidreader.model.data_models.Pages
-import ru.tp_project.androidreader.model.repos.BookRepository
 import ru.tp_project.androidreader.model.repos.BooksRepository
 import ru.tp_project.androidreader.model.repos.PagesRepository
 import java.io.File
@@ -48,9 +49,14 @@ class FireBaseViewModel : BaseViewModel() {
         }
     }
 
-    fun downloadBook(context: Context, bookName: String, bookLink: String, successCallback: ()-> Unit,
-                     failCallback: ()-> Unit) {
-        val dirname = context.filesDir!!.absolutePath
+    @SuppressLint("SdCardPath")
+    fun downloadBook(
+        bookName: String,
+        bookLink: String,
+        successCallback: () -> Unit,
+        failCallback: () -> Unit
+    ) {
+        val dirname = ReaderApp.getInstance().DOWNLOAD_PATH
         val file = File(dirname, bookName)
         // create a new file
         val isNewFileCreated :Boolean = file.createNewFile()

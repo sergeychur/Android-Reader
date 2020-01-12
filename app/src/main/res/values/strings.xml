@@ -77,4 +77,6 @@
     <string name="upload_fail">Upload failed</string>
     <string name="delete_success">Deleted</string>
     <string name="delete_fail">Hey, It is not your file</string>
+    <string name="permission_fail">Permissions weren\'t granted</string>
+    <string name="permission_ok">Permissions granted</string>
 </resources>

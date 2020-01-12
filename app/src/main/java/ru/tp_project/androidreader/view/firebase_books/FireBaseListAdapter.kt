@@ -28,7 +28,6 @@ class FireBaseListAdapter(private val firebasebookViewModel: FireBaseViewModel,
 
     fun updateBooksList(booksList: List<FireBaseBook>) {
         this.booksList = booksList
-//        Log.println(Log.ERROR, "ss", "AAAAAA: size is " + booksList.size.toString())
         notifyDataSetChanged()
     }
 }
