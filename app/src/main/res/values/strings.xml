@@ -79,4 +79,13 @@
     <string name="delete_fail">Hey, It is not your file</string>
     <string name="permission_fail">Permissions weren\'t granted</string>
     <string name="permission_ok">Permissions granted</string>
+    <string name="logo">Logo</string>
+    <string name="app_description">Our app is for reading books with tasks</string>
+    <string name="team">Team Blank</string>
+    <string name="sergey">Sergey Churikov</string>
+    <string name="artem">Artem Doctor</string>
+    <string name="nikita">Nikita Kotov</string>
+    <string name="mentor">Mentor:</string>
+    <string name="mentor_name">Nikita Ryzhkov</string>
+    <string name="version1_0">version 1.0</string>
 </resources>
