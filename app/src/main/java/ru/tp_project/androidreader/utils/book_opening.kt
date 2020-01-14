@@ -43,8 +43,118 @@ fun stringSize(raw: String): String {
     return "$sizeString $type"
 }
 
-fun loadBookXML(xml: String): BookXML? {
+fun cut(name : String, row : String) : String {
+    val e = row.indexOf("</"+name+ ">")+("</"+name+">").length
+    if (e >= 0) {
+        return row.substring(e)
+    }
+    return row
+}
+
+fun getP(row : String) : String {
+    val ppp = getAttribute("p", row)
+    val pppp = deleteTags(row)
+    return getAttribute("p", row)
+}
+
+fun deleteTags(origin : String) : String {
+    var work = origin
+    while (work.indexOf("<") !=  work.indexOf(">")) {
+        val l = work.indexOf("<")
+        val r = work.indexOf(">")
+        if (l == -1 || r == -1) {
+            break
+        }
+        work = work.substring(0, l) + work.substring(r)
+    }
+    return work
+}
+
+fun getAttribute(name : String, row : String) : String {
+    val l = row.indexOf("<"+name)
+    //Log.d("we l","<"+name+" " + l + " !")
+    if (l < 0) {
+        return ""
+    }
+    //Log.d("return ",row.substring(l,l+20))
+    val r = row.substring(l).indexOf(">")+l+1
+    //Log.d("we r","> " + l + " !")
+    if (r-l-1< 0) {
+        return ""
+    }
+    //Log.d("return ",row.substring(r,r+10))
+    val e = row.substring(r).indexOf("</"+name)+r
+    //Log.d("we e","</"+name + " " + e + " !")
+    if (e-r < 0) {
+        return ""
+    }
+    //Log.d("return e",row.substring(e,e+10))
+    //Log.d("return",row.substring(r,e))
+    return row.substring(r,e)
+}
+
+
+fun loadBookXML(origin: String): BookXML? {
+    var xml = origin
+    var bookXML = BookXML()
+
+    // description {
+        // titleInfo {
+    bookXML.description.titleInfo.genre = getAttribute("genre", xml)
+    Log.d("itleInfo.genre", bookXML.description.titleInfo.genre)
+    bookXML.description.titleInfo.author.first_name = getAttribute("first-name", xml)
+    Log.d("author.first_name", bookXML.description.titleInfo.author.first_name)
+    bookXML.description.titleInfo.author.last_name = getAttribute("last-name", xml)
+    Log.d("author.last_name", bookXML.description.titleInfo.author.last_name)
+    bookXML.description.titleInfo.book_title = getAttribute("book-title", xml)
+    Log.d("itleInfo.book_title", bookXML.description.titleInfo.book_title)
+    bookXML.description.titleInfo.lang = getAttribute("lang", xml)
+    Log.d("itleInfo.lang", bookXML.description.titleInfo.lang)
+    xml = cut("title-info", xml)
+        // }
+
+        // documentInfo {
+    bookXML.description.documentInfo.author.nickname = getAttribute("nickname", xml)
+    Log.d("author.nickname", bookXML.description.documentInfo.author.nickname)
+    bookXML.description.documentInfo.author.first_name = getAttribute("first-name", xml)
+    Log.d("author.first_name", bookXML.description.documentInfo.author.first_name)
+    bookXML.description.documentInfo.author.last_name = getAttribute("last-name", xml)
+    Log.d("author.last_name", bookXML.description.documentInfo.author.last_name)
+    bookXML.description.documentInfo.author.fixNames()
+    bookXML.description.documentInfo.date = getAttribute("date", xml)
+    Log.d("itleInfo.date", bookXML.description.documentInfo.date)
+    bookXML.description.documentInfo.version = getAttribute("version", xml)
+    Log.d("itleInfo.version", bookXML.description.documentInfo.version)
+    // }
+    xml = cut("description", xml)
+    // }
+
+    // body
+    val rows: MutableList<String> = mutableListOf()
+    var section = getAttribute("section", xml)
+    var p = getP(section)
+    Log.d("section:", xml)
+    Log.d("p:", p + " " + p.length)
+    while (p.length > 0) {
+        Log.d("best!:", p + " " + p.length)
+        rows.add(p)
+        Log.d("best1!:", p + " " + p.length)
+        section = cut("p", section)
+        Log.d("best2!:", section)
+        p = getP(section)
+        Log.d("real row",p)
+    }
+    bookXML.body.section = rows
+    xml = cut("body", xml)
+    Log.d("done!:", "")
+
+    bookXML.binary = getAttribute("binary", xml)
+    return bookXML
+}
+
+fun loadBookXML3(xml: String): BookXML? {
     val reader = StringReader(xml)
+    Log.d("xml: String", xml)
     val serializer = Persister()
     var book: BookXML
     try {
