@@ -129,26 +129,30 @@ fun loadBookXML(origin: String): BookXML? {
     xml = cut("description", xml)
     // }
 
+    bookXML.binary = getAttribute("binary", xml)
+
     // body
     val rows: MutableList<String> = mutableListOf()
     var section = getAttribute("section", xml)
-    var p = getP(section)
-    Log.d("section:", xml)
-    Log.d("p:", p + " " + p.length)
-    while (p.length > 0) {
-        Log.d("best!:", p + " " + p.length)
-        rows.add(p)
-        Log.d("best1!:", p + " " + p.length)
-        section = cut("p", section)
-        Log.d("best2!:", section)
-        p = getP(section)
-        Log.d("real row",p)
-    }
-    bookXML.body.section = rows
-    xml = cut("body", xml)
-    Log.d("done!:", "")
+    Log.d("first:", section)
+    while (section.length > 0) {
+        Log.d("before:", section)
+        var ps = section.split("<p>")
+        for (row in ps) {
+            var sm = row.split("</p>")
+            if (sm.size > 0) {
+                rows.add(sm[0])
+            }
+        }
 
-    bookXML.binary = getAttribute("binary", xml)
+        bookXML.body.section = rows
+        //Log.d("beforecut:", section)
+        xml = cut("section", xml)
+        //Log.d("aftercut:", section)
+        section = getAttribute("section", xml)
+        //Log.d("xml: section:", section)
+    }
+    Log.d("bookXML done!:", "lol")
     return bookXML
 }
 
@@ -198,10 +202,6 @@ private fun addContentToModel(book: BookXML, content: String?): BookXML {
 }
 
 fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
-    var str = ""
-    for (s in bookXML.body.section) {
-        str += s
-    }
     return Book(
         0, bookXML.description.titleInfo.book_title,
         bookXML.binary, bookXML.description.titleInfo.author.first_name +
@@ -209,11 +209,11 @@ fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
         bookXML.description.titleInfo.date,
         bookXML.description.publishInfo.publisher,
         bookXML.description.titleInfo.genre,
-        size, "fb2", 0f, str, path, 0, 0, 0
+        size, "fb2", 0f, path, 0, 0, 0
     )
 }
 
-fun createTextSize(content: String, bookID : Int, fragment: Fragment): TextSize {
+fun createTextSize(content: List<String>, bookID : Int, fragment: Fragment): TextSize {
     val textviewPage = fragment.layoutInflater.inflate(
         R.layout.book_viewer_fragment, null,
         false
@@ -262,17 +262,23 @@ fun launchBook(fragment: Fragment, path: Uri,
         }
         builder.show()
     } else {
+        Log.d("tick1", "no bug here")
         val neededPath = FileUtils.getPath(ReaderApp.getInstance(), path)
         if (neededPath == null) {
             Log.d("kek", "failed with getting the path")
         }
+        Log.d("tick2", "no bug here")
         val bookBD = xmlToDB(book, neededPath!!, size)
+        Log.d("tick3", "no bug here")
         val pc = PagesCount{pages ->
             saveToDBCallback(ReaderApp.getInstance(), bookBD, pages) { id ->
+                Log.d("tick5", "no bug here")
                 bookBD.id = id.toInt()
                 BookShelfFragment.showContent(ReaderApp.getInstance(), bookBD)
             }
         }
-        pc.execute(createTextSize(book.body.section.joinToString(""), 0, fragment = fragment))
+        Log.d("tick4", "no bug here")
+        pc.execute(createTextSize(book.body.section, 0, fragment = fragment))
+        Log.d("tick4.5", "no bug here")
     }
 }

@@ -15,6 +15,8 @@ import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Pages
 import ru.tp_project.androidreader.view_models.BookViewerViewModel
+import java.io.File
+import java.io.InputStream
 
 
 class BookViewer : AppCompatActivity() {
@@ -23,6 +25,7 @@ class BookViewer : AppCompatActivity() {
     private var mPageIndicator: LinearLayout? = null
     private var mProgressBar: ProgressBar? = null
     private var book: Book? = null
+    private var text: String? = null
     private var pages: Pages? = null
     private var viewmodel: BookViewerViewModel? = null
 
@@ -53,6 +56,10 @@ class BookViewer : AppCompatActivity() {
                 }
             }
         }
+        Log.d("tick 16", "no bug")
+        val inputStream: InputStream = File(b.path).inputStream()
+        text = inputStream.bufferedReader().use { it.readText() }
+        Log.d("tick 17", "no bug")
     }
 
     private fun getFromIntent(): Book {
@@ -147,8 +154,7 @@ class BookViewer : AppCompatActivity() {
             pn = p.pageStartEnd.size-1
         }
         val pair = p.pageStartEnd[pn]
-        Log.d("newPage!", " " + pair.first + " "+ pair.second+" "+b.text.length)
-        return b.text.substring(pair.first, pair.second).trim { it <= ' ' }
+        return text!!.substring(pair.first, pair.second).trim { it <= ' ' }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -5,6 +5,8 @@ import android.util.Base64
 import android.widget.ImageView
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.view.book_viewer.PageContentsFragment
 
@@ -23,7 +25,6 @@ data class Book(
     val size: String,
     var format: String,
     val progress: Float,
-    val text: String,
     val path: String,
 
     var pages: Int,
