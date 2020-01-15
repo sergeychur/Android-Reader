@@ -47,6 +47,7 @@ import java.util.*
 class BookShelfFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentBookShelveBinding
     private lateinit var adapter: ListAdapter
+    private var mProgressBar: ProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +64,7 @@ class BookShelfFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setup()
+        mProgressBar = view.findViewById(R.id.progress)
     }
 
     override fun onResume() {
@@ -190,9 +192,16 @@ class BookShelfFragment : Fragment() {
         if (requestCode == 111 && resultCode == RESULT_OK) {
             val path = data!!.data!!
             val viewModel = checkNotNull(viewDataBinding.viewmodel)
-            launchBook(this, path, viewModel::load)
+//            activity!!.runOnUiThread {
+//                mProgressBar!!.visibility = View.VISIBLE
+//            }
+            launchBook(this, path, { }, viewModel::load)
         }
     }
+
+//    private fun hideProgress() {
+//        //mProgressBar!!.visibility = View.GONE
+//    }
 
     companion object {
         private fun setToIntent(intent: Intent, book: Book) {

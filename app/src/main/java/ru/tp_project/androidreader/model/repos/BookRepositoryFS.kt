@@ -27,31 +27,38 @@ class BookRepositoryFS {
 
         // description {
         // titleInfo {
-        bookXML.description.titleInfo.genre = getAttribute("genre", xml)
+        bookXML.description.titleInfo.genre = getAttributeNoTags("genre", xml)
+        if (bookXML.description.titleInfo.genre == "") {
+            bookXML.description.titleInfo.genre = getAttributeNoTags("annotation", xml)
+        }
         Log.d("itleInfo.genre", bookXML.description.titleInfo.genre)
-        bookXML.description.titleInfo.author.first_name = getAttribute("first-name", xml)
+        bookXML.description.titleInfo.author.first_name = getAttributeNoTags("first-name", xml)
         Log.d("author.first_name", bookXML.description.titleInfo.author.first_name)
-        bookXML.description.titleInfo.author.last_name = getAttribute("last-name", xml)
+        bookXML.description.titleInfo.author.last_name = getAttributeNoTags("last-name", xml)
         Log.d("author.last_name", bookXML.description.titleInfo.author.last_name)
-        bookXML.description.titleInfo.book_title = getAttribute("book-title", xml)
+        bookXML.description.titleInfo.book_title = getAttributeNoTags("book-title", xml)
         Log.d("itleInfo.book_title", bookXML.description.titleInfo.book_title)
-        bookXML.description.titleInfo.lang = getAttribute("lang", xml)
+        bookXML.description.titleInfo.lang = getAttributeNoTags("lang", xml)
         Log.d("itleInfo.lang", bookXML.description.titleInfo.lang)
         xml = cut("title-info", xml)
         // }
 
         // documentInfo {
-        bookXML.description.documentInfo.author.nickname = getAttribute("nickname", xml)
+        bookXML.description.documentInfo.author.nickname = getAttributeNoTags("nickname", xml)
         Log.d("author.nickname", bookXML.description.documentInfo.author.nickname)
-        bookXML.description.documentInfo.author.first_name = getAttribute("first-name", xml)
+        bookXML.description.documentInfo.author.first_name = getAttributeNoTags("first-name", xml)
         Log.d("author.first_name", bookXML.description.documentInfo.author.first_name)
-        bookXML.description.documentInfo.author.last_name = getAttribute("last-name", xml)
+        bookXML.description.documentInfo.author.last_name = getAttributeNoTags("last-name", xml)
         Log.d("author.last_name", bookXML.description.documentInfo.author.last_name)
         bookXML.description.documentInfo.author.fixNames()
-        bookXML.description.documentInfo.date = getAttribute("date", xml)
+        bookXML.description.documentInfo.date = getAttributeNoTags("date", xml)
         Log.d("itleInfo.date", bookXML.description.documentInfo.date)
-        bookXML.description.documentInfo.version = getAttribute("version", xml)
+        bookXML.description.documentInfo.version = getAttributeNoTags("version", xml)
         Log.d("itleInfo.version", bookXML.description.documentInfo.version)
+
+        bookXML.description.publishInfo.publisher = getAttributeNoTags("publisher", xml)
+        Log.d("itleInfo.version", bookXML.description.documentInfo.version)
+
         // }
         xml = cut("description", xml)
         // }
@@ -82,10 +89,17 @@ class BookRepositoryFS {
     }
 
     fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
+        var author = bookXML.description.titleInfo.author.first_name+bookXML.description.titleInfo.author.last_name
+        val nickname = bookXML.description.documentInfo.author.first_name+bookXML.description.documentInfo.author.last_name
+        if (author != "" && nickname != "") {
+            author += "/"
+        }
+        author += nickname
+        Log.d("look at author", author)
+
         return Book(
             0, bookXML.description.titleInfo.book_title,
-            bookXML.binary, bookXML.description.titleInfo.author.first_name +
-                    bookXML.description.titleInfo.author.last_name,
+            bookXML.binary, author,
             bookXML.description.titleInfo.date,
             bookXML.description.publishInfo.publisher,
             bookXML.description.titleInfo.genre,
@@ -109,42 +123,38 @@ class BookRepositoryFS {
     }
 
     fun deleteTags(origin : String) : String {
-        var work = origin
         return Html.fromHtml(origin).toString()
-//        tags = work.split("<")
-//        while
-
-//        while (work.indexOf("<") !=  work.indexOf(">")) {
-//            val l = work.indexOf("<")
-//            val r = work.indexOf(">")
-//            if (l == -1 || r == -1) {
-//                break
-//            }
-//            work = work.substring(0, l) + work.substring(r)
-//        }
-        return work
     }
 
     fun getAttribute(name : String, row : String) : String {
         val l = row.indexOf("<"+name)
-        //Log.d("we l","<"+name+" " + l + " !")
         if (l < 0) {
             return ""
         }
-        //Log.d("return ",row.substring(l,l+20))
         val r = row.substring(l).indexOf(">")+l+1
-        //Log.d("we r","> " + l + " !")
         if (r-l-1< 0) {
             return ""
         }
-        //Log.d("return ",row.substring(r,r+10))
         val e = row.substring(r).indexOf("</"+name)+r
-        //Log.d("we e","</"+name + " " + e + " !")
         if (e-r < 0) {
             return ""
         }
-        //Log.d("return e",row.substring(e,e+10))
-        //Log.d("return",row.substring(r,e))
         return row.substring(r,e)
+    }
+
+    fun getAttributeNoTags(name : String, row : String) : String {
+        val l = row.indexOf("<"+name)
+        if (l < 0) {
+            return ""
+        }
+        val r = row.substring(l).indexOf(">")+l+1
+        if (r-l-1< 0) {
+            return ""
+        }
+        val e = row.substring(r).indexOf("</"+name)+r
+        if (e-r < 0) {
+            return ""
+        }
+        return deleteTags(row.substring(r,e))
     }
 }

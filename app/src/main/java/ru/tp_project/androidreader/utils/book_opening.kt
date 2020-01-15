@@ -71,6 +71,7 @@ fun createTextSize(content: List<String>, bookID : Int, fragment: Fragment): Tex
 }
 
 fun launchBook(fragment: Fragment, path: Uri,
+                        finish: () -> Unit,
                        saveToDBCallback: (context: Context,
                                           book: Book,
                                           pages: Pages,
@@ -83,6 +84,7 @@ fun launchBook(fragment: Fragment, path: Uri,
     val bookLoader = BookRepositoryFS()
     val book = bookLoader.getBookFB2(inputAsString)
     if (book == null) {
+        finish()
         val builder = AlertDialog.Builder(fragment.activity)
         builder.setTitle(fragment.getString(R.string.wrong_file_title))
         builder.setMessage(fragment.getString(R.string.wrong_file_message))
@@ -106,6 +108,7 @@ fun launchBook(fragment: Fragment, path: Uri,
             saveToDBCallback(ReaderApp.getInstance(), bookBD, pages) { id ->
                 Log.d("tick5", "no bug here")
                 bookBD.id = id.toInt()
+                finish()
                 BookShelfFragment.showContent(ReaderApp.getInstance(), bookBD)
             }
         }

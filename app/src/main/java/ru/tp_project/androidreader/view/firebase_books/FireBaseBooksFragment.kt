@@ -102,7 +102,7 @@ class FireBaseBooksFragment : Fragment() {
         ).show()
         val successCallback = {
             val viewModel = checkNotNull(databinding.firebaseViewModel)
-            launchBook(this, Uri.fromFile(File(dirname, bookName)), viewModel::load)
+            launchBook(this, Uri.fromFile(File(dirname, bookName)), {}, viewModel::load)
         }
 
         val failCallback = {

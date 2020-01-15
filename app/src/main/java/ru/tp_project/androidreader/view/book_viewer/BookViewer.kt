@@ -52,11 +52,9 @@ class BookViewer : AppCompatActivity() {
                 }
             }
         }
-        Log.d("tick16", "no bug")
         val bookLoader = BookRepositoryFS()
         val bookFromFile = bookLoader.getBookFB2FromFile(book!!.path)
         text = bookFromFile!!.body.section
-        Log.d("tick17", text!!.joinToString(""))
     }
 
     private fun getFromIntent(): Book {
