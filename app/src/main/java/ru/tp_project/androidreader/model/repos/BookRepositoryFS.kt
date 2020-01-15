@@ -11,6 +11,9 @@ import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.xml.BookXML
 import java.io.File
 import java.io.InputStream
+import android.text.Html
+
+
 
 class BookRepositoryFS {
     fun getBookFB2FromFile(path: String): BookXML? {
@@ -58,9 +61,7 @@ class BookRepositoryFS {
         // body
         val rows: MutableList<String> = mutableListOf()
         var section = getAttribute("section", xml)
-        Log.d("first:", section)
         while (section.length > 0) {
-            Log.d("before:", section)
             var ps = section.split("<p>")
             for (row in ps) {
                 var sm = row.split("</p>")
@@ -109,6 +110,10 @@ class BookRepositoryFS {
 
     fun deleteTags(origin : String) : String {
         var work = origin
+        return Html.fromHtml(origin).toString()
+//        tags = work.split("<")
+//        while
+
 //        while (work.indexOf("<") !=  work.indexOf(">")) {
 //            val l = work.indexOf("<")
 //            val r = work.indexOf(">")

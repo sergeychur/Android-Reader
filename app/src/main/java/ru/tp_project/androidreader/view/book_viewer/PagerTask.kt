@@ -46,6 +46,7 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
         var symbolEnd = 0
 
         for (i in ts.content.indices) {
+            Log.d("apge", ""+i+" "+ts.content[i])
             var content = ts.content[i]
             var offset = 0
             while (content.isNotEmpty()) {
@@ -74,10 +75,17 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
                 pageEnd = i
                 symbolEnd = offset
                 addpage(pages, pageStart, symbolStart, pageEnd, symbolEnd, pageContent)
+
+                if (pages.pageCount < 20) {
+                    Log.d(
+                        "done",
+                        ""+ (pages.pageCount-1) + " " + pageEnd + " " + symbolEnd + " " + pageStart + " " + symbolStart
+                    )
+                    Log.d("deno", pageContent)
+
+                }
                 pageStart = pageEnd
                 symbolStart = symbolEnd
-
-                Log.d("done", ""+pageContent)
                 lineCount = 0
                 pageContent = ""
             }

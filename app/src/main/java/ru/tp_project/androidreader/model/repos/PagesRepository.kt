@@ -30,9 +30,7 @@ class PagesRepository {
                 AppDb.getInstance(context).pagesDao().get(id)
             }
             Log.d("!!!id", ""+pages.bookID)
-                for (page in pages.pageWordsSymbols) {
-                Log.d("page++!!!!", ""+page.first+" "+page.second)
-            }
+
             onResult(true, pages)
         }
     }

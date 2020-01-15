@@ -56,6 +56,9 @@ class BookViewer : AppCompatActivity() {
         val bookLoader = BookRepositoryFS()
         val bookFromFile = bookLoader.getBookFB2FromFile(book!!.path)
         text = bookFromFile!!.body.section
+        for (i in 49..51) {
+            Log.d("killit", ""+i + " " +bookFromFile!!.body.section[i])
+        }
         Log.d("tick17", text!!.joinToString(""))
     }
 
@@ -153,8 +156,15 @@ class BookViewer : AppCompatActivity() {
         var start = p.pageStart[pageNumber]
         var end = p.pageEnd[pageNumber]
 
+
+        Log.d(
+            "look",
+            " " + pageNumber + " "+ end.first + " " + end.second + " " + start.first + " " + start.second
+        )
+        Log.d("looka", text!![pageNumber])
+
         if (start.first == end.first) {
-            return text!![pageNumber].substring(start.second, end.second)
+            return text!![start.first].substring(start.second, end.second)
         }
 
         var row = text!![start.first].substring(start.second)
