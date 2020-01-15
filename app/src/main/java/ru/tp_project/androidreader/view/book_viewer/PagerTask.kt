@@ -32,19 +32,25 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
     fun count(ts: TextSize){
 
         Log.d("tick10", "no bug here")
-        var pages = Pages(0,ts.bookID, ArrayList(),
+        var pages = Pages(0,ts.bookID, ArrayList(), ArrayList(),
             ArrayList(),ts.screenWidth, ts.lineMax,0, 0)
 
         var lineCount = 0
-        addpage(pages, 0, 0, "") // добавляем обложку
-        var symbolsCount = 0
+        addpage(pages, 0,0,0, 0, "") // добавляем обложку
         var pageContent = ""
 
-        for (page in ts.content) {
-            var content = page
+        var pageStart = 0
+        var pageEnd = 0
+
+        var symbolStart = 0
+        var symbolEnd = 0
+
+        for (i in ts.content.indices) {
+            var content = ts.content[i]
+            var offset = 0
             while (content.isNotEmpty()) {
                 var numChars = 0
-                while (lineCount < ts.lineMax && numChars < page.length) {
+                while (lineCount < ts.lineMax && numChars < content.length) {
                     val value = ts.paint.breakText(
                         content.substring(numChars),
                         true,
@@ -55,42 +61,47 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
                     lineCount++
                 }
 
+
                 // Retrieve the String to be displayed in the current textview
                 pageContent += content.substring(0, numChars)
                 content = content.substring(numChars)
+                offset += numChars
 
-                val start = symbolsCount
-                symbolsCount += pageContent.length
-                val end = symbolsCount
+                if (lineCount < ts.lineMax) {
+                    continue
+                }
 
-                addpage(pages, start, end, "")
+                pageEnd = i
+                symbolEnd = offset
+                addpage(pages, pageStart, symbolStart, pageEnd, symbolEnd, pageContent)
+                pageStart = pageEnd
+                symbolStart = symbolEnd
 
+                Log.d("done", ""+pageContent)
                 lineCount = 0
                 pageContent = ""
             }
         }
         Log.d("tick11", "no bug here")
         if (lineCount != 0) {
-            val start = symbolsCount
-            symbolsCount += pageContent.length
-            val end = symbolsCount + pageContent.length
-
-            addpage(pages, start, end, "")
+            addpage(pages, pageStart, symbolStart,
+                ts.content.size-1, ts.content[ts.content.size-1].length, pageContent)
         }
         Log.d("tick12", "no bug here")
         finish(pages)
         Log.d("tick13", "no bug here")
     }
 
-    private fun addpage(pages: Pages, start: Int, end: Int,
-                        content: String) {
+    private fun addpage(pages: Pages,
+                        startPage: Int, startSymbol: Int,
+                        endPage: Int, endSymbol: Int,
+                        pageContent: String) {
         pages.pageCount++
-        pages.pageStartEnd.add(Pair(start, end))
+        pages.pageStart.add(Pair(startPage, startSymbol))
+        pages.pageEnd.add(Pair(endPage, endSymbol))
 
-//        val part  = content.substring(start, end)
-        val words = 0//part.split(" ").size
-        val symbols = 0//part.length
-
+        val words = pageContent.split(" ").size
+        val symbols = pageContent.length
 
         pages.pageWordsSymbols.add(Pair(words, symbols))
     }

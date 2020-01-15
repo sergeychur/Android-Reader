@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Pages
+import ru.tp_project.androidreader.model.repos.BookRepositoryFS
 import ru.tp_project.androidreader.view_models.BookViewerViewModel
 import java.io.File
 import java.io.InputStream
@@ -25,7 +26,7 @@ class BookViewer : AppCompatActivity() {
     private var mPageIndicator: LinearLayout? = null
     private var mProgressBar: ProgressBar? = null
     private var book: Book? = null
-    private var text: String? = null
+    private var text: List<String>? = null
     private var pages: Pages? = null
     private var viewmodel: BookViewerViewModel? = null
 
@@ -43,23 +44,19 @@ class BookViewer : AppCompatActivity() {
         book = b
         viewmodel!!.get(applicationContext, book!!.id){ smp ->
             pages = smp
-            var i = 0
             runOnUiThread {
                 initViewPager(smp, b)
                 hideProgress()
-                setIndicator(i, smp.pageCurrent)
-                i++
-                while (i < smp.pageCount) {
+                for (i in 0..smp.pageCount-1) {
                     setIndicator(i, smp.pageCurrent)
-                    (mPagerAdapter as MyPagerAdapter).incrementPageCount()
-                    i++
                 }
             }
         }
-        Log.d("tick 16", "no bug")
-        val inputStream: InputStream = File(b.path).inputStream()
-        text = inputStream.bufferedReader().use { it.readText() }
-        Log.d("tick 17", "no bug")
+        Log.d("tick16", "no bug")
+        val bookLoader = BookRepositoryFS()
+        val bookFromFile = bookLoader.getBookFB2FromFile(book!!.path)
+        text = bookFromFile!!.body.section
+        Log.d("tick17", text!!.joinToString(""))
     }
 
     private fun getFromIntent(): Book {
@@ -136,7 +133,7 @@ class BookViewer : AppCompatActivity() {
 
     }
 
-    fun getContents(pageNumber: Int): String {
+    fun getContents(pn: Int): String {
         val p = pages
         if (p == null) {
             Log.d("BookViewerError", getString(R.string.noPages))
@@ -149,12 +146,24 @@ class BookViewer : AppCompatActivity() {
             return getString(R.string.noBook)
         }
 
-        var pn = pageNumber
-        if (pageNumber >= p.pageStartEnd.size) {
-            pn = p.pageStartEnd.size-1
+        var pageNumber = pn
+        if (pageNumber >= p.pageStart.size) {
+            pageNumber = p.pageStart.size-1
         }
-        val pair = p.pageStartEnd[pn]
-        return text!!.substring(pair.first, pair.second).trim { it <= ' ' }
+        var start = p.pageStart[pageNumber]
+        var end = p.pageEnd[pageNumber]
+
+        if (start.first == end.first) {
+            return text!![pageNumber].substring(start.second, end.second)
+        }
+
+        var row = text!![start.first].substring(start.second)
+        for (i in start.first+1..end.first-1 ) {
+            row += text!![i]
+        }
+        row += text!![end.first].substring(0, end.second)
+
+        return row
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
