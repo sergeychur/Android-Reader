@@ -88,4 +88,5 @@
     <string name="mentor">Mentor:</string>
     <string name="mentor_name">Nikita Ryzhkov</string>
     <string name="version1_0">version 1.0</string>
+    <string name="no_auth">Authorize, please</string>
 </resources>

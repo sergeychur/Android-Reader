@@ -89,4 +89,5 @@
     <string name="mentor">Ментор:</string>
     <string name="mentor_name">Никита Рыжков</string>
     <string name="version1_0">версия 1.0</string>
+    <string name="no_auth">Войдите в аккаунт</string>
 </resources>
