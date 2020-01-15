@@ -23,7 +23,8 @@ class CommonStatsFragment : Fragment() {
     ): View? {
 
         viewDataBinding = FragmentCommonStatsBinding.inflate(inflater, container, false).apply {
-            viewmodel = ViewModelProviders.of(this@CommonStatsFragment).get(CommonStatsViewModel::class.java)
+            viewmodel = ViewModelProviders.of(this@CommonStatsFragment)
+                .get(CommonStatsViewModel::class.java)
             lifecycleOwner = viewLifecycleOwner
         }
         return viewDataBinding.root
@@ -33,17 +34,9 @@ class CommonStatsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewDataBinding.viewmodel?.getStatistic()
         val observer = Observer<User> { statistic: User ->
-            run {
-                setIntToTextView(books_read_val, statistic.booksRead)
-                setIntToTextView(pages_read_val, statistic.pagesRead)
-                setIntToTextView(words_read_val, statistic.wordsRead)
-                setIntToTextView(hours_per_day_val, statistic.hoursPerDay)
-                setIntToTextView(pages_per_hour_val, statistic.pagesPerHour)
-                setIntToTextView(words_per_min_val, statistic.wordsPerMin)
-                setIntToTextView(years_spent_val, statistic.years)
-                setIntToTextView(days_spent_val, statistic.days)
-                setIntToTextView(hours_spent_val, statistic.hours)
-            }
+            setIntToTextView(books_read_val, statistic.booksRead)
+            setIntToTextView(pages_read_val, statistic.pagesRead)
+            setIntToTextView(words_read_val, statistic.wordsRead)
         }
         viewDataBinding.viewmodel?.statistic?.observe(viewLifecycleOwner, observer)
     }

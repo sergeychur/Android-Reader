@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_book_shelve.*
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.databinding.ShelveOneBookBinding
@@ -140,6 +141,15 @@ class BookShelfFragment : Fragment() {
                 getText(R.string.upload_fail),
                 Toast.LENGTH_LONG
             ).show()
+        }
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId == null) {
+            Toast.makeText(
+                activity,
+                getText(R.string.no_auth),
+                Toast.LENGTH_LONG
+            ).show()
+            return
         }
         val viewmodel = checkNotNull(viewDataBinding.viewmodel)
         viewmodel.uploadBook(book, successCallback, failCallback)

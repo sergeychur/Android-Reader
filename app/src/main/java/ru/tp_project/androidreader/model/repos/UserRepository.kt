@@ -24,12 +24,30 @@ class UserRepository {
     }
 
     fun getUserStatistic(context: Context, onResult: (isSuccess: Boolean, user: User?) -> Unit) {
-        GlobalScope.launch {
-            val user = withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).userStatisticDao()
-                    .load(context.resources.getInteger(currentUserID))
+        GlobalScope.launch(Dispatchers.Default) {
+            val db = AppDb.getInstance(context)
+            val user = db.userStatisticDao().load(context.resources.getInteger(currentUserID))
+            val books = db.booksDao().getAll()
+            val pages = db.pagesDao().getAll()
+
+            var pageCount = 0
+            var wordsCount = 0
+            var booksCount = 0
+
+            for (page in pages) {
+                if (books.find { it.id == page.bookID } != null) {
+                    pageCount += page.pageCurrent + 1
+                    wordsCount += page.pageWordsSymbols.slice(0..page.pageCurrent)
+                        .sumBy { it.first }
+                    if (page.pageCurrent + 1 == page.pageCount) {
+                        booksCount += 1
+                    }
+                }
             }
-            onResult(true, user)
+            onResult(
+                true,
+                user.copy(pagesRead = pageCount, wordsRead = wordsCount, booksRead = booksCount)
+            )
         }
     }
 
