@@ -147,7 +147,7 @@ object FileUtils {
             } else if (isDownloadsDocument(uri)) {
                 val fileName: String? = getFilePath(context, uri)
                 if (fileName != null) {
-                    return "${ReaderApp.getInstance().DOWNLOAD_PATH}$fileName"
+                    return "${ReaderApp.getInstance().DOWNLOAD_PATH}/$fileName"
                 }
 
                 val id = DocumentsContract.getDocumentId(uri)

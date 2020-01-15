@@ -16,6 +16,14 @@
         android:layout_height="match_parent"
         tools:context=".view.BookShelfFragment">
 
+        <ProgressBar
+            android:id="@+id/book_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center">
+        </ProgressBar>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addBook"
             android:layout_width="match_parent"

@@ -79,7 +79,9 @@ class FireBaseViewModel : BaseViewModel() {
 
     fun load(context: Context, book: Book, pages: Pages, action : (id: Long) -> Unit) {
         startMultiple(2)
+        Log.d("tick8", "start")
         bookRepository.loadBook(context, book) { id, isSuccess ->
+            Log.d("tick6", "bookRepository done "+ isSuccess)
             if (isSuccess) {
                 val list = data.value
                 list?.let {
@@ -94,6 +96,7 @@ class FireBaseViewModel : BaseViewModel() {
             pagesRep.load(context, pages) {isSuccess2 ->
                 val list = this.pages.value
                 list?.let {
+                    Log.d("tick7", "pagesRep done "+isSuccess)
                     val arr = list.toMutableList()
                     book.id=id.toInt()
                     arr.add(pages)

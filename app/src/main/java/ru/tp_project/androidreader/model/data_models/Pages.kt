@@ -12,7 +12,10 @@ data class Pages (
     val id: Int,
 
     var bookID : Int,
-    var pageStartEnd : ArrayList<Pair<Int, Int>>,
+    // индекс в массиве строк и индекс символа в строке
+    var pageStart : ArrayList<Pair<Int, Int>>,
+    var pageEnd : ArrayList<Pair<Int, Int>>,
+
     var pageWordsSymbols : ArrayList<Pair<Int, Int>>,
     var width : Int,
     var maxLines : Int,

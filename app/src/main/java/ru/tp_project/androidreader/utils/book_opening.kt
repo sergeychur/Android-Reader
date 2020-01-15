@@ -15,6 +15,7 @@ import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.ReaderApp
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Pages
+import ru.tp_project.androidreader.model.repos.BookRepositoryFS
 import ru.tp_project.androidreader.model.xml.BookXML
 import ru.tp_project.androidreader.view.BookShelfFragment
 import ru.tp_project.androidreader.view.book_viewer.PagesCount
@@ -43,67 +44,7 @@ fun stringSize(raw: String): String {
     return "$sizeString $type"
 }
 
-fun loadBookXML(xml: String): BookXML? {
-    val reader = StringReader(xml)
-    val serializer = Persister()
-    var book: BookXML
-    try {
-        book = serializer.read(BookXML::class.java, reader, false)
-    } catch (e: Exception) {
-        return null
-    }
-
-    val content = getContent(xml)
-    book = addContentToModel(book, content)
-    return book
-}
-
-private fun getContent(xml: String): String? {
-    val start = xml.indexOf("<section>") + "<section>".length
-    val end = xml.indexOf("</section>")
-    if (start >= end) {
-        return null
-    }
-    return xml.substring(start..end)
-}
-
-private fun addContentToModel(book: BookXML, content: String?): BookXML {
-    val rows: MutableList<String> = mutableListOf()
-    if (content != null) {
-        val strings = content.split("</p>")
-        val s = 4
-        for (str in strings) {
-            if (str.length < s) {
-                continue
-            }
-            rows.add(str.substring(s))
-        }
-    }
-    if (rows.size > 0) {
-        book.body.section = rows
-    } else {
-        book.body.section = listOf("No content")
-    }
-    return book
-}
-
-fun xmlToDB(bookXML: BookXML, path: String, size: String): Book {
-    var str = ""
-    for (s in bookXML.body.section) {
-        str += s
-    }
-    return Book(
-        0, bookXML.description.titleInfo.book_title,
-        bookXML.binary, bookXML.description.titleInfo.author.first_name +
-                bookXML.description.titleInfo.author.last_name,
-        bookXML.description.titleInfo.date,
-        bookXML.description.publishInfo.publisher,
-        bookXML.description.titleInfo.genre,
-        size, "fb2", 0f, str, path, 0, 0, 0
-    )
-}
-
-fun createTextSize(content: String, bookID : Int, fragment: Fragment): TextSize {
+fun createTextSize(content: List<String>, bookID : Int, fragment: Fragment): TextSize {
     val textviewPage = fragment.layoutInflater.inflate(
         R.layout.book_viewer_fragment, null,
         false
@@ -130,6 +71,7 @@ fun createTextSize(content: String, bookID : Int, fragment: Fragment): TextSize 
 }
 
 fun launchBook(fragment: Fragment, path: Uri,
+                        finish: () -> Unit,
                        saveToDBCallback: (context: Context,
                                           book: Book,
                                           pages: Pages,
@@ -139,8 +81,10 @@ fun launchBook(fragment: Fragment, path: Uri,
     val input: InputStream? = ReaderApp.getInstance().contentResolver.openInputStream(path)
     val inputAsString = input!!.bufferedReader().use { it.readText() }
     val size = stringSize(inputAsString)
-    val book = loadBookXML(inputAsString)
+    val bookLoader = BookRepositoryFS()
+    val book = bookLoader.getBookFB2(inputAsString)
     if (book == null) {
+        finish()
         val builder = AlertDialog.Builder(fragment.activity)
         builder.setTitle(fragment.getString(R.string.wrong_file_title))
         builder.setMessage(fragment.getString(R.string.wrong_file_message))
@@ -152,17 +96,24 @@ fun launchBook(fragment: Fragment, path: Uri,
         }
         builder.show()
     } else {
+        Log.d("tick1", "no bug here")
         val neededPath = FileUtils.getPath(ReaderApp.getInstance(), path)
         if (neededPath == null) {
             Log.d("kek", "failed with getting the path")
         }
-        val bookBD = xmlToDB(book, neededPath!!, size)
+        Log.d("tick2", "no bug here")
+        val bookBD = bookLoader.xmlToDB(book, neededPath!!, size)
+        Log.d("tick3", "no bug here")
         val pc = PagesCount{pages ->
             saveToDBCallback(ReaderApp.getInstance(), bookBD, pages) { id ->
+                Log.d("tick5", "no bug here")
                 bookBD.id = id.toInt()
+                finish()
                 BookShelfFragment.showContent(ReaderApp.getInstance(), bookBD)
             }
         }
-        pc.execute(createTextSize(book.body.section.joinToString(""), 0, fragment = fragment))
+        Log.d("tick4", "no bug here")
+        pc.execute(createTextSize(book.body.section, 0, fragment = fragment))
+        Log.d("tick4.5", "no bug here")
     }
 }

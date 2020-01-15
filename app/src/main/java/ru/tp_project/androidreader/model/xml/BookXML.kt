@@ -61,14 +61,31 @@ class BookXML {
         var documentInfo: DocumentInfo = DocumentInfo()
 
         class DocumentInfo {
-            @get:Element(required=false,name = "nickname")
-            @set:Element(required=false,name = "nickname")
-            var id: Author = Author()
+            @get:Element(required=false,name = "author")
+            @set:Element(required=false,name = "author")
+            var author: Author = Author()
 
             class Author {
                 @get:Element(required=false,name = "nickname")
                 @set:Element(required=false,name = "nickname")
                 var nickname: String = ""
+
+                @get:Element(required=false, name = "first-name")
+                @set:Element(required=false, name = "first-name")
+                var first_name: String = ""
+
+                @get:Element(required=false, name = "last-name")
+                @set:Element(required=false, name = "last-name")
+                var last_name: String = ""
+
+                fun fixNames() {
+                    if (this.nickname.length == 0) {
+                        this.nickname = this.first_name + this.last_name
+                    }
+                    if (this.first_name.length == 0) {
+                        this.first_name = this.nickname
+                    }
+                }
             }
             @get:Element(required=false,name = "date")
             @set:Element(required=false,name = "date")

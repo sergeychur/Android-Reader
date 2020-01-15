@@ -31,7 +31,7 @@ class PageContentsFragment : PageContentsFragmentBase() {
         return rootView
     }
 
-    private fun setBookCover(layout: LinearLayout) {
+    public fun setBookCover(layout: LinearLayout) {
         val imageBytes = Base64.decode(bookPhoto, 0)
         val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
@@ -72,7 +72,7 @@ class PageContentsFragment : PageContentsFragmentBase() {
         source.visibility = View.VISIBLE
     }
 
-    private fun setBookContent(layout: LinearLayout) {
+    public fun setBookContent(layout: LinearLayout) {
         val contentTextView = layout.findViewById(R.id.text) as TextView
         val contents = (activity as BookViewer).getContents(pageNumber)
         contentTextView.text = contents

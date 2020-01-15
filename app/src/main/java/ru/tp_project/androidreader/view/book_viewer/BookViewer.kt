@@ -14,7 +14,10 @@ import androidx.viewpager.widget.ViewPager
 import ru.tp_project.androidreader.R
 import ru.tp_project.androidreader.model.data_models.Book
 import ru.tp_project.androidreader.model.data_models.Pages
+import ru.tp_project.androidreader.model.repos.BookRepositoryFS
 import ru.tp_project.androidreader.view_models.BookViewerViewModel
+import java.io.File
+import java.io.InputStream
 
 
 class BookViewer : AppCompatActivity() {
@@ -23,6 +26,7 @@ class BookViewer : AppCompatActivity() {
     private var mPageIndicator: LinearLayout? = null
     private var mProgressBar: ProgressBar? = null
     private var book: Book? = null
+    private var text: List<String>? = null
     private var pages: Pages? = null
     private var viewmodel: BookViewerViewModel? = null
 
@@ -40,19 +44,17 @@ class BookViewer : AppCompatActivity() {
         book = b
         viewmodel!!.get(applicationContext, book!!.id){ smp ->
             pages = smp
-            var i = 0
             runOnUiThread {
                 initViewPager(smp, b)
                 hideProgress()
-                setIndicator(i, smp.pageCurrent)
-                i++
-                while (i < smp.pageCount) {
+                for (i in 0..smp.pageCount-1) {
                     setIndicator(i, smp.pageCurrent)
-                    (mPagerAdapter as MyPagerAdapter).incrementPageCount()
-                    i++
                 }
             }
         }
+        val bookLoader = BookRepositoryFS()
+        val bookFromFile = bookLoader.getBookFB2FromFile(book!!.path)
+        text = bookFromFile!!.body.section
     }
 
     private fun getFromIntent(): Book {
@@ -74,6 +76,16 @@ class BookViewer : AppCompatActivity() {
         mProgressBar!!.visibility = View.GONE
     }
 
+    private fun colorIndicator(pageNumber: Int, current: Int) {
+        mPageIndicator = findViewById(R.id.pageIndicator)
+        val selectedIndexIndicator1 = mPageIndicator!!.getChildAt(pageNumber)
+        selectedIndexIndicator1.setBackgroundResource(R.drawable.indicator_background)
+
+        mPageIndicator = findViewById(R.id.pageIndicator)
+        val selectedIndexIndicator2 = mPageIndicator!!.getChildAt(current)
+        selectedIndexIndicator2.setBackgroundResource(R.drawable.current_page_indicator)
+    }
+
     private fun setIndicator(pageNumber: Int, current: Int) {
         mPageIndicator = findViewById(R.id.pageIndicator)
         val view = View(this)
@@ -89,6 +101,22 @@ class BookViewer : AppCompatActivity() {
         } else {
             view.setBackgroundResource(R.drawable.indicator_background)
         }
+        view.setOnClickListener {
+//            Log.d("pageNumber===", ""+ pageNumber)
+//            colorIndicator(pages!!.pageCurrent, pageNumber)
+//            setCurrentPage(pageNumber)
+//
+////            mPagerAdapter!!.getItem(pageNumber)
+////            PageContentsFragmentBase.create(position,
+////                book.author, book.genre, book.photo,
+////                book.source, book.name, book.date)
+//
+//            val contentTextView = findViewById(R.id.text) as TextView
+//            val contents = getContents(pageNumber)
+//            contentTextView.text = contents
+            colorIndicator(pages!!.pageCurrent, pageNumber)
+            mPager!!.currentItem = pageNumber
+        }
         view.tag = pageNumber
         mPageIndicator!!.addView(view)
     }
@@ -97,6 +125,7 @@ class BookViewer : AppCompatActivity() {
         setPageText(position)
         pages!!.pageCurrent = position
         viewmodel!!.update(applicationContext, pages!!)
+
     }
 
     private fun setPageText(position: Int) {
@@ -129,7 +158,7 @@ class BookViewer : AppCompatActivity() {
 
     }
 
-    fun getContents(pageNumber: Int): String {
+    fun getContents(pn: Int): String {
         val p = pages
         if (p == null) {
             Log.d("BookViewerError", getString(R.string.noPages))
@@ -142,13 +171,31 @@ class BookViewer : AppCompatActivity() {
             return getString(R.string.noBook)
         }
 
-        var pn = pageNumber
-        if (pageNumber >= p.pageStartEnd.size) {
-            pn = p.pageStartEnd.size-1
+        var pageNumber = pn
+        if (pageNumber >= p.pageStart.size) {
+            pageNumber = p.pageStart.size-1
         }
-        val pair = p.pageStartEnd[pn]
-        Log.d("newPage!", " " + pair.first + " "+ pair.second+" "+b.text.length)
-        return b.text.substring(pair.first, pair.second).trim { it <= ' ' }
+        var start = p.pageStart[pageNumber]
+        var end = p.pageEnd[pageNumber]
+
+
+        Log.d(
+            "look",
+            " " + pageNumber + " "+ end.first + " " + end.second + " " + start.first + " " + start.second
+        )
+        Log.d("looka", text!![pageNumber])
+
+        if (start.first == end.first) {
+            return text!![start.first].substring(start.second, end.second)
+        }
+
+        var row = text!![start.first].substring(start.second)
+        for (i in start.first+1..end.first-1 ) {
+            row += text!![i]
+        }
+        row += text!![end.first].substring(0, end.second)
+
+        return row
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

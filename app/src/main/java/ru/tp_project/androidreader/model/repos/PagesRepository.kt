@@ -17,7 +17,7 @@ class PagesRepository {
     fun getAll(context: Context, onResult: (isSuccess: Boolean, books: List<Pages>) -> Unit) {
         GlobalScope.launch {
             val pages = withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).pagesDao().getAll()
+                AppDb.getInstance(context).pagesDao().getAll().reversed()
             }
             onResult(true, pages)
         }
@@ -30,9 +30,7 @@ class PagesRepository {
                 AppDb.getInstance(context).pagesDao().get(id)
             }
             Log.d("!!!id", ""+pages.bookID)
-                for (page in pages.pageWordsSymbols) {
-                Log.d("page++!!!!", ""+page.first+" "+page.second)
-            }
+
             onResult(true, pages)
         }
     }

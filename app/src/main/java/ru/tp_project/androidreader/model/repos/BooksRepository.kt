@@ -21,7 +21,7 @@ class BooksRepository {
     fun getBooks(context: Context, onResult: (isSuccess: Boolean, books: List<Book>) -> Unit) {
         GlobalScope.launch {
             val books = withContext(Dispatchers.Default) {
-                AppDb.getInstance(context).booksDao().getAll()
+                AppDb.getInstance(context).booksDao().getAll().reversed()
             }
             onResult(true, books)
         }

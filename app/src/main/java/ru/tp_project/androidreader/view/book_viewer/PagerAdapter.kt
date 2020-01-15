@@ -26,9 +26,4 @@ class MyPagerAdapter(fragmentManager: FragmentManager,
             book.author, book.genre, book.photo,
             book.source, book.name, book.date)
     }
-
-    fun incrementPageCount() {
-        count += 1
-        notifyDataSetChanged()
-    }
 }
