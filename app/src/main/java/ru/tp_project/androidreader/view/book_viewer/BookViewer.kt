@@ -56,9 +56,6 @@ class BookViewer : AppCompatActivity() {
         val bookLoader = BookRepositoryFS()
         val bookFromFile = bookLoader.getBookFB2FromFile(book!!.path)
         text = bookFromFile!!.body.section
-        for (i in 49..51) {
-            Log.d("killit", ""+i + " " +bookFromFile!!.body.section[i])
-        }
         Log.d("tick17", text!!.joinToString(""))
     }
 
@@ -81,6 +78,16 @@ class BookViewer : AppCompatActivity() {
         mProgressBar!!.visibility = View.GONE
     }
 
+    private fun colorIndicator(pageNumber: Int, current: Int) {
+        mPageIndicator = findViewById(R.id.pageIndicator)
+        val selectedIndexIndicator1 = mPageIndicator!!.getChildAt(pageNumber)
+        selectedIndexIndicator1.setBackgroundResource(R.drawable.indicator_background)
+
+        mPageIndicator = findViewById(R.id.pageIndicator)
+        val selectedIndexIndicator2 = mPageIndicator!!.getChildAt(current)
+        selectedIndexIndicator2.setBackgroundResource(R.drawable.current_page_indicator)
+    }
+
     private fun setIndicator(pageNumber: Int, current: Int) {
         mPageIndicator = findViewById(R.id.pageIndicator)
         val view = View(this)
@@ -96,6 +103,22 @@ class BookViewer : AppCompatActivity() {
         } else {
             view.setBackgroundResource(R.drawable.indicator_background)
         }
+        view.setOnClickListener {
+//            Log.d("pageNumber===", ""+ pageNumber)
+//            colorIndicator(pages!!.pageCurrent, pageNumber)
+//            setCurrentPage(pageNumber)
+//
+////            mPagerAdapter!!.getItem(pageNumber)
+////            PageContentsFragmentBase.create(position,
+////                book.author, book.genre, book.photo,
+////                book.source, book.name, book.date)
+//
+//            val contentTextView = findViewById(R.id.text) as TextView
+//            val contents = getContents(pageNumber)
+//            contentTextView.text = contents
+            colorIndicator(pages!!.pageCurrent, pageNumber)
+            mPager!!.currentItem = pageNumber
+        }
         view.tag = pageNumber
         mPageIndicator!!.addView(view)
     }
@@ -104,6 +127,7 @@ class BookViewer : AppCompatActivity() {
         setPageText(position)
         pages!!.pageCurrent = position
         viewmodel!!.update(applicationContext, pages!!)
+
     }
 
     private fun setPageText(position: Int) {

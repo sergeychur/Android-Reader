@@ -46,7 +46,6 @@ class PagesCount(val finish: (pages: Pages) -> Unit) {
         var symbolEnd = 0
 
         for (i in ts.content.indices) {
-            Log.d("apge", ""+i+" "+ts.content[i])
             var content = ts.content[i]
             var offset = 0
             while (content.isNotEmpty()) {
