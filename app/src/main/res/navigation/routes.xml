@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/routes.xml"
+    app:startDestination="@id/bookShelveFragment">
+    <fragment
+        android:id="@+id/bookShelveFragment"
+        android:name="ru.tp_project.androidreader.view.BookShelfFragment"
+        android:label="@string/book_shelf"
+        tools:layout="@layout/fragment_book_shelve" >
+        <action
+            android:id="@+id/action_bookShelveFragment_to_bookReadingFragment"
+            app:destination="@id/bookReadingFragment" />
+        <action
+            android:id="@+id/action_bookShelveFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_bookShelveFragment_to_bookStatsFragment"
+            app:destination="@id/bookStatsFragment" />
+        <action
+            android:id="@+id/action_bookShelveFragment_to_commonStatsFragment"
+            app:destination="@id/commonStatsFragment" />
+        <action
+            android:id="@+id/action_bookShelveFragment_to_taksListFragment"
+            app:destination="@id/tasksListFragment" />
+        <action
+            android:id="@+id/action_bookShelveFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_bookShelveFragment_to_fireBaseBooks"
+            app:destination="@id/fireBaseBooksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="ru.tp_project.androidreader.view.AboutFragment"
+        android:label="@string/about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/bookReadingFragment"
+        android:name="ru.tp_project.androidreader.view.BookReadingFragment"
+        android:label="@string/reading"
+        tools:layout="@layout/fragment_book_reading" />
+    <fragment
+        android:id="@+id/bookStatsFragment"
+        android:name="ru.tp_project.androidreader.view.BookStatsFragment"
+        android:label="@string/stats"
+        tools:layout="@layout/fragment_book_stats" />
+    <fragment
+        android:id="@+id/commonStatsFragment"
+        android:name="ru.tp_project.androidreader.view.CommonStatsFragment"
+        android:label="@string/stats"
+        tools:layout="@layout/fragment_common_stats" />
+    <fragment
+        android:id="@+id/newTaskFragment"
+        android:name="ru.tp_project.androidreader.view.NewTaskFragment"
+        android:label="@string/new_task"
+        tools:layout="@layout/fragment_new_task" />
+    <fragment
+        android:id="@+id/booksChoiceFragment"
+        android:name="ru.tp_project.androidreader.view.task_books_choise_list.BookChoiceFragment"
+        android:label="@string/book_choice_title"
+        tools:layout="@layout/fragment_new_task" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ru.tp_project.androidreader.view.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/tasksListFragment"
+        android:name="ru.tp_project.androidreader.view.tasks_list.TasksListFragment"
+        android:label="@string/tasks_list"
+        tools:layout="@layout/fragment_tasks_list" >
+        <action
+            android:id="@+id/action_tasksListFragment_to_newTaskFragment"
+            app:destination="@id/newTaskFragment" />
+        <action
+            android:id="@+id/action_tasksListFragment_to_taskEditingFragment"
+            app:destination="@id/taskEditingFragment" />
+        <action
+            android:id="@+id/action_tasksListFragment_to_taskStatFragment"
+            app:destination="@id/taskStatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskEditingFragment"
+        android:name="ru.tp_project.androidreader.view.TaskEditingFragment"
+        android:label="@string/task_edit"
+        tools:layout="@layout/fragment_task_editing" />
+    <fragment
+        android:id="@+id/taskStatFragment"
+        android:name="ru.tp_project.androidreader.view.TaskStatFragment"
+        android:label="@string/task_stat"
+        tools:layout="@layout/fragment_task_stat" />
+    <fragment
+        android:id="@+id/fireBaseBooksFragment"
+        android:name="ru.tp_project.androidreader.view.firebase_books.FireBaseBooksFragment"
+        android:label="@string/books_in_net"
+        tools:layout="@layout/fragment_fire_base_books" />
+</navigation>

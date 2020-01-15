@@ -1,0 +1,80 @@
+{
+  "project_info": {
+    "project_number": "455237438483",
+    "firebase_url": "https://androidreader-3d352.firebaseio.com",
+    "project_id": "androidreader-3d352",
+    "storage_bucket": "androidreader-3d352.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455237438483:android:5ce43d1ca089dd7b8503e6",
+        "android_client_info": {
+          "package_name": "ru.tp_project.androidreader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455237438483-27ipa11aopsc3k3jn1n8bti17jhlg3c3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.tp_project.androidreader",
+            "certificate_hash": "6b33fa89367226fb76f7fe3229671bdb25daab71"
+          }
+        },
+        {
+          "client_id": "455237438483-6qns3u3840dmpc265nkbknqksak7i740.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.tp_project.androidreader",
+            "certificate_hash": "5e0d713695622d280c98b1c8070631d85891cda4"
+          }
+        },
+        {
+          "client_id": "455237438483-h4034i0b0ksgahpo417pqcuqda9v4d3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.tp_project.androidreader",
+            "certificate_hash": "111556e9a2031e64589c1a330615c30b5809fd63"
+          }
+        },
+        {
+          "client_id": "455237438483-djmue8mfruqiljaf7bh4p0a0pa5m3cjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.tp_project.androidreader",
+            "certificate_hash": "236b28ec25aad0b2ccd86ea5cb46a23da1324dc0"
+          }
+        },
+        {
+          "client_id": "455237438483-g613hur42nbp942p81rtgjkjqqp5i01i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.tp_project.androidreader",
+            "certificate_hash": "f7385a51fbad2b9e5db334baef07b16a0ef6a6a3"
+          }
+        },
+        {
+          "client_id": "455237438483-idf13uj93k48ksricrpf7of6bch75q07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzWBc2tD_tQFh9E-9EKHG8hwKEkYcuR2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455237438483-k14ovpse3g47dme0d8r01g20gtjcip0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

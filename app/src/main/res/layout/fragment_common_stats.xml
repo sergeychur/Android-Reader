@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><!--<FrameLayout -->
+<layout>
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewmodel"
+            type="ru.tp_project.androidreader.view_models.CommonStatsViewModel" />
+    </data>
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="0,1,2"
+        tools:context=".view.CommonStatsFragment">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/read_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_span="3"
+                android:drawableStart="@drawable/ic_read_stat"
+                android:drawablePadding="4dp"
+                android:gravity="start|center_vertical"
+                android:text="@string/read_header"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/books_read_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/left_rounded"
+                    android:gravity="end|center_vertical"
+                    android:padding="2dp"
+                    android:text="@string/books_read"
+                    android:textColor="@color/colorPrimaryGray" />
+
+                <TextView
+                    android:id="@+id/books_read_val"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/right_rounded"
+                    android:gravity="start|center_vertical"
+                    android:minWidth="40dp"
+                    android:text="@{Integer.toString(viewmodel.statistic.booksRead)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryBlue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/pages_read_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/left_rounded"
+                    android:gravity="end|center_vertical"
+                    android:padding="2dp"
+                    android:text="@string/pages_read"
+                    android:textColor="@color/colorPrimaryGray" />
+
+                <TextView
+                    android:id="@+id/pages_read_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/right_rounded"
+                    android:gravity="start|center_vertical"
+                    android:minWidth="40dp"
+                    android:text="@{Integer.toString(viewmodel.statistic.pagesRead)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryBlue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/words_read_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/left_rounded"
+                    android:gravity="end|center_vertical"
+                    android:padding="2dp"
+                    android:text="@string/words_read"
+                    android:textColor="@color/colorPrimaryGray" />
+
+                <TextView
+                    android:id="@+id/words_read_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/right_rounded"
+                    android:gravity="start|center_vertical"
+                    android:minWidth="40dp"
+                    android:text="@{Integer.toString(viewmodel.statistic.wordsRead)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryBlue" />
+            </LinearLayout>
+
+        </TableRow>
+
+    </TableLayout>
+
+</layout>

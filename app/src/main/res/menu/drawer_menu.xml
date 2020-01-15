@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/bookShelveFragment"
+            android:icon="@drawable/book_shelf"
+            android:title="@string/book_shelf"/>
+        <item
+            android:id="@+id/tasksListFragment"
+            android:icon="@drawable/tasks_list"
+            android:title="@string/tasks_list"/>
+        <item
+            android:id="@+id/commonStatsFragment"
+            android:icon="@drawable/common_stats"
+            android:title="@string/stats"/>
+        <!--<item
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="@string/settings"/>-->
+        <item
+            android:id="@+id/aboutFragment"
+            android:icon="@drawable/about"
+            android:title="@string/about"/>
+    </group>
+    <group>
+        <item
+            android:id="@+id/fireBaseBooksFragment"
+            android:icon="@drawable/firebase_books"
+            android:title="@string/books_in_net"/>
+        <item
+            android:id="@+id/sign_in"
+            android:icon="@drawable/googleg_standard_color_18"
+            android:onClick="onClick"
+            android:title="@string/sign_in_google" />
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/googleg_standard_color_18"
+            android:onClick="onClick"
+            android:title="@string/sign_out"
+            android:visible="false" />
+    </group>
+</menu>
