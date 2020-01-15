@@ -18,6 +18,7 @@ class FileStorage {
                 throw NullPointerException("No userId")
             } catch (e: NullPointerException) {
                 failCallback(e)
+                return
             }
         }
         if (!book.exists()) {
@@ -25,14 +26,14 @@ class FileStorage {
                 throw FileNotFoundException("File Not Found")
             } catch (e: FileNotFoundException) {
                 failCallback(e)
+                return
             }
         }
         val filePath = Uri.fromFile(book)
         val fileRef = storage.child("internal/${userId}/${filePath.lastPathSegment}")
         fileRef.putFile(filePath)
-            .addOnSuccessListener { successCallback() }
-      // TODO(smbdy): comment addOnFailureListener if keeps falling
-            .addOnFailureListener { failCallback(it) }
+            .addOnSuccessListener { successCallback()}
+            .addOnFailureListener { failCallback(it)}
     }
 
     fun downloadFile(url: String, destination: File,

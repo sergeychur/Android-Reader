@@ -7,9 +7,9 @@ import android.database.Cursor
 import android.database.DatabaseUtils
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import ru.tp_project.androidreader.ReaderApp
 import java.io.File
 
@@ -95,6 +95,26 @@ object FileUtils {
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun getPathToNonPrimaryVolume(
+        context: Context,
+        tag: String
+    ): String? {
+        val volumes = context.externalCacheDirs
+        if (volumes != null) {
+            for (volume in volumes) {
+                if (volume != null) {
+                    val path = volume.absolutePath
+                    val index = path.indexOf(tag)
+                    if (index != -1) {
+                        return path.substring(0, index) + tag
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and
@@ -119,8 +139,10 @@ object FileUtils {
                 val docId = DocumentsContract.getDocumentId(uri)
                 val split = docId.split(":").toTypedArray()
                 val type = split[0]
-                if ("primary".equals(type, ignoreCase = true)) {
-                    return Environment.getExternalStorageState() + "/" + split[1]
+                return if ("primary".equals(type, ignoreCase = true)) {
+                    "/sdcard" + "/" + split[1]
+                } else {
+                    getPathToNonPrimaryVolume(context, type) + "/" + split[1]
                 }
             } else if (isDownloadsDocument(uri)) {
                 val fileName: String? = getFilePath(context, uri)

@@ -80,4 +80,13 @@
     <string name="delete_fail">Ээй, это не твой файл!!!</string>
     <string name="permission_fail">Разрешения не получены</string>
     <string name="permission_ok">Разрешения получены</string>
+    <string name="logo">Лого</string>
+    <string name="app_description">Приложение для чтения книг с задачами</string>
+    <string name="team">Команда Blank</string>
+    <string name="sergey">Сергей Чуриков</string>
+    <string name="artem">Артем Доктор</string>
+    <string name="nikita">Никита Котов</string>
+    <string name="mentor">Ментор:</string>
+    <string name="mentor_name">Никита Рыжков</string>
+    <string name="version1_0">версия 1.0</string>
 </resources>
