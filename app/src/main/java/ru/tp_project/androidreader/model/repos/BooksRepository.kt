@@ -102,17 +102,19 @@ class BooksRepository {
             onResult(false)
             return
         }
-        FileStorage.getInstance().uploadFile(book = bookFile,
-            userId = userId,
-            successCallback = {
-                Log.d("dad", "upload success")
-                onResult(true)
-            },
-            failCallback = {
-                Log.println(Log.ERROR, "exception", it.message!!)
-                Log.d("dad", "upload fail")
-                onResult(false)
-            })
+        GlobalScope.launch {
+            FileStorage.getInstance().uploadFile(book = bookFile,
+                userId = userId,
+                successCallback = {
+                    Log.d("dad", "upload success")
+                    onResult(true)
+                },
+                failCallback = {
+                    Log.println(Log.ERROR, "exception", it.message!!)
+                    Log.d("dad", "upload fail")
+//                    onResult(false)
+                })
 
+        }
     }
 }
